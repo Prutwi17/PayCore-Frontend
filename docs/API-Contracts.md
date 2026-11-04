@@ -149,3 +149,92 @@ export interface ApiKeyCreatedResponse {
 - `listApiKeys(): Promise<ApiKeyItem[]>` -> `GET /api/v1/merchants/api-keys`
 - `generateApiKey(payload): Promise<ApiKeyCreatedResponse>` -> `POST /api/v1/merchants/api-keys`
 - `revokeApiKey(id: number): Promise<ApiKeyItem>` -> `DELETE /api/v1/merchants/api-keys/{id}`
+
+
+### 3.4 Payment & Telemetry Types (src/types/payment.ts)
+
+`	ypescript
+export type PaymentStatus =
+  | 'CREATED'
+  | 'PROCESSING'
+  | 'REQUIRES_ACTION'
+  | 'AUTHORIZED'
+  | 'SUCCESS'
+  | 'FAILED'
+  | 'CANCELLED'
+  | 'UNKNOWN';
+
+export type PaymentMethodType =
+  | 'CREDIT_CARD'
+  | 'DEBIT_CARD'
+  | 'BANK_TRANSFER'
+  | 'UPI'
+  | 'WALLET';
+
+export type PaymentAttemptStatus = 'SUCCESS' | 'FAILED' | 'PENDING' | 'TIMEOUT';
+
+export interface PaymentAttemptItem {
+  id: number;
+  attemptNumber: number;
+  provider: string;
+  providerTransactionId?: string;
+  status: PaymentAttemptStatus;
+  requestReference: string;
+  responseCode?: string;
+  responseMessage?: string;
+  startedAt: string;
+  completedAt?: string;
+  createdAt: string;
+}
+
+export interface PaymentItem {
+  id: number;
+  paymentReference: string;
+  merchantCode: string;
+  customerReference: string;
+  amount: number;
+  currency: string;
+  description?: string;
+  paymentMethod: PaymentMethodType;
+  status: PaymentStatus;
+  provider?: string;
+  providerTransactionId?: string;
+  failureCode?: string;
+  failureMessage?: string;
+  createdAt: string;
+  updatedAt: string;
+  processedAt?: string;
+  attempts?: PaymentAttemptItem[];
+}
+
+export interface PaymentCreatePayload {
+  amount: number;
+  currency: string;
+  paymentMethod: PaymentMethodType;
+  customerReference: string;
+  description?: string;
+  simulationScenario?: 'SUCCESS' | 'FAIL' | 'TIMEOUT' | 'REQUIRES_ACTION';
+}
+
+export interface PaymentStatusResponse {
+  paymentReference: string;
+  status: PaymentStatus;
+  previousStatus?: PaymentStatus;
+  updated: boolean;
+  message: string;
+  checkedAt: string;
+}
+`
+
+---
+
+### 4.4 Payment Service (src/services/api/paymentService.ts)
+- createPayment(payload: PaymentCreatePayload): Promise<PaymentItem> -> POST /api/v1/payments
+- listMerchantPayments(params): Promise<PagedResponse<PaymentItem>> -> GET /api/v1/payments
+- getPayment(ref: string): Promise<PaymentItem> -> GET /api/v1/payments/{paymentReference}
+- getPaymentAttempts(ref: string): Promise<PaymentAttemptItem[]> -> GET /api/v1/payments/{paymentReference}/attempts
+- getPaymentStatus(ref: string): Promise<PaymentStatusResponse> -> GET /api/v1/payments/{paymentReference}/status
+- cancelPayment(ref: string, reason?: string): Promise<PaymentItem> -> POST /api/v1/payments/{paymentReference}/cancel
+- listAdminPayments(params): Promise<PagedResponse<PaymentItem>> -> GET /api/v1/admin/payments
+- getAdminPayment(ref: string): Promise<PaymentItem> -> GET /api/v1/admin/payments/{paymentReference}
+- getAdminPaymentAttempts(ref: string): Promise<PaymentAttemptItem[]> -> GET /api/v1/admin/payments/{paymentReference}/attempts

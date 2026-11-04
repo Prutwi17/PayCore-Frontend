@@ -15,10 +15,12 @@ import { PublicOnlyRoute } from '@/components/common/PublicOnlyRoute';
 import { MerchantDashboardPlaceholder } from '@/pages/merchant/MerchantDashboardPlaceholder';
 import { MerchantProfilePage } from '@/pages/merchant/MerchantProfilePage';
 import { MerchantApiKeysPage } from '@/pages/merchant/MerchantApiKeysPage';
+import { MerchantPaymentsPage } from '@/pages/merchant/MerchantPaymentsPage';
 
 // Admin Pages
 import { AdminDashboardPlaceholder } from '@/pages/admin/AdminDashboardPlaceholder';
 import { AdminMerchantsPage } from '@/pages/admin/AdminMerchantsPage';
+import { AdminPaymentsPage } from '@/pages/admin/AdminPaymentsPage';
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -52,7 +54,7 @@ export const AppRoutes: React.FC = () => {
           <Route path="dashboard" element={<MerchantDashboardPlaceholder />} />
           <Route path="settings" element={<MerchantProfilePage />} />
           <Route path="api-keys" element={<MerchantApiKeysPage />} />
-          <Route path="payments" element={<MerchantDashboardPlaceholder />} />
+          <Route path="payments" element={<MerchantPaymentsPage />} />
           <Route path="refunds" element={<MerchantDashboardPlaceholder />} />
           <Route path="webhooks" element={<MerchantDashboardPlaceholder />} />
           <Route path="reconciliation" element={<MerchantDashboardPlaceholder />} />
@@ -73,7 +75,7 @@ export const AppRoutes: React.FC = () => {
           <Route path="dashboard" element={<AdminDashboardPlaceholder />} />
           <Route path="merchants" element={<AdminMerchantsPage />} />
           <Route path="settings" element={<AdminDashboardPlaceholder />} />
-          <Route path="payments" element={<AdminDashboardPlaceholder />} />
+          <Route path="payments" element={<AdminPaymentsPage />} />
           <Route path="refunds" element={<AdminDashboardPlaceholder />} />
           <Route path="reconciliation" element={<AdminDashboardPlaceholder />} />
           <Route path="webhooks" element={<AdminDashboardPlaceholder />} />

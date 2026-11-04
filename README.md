@@ -65,22 +65,25 @@ npm run build
 
 ---
 
-## 🚀 Implemented Modules (Stage 2 Complete)
+## 🚀 Implemented Modules (Stage 3 Complete)
 
-1. **Authentication & Session (`AuthContext`):**
-   - Centralized authentication state management with localStorage persistence and `/auth/me` token hydration.
+1. **Authentication & Session (AuthContext):**
+   - Centralized authentication state management with localStorage persistence and /auth/me token hydration.
    - Axios Bearer token injection and error interception.
 2. **Route Guards:**
-   - `ProtectedRoute`: Guarantees only authenticated users can access protected sections.
-   - `RoleRoute`: Enforces role-based boundaries (`ROLE_ADMIN` vs `ROLE_MERCHANT`).
-   - `PublicOnlyRoute`: Prevents authenticated users from viewing guest login/register screens.
+   - ProtectedRoute: Guarantees only authenticated users can access protected sections.
+   - RoleRoute: Enforces role-based boundaries (ROLE_ADMIN vs ROLE_MERCHANT).
+   - PublicOnlyRoute: Prevents authenticated users from viewing guest login/register screens.
 3. **Public Auth Pages:**
-   - `/login`: Clean interface with password visibility toggle, developer quick-fill admin helper, and error alerts.
-   - `/register`: Comprehensive account creation with optional merchant business provisioning.
+   - /login: Clean interface with password visibility toggle, developer quick-fill admin helper, and error alerts.
+   - /register: Comprehensive account creation with optional merchant business provisioning.
 4. **Merchant Workspace:**
-   - `/merchant/dashboard`: Portal telemetry overview, merchant code, and quick action cards.
-   - `/merchant/settings`: Business profile review, status badges (`PENDING`, `ACTIVE`, `SUSPENDED`), and editable contact details.
-   - `/merchant/api-keys`: API credential registry, generation modal, single-exposure secret key disclosure, and key revocation.
+   - /merchant/dashboard: Portal telemetry overview, merchant code, quick action cards, and Stage 3 core payment engine status indicator.
+   - /merchant/payments: Interactive payment processing console, dynamic status filter tabs (ALL, SUCCESS, PROCESSING, REQUIRES_ACTION, FAILED, CANCELLED, UNKNOWN), search by reference/customer, and initiation modal with deterministic simulation scenario injection (NORMAL, FAIL, TIMEOUT, ACTION).
+   - /merchant/payments (Attempt Telemetry Inspection): Modal with granular attempt logs, provider transaction references, timestamps, error codes, in-place payment cancellation for eligible states, and self-healing status verification for UNKNOWN states.
+   - /merchant/settings: Business profile review, status badges (PENDING, ACTIVE, SUSPENDED), and editable contact details.
+   - /merchant/api-keys: API credential registry, generation modal, single-exposure secret key disclosure, and key revocation.
 5. **Admin Operations:**
-   - `/admin/dashboard`: Platform health and governance summary.
-   - `/admin/merchants`: Merchant auditing directory with search, status filtering, and approval/suspension lifecycle actions.
+   - /admin/dashboard: Platform health and governance summary.
+   - /admin/merchants: Merchant auditing directory with search, status filtering, and approval/suspension lifecycle actions.
+   - /admin/payments: Global payments ledger with cross-merchant auditing, status filters, reference search, and deep per-attempt telemetry inspection.
