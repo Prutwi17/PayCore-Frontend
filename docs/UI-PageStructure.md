@@ -1,0 +1,122 @@
+# PAYCORE FRONTEND — UI PAGE STRUCTURE & DESIGN SYSTEM
+
+## 1. Visual Direction & Design Tokens
+
+Derived from the official design reference (`design-reference/paycore-ui-reference.png`) and architectural requirements:
+
+- **Primary Brand Color:** Blue (`#2563EB` / Tailwind `blue-600`, `#1D4ED8` / `blue-700`)
+- **Portal Sidebar & Header Dark Accents:** Deep Slate / Navy (`#0F172A` / `slate-900`, `#1E293B` / `slate-800`)
+- **Canvas Background:** Pure White (`#FFFFFF`) with subtle surface tints (`#F8FAFC` / `slate-50`)
+- **Typography:** Modern clean sans-serif (Inter / System Font Stack)
+- **Borders & Dividers:** Subtle soft gray borders (`#E2E8F0` / `slate-200`)
+- **Shadows:** Minimal soft elevations (`shadow-sm`, `shadow-md`)
+- **Status Colors:**
+  - `SUCCESS` / `Active`: Emerald Green (`bg-emerald-50 text-emerald-700 border-emerald-200`)
+  - `PROCESSING` / `Pending`: Royal Blue (`bg-blue-50 text-blue-700 border-blue-200`)
+  - `FAILED` / `Cancelled`: Coral Red (`bg-red-50 text-red-700 border-red-200`)
+  - `UNKNOWN` / `Requires Action`: Amber Orange (`bg-amber-50 text-amber-700 border-amber-200`)
+
+---
+
+## 2. Authentication Pages Architecture (Public)
+
+Applies to: **Login**, **Register**, **Forgot Password**, **Reset Password**
+
+### Visual Specifications
+- Full white background (`#FFFFFF`)
+- Subtle circular ambient blue gradient orbs in background (`bg-gradient-to-tr from-blue-100/50 to-transparent blur-3xl`)
+- Flowing blue wave accent pinned cleanly along the bottom viewport
+- Centered card container (max width 420px) with crisp white surface and soft boundary shadow
+- **PayCore Logo:** Coin-inspired metallic blue circular emblem featuring a stylized payment "P" with clean geometric lines (zero resemblance to Bitcoin).
+
+### Form Elements & UX
+- Floating / labelled inputs with inline icon prefixes (`Mail`, `Lock`, `User`).
+- Password visibility toggle icon.
+- High-contrast, full-width solid blue CTA button (`bg-blue-600 hover:bg-blue-700 text-white rounded-lg py-2.5 font-medium transition`).
+- Responsive mobile centering with viewport height management.
+
+---
+
+## 3. Merchant Portal Layout (`/merchant/*`)
+
+### 3.1 Dark Navy Sidebar
+- Fixed left navigation (`w-64 bg-slate-900 text-slate-300 min-h-screen`)
+- PayCore branding emblem and "Merchant Portal" pill badge
+- Navigation Links:
+  - 📊 **Dashboard** (`/merchant/dashboard`)
+  - 💳 **Payments** (`/merchant/payments`)
+  - 🔄 **Refunds** (`/merchant/refunds`)
+  - ⚡ **Webhooks** (`/merchant/webhooks`)
+  - ⚖️ **Reconciliation** (`/merchant/reconciliation`)
+  - 🔑 **API Keys** (`/merchant/api-keys`)
+  - ⚙️ **Settings** (`/merchant/settings`)
+
+### 3.2 Top Bar
+- Contextual breadcrumb / page title
+- Quick-filter date range selector ("Last 30 Days", "This Month", "Custom")
+- Live environment indicator pill ("TEST" / "LIVE")
+- User profile dropdown with merchant code display and Sign Out action
+
+### 3.3 Dashboard Screen Components
+- **Top Metric Cards (4 Grid):**
+  - Total Payments (e.g., `₹12,56,000` with subtle upward trend badge)
+  - Successful Payments count (e.g., `3,842`)
+  - Failed Payments count (e.g., `126`)
+  - Refunded Volume (e.g., `₹4,32,000`)
+- **Payment Volume Chart:** Responsive line chart mapping volume across time intervals
+- **Recent Transactions Quick Table:** Snapshot of latest 5 payments with quick action links
+
+### 3.4 Payments Screen
+- Search input by Order ID or Payment ID with debounced querying
+- Filter drawer / modal (Status, Date Range, Currency)
+- Interactive Data Table:
+  - Columns: `Payment ID`, `Order ID`, `Amount`, `Status Badge`, `Created At`, `Actions`
+  - Pagination bar (`Rows per page`, `Previous`, `Next`)
+- "+ Create Payment" primary action button triggering creation drawer/modal:
+  - Fields: Order ID, Amount, Currency dropdown, Payment Method, pre-filled auto-generated Idempotency Key (UUID).
+
+### 3.5 Payment Details Screen (`/merchant/payments/:paymentId`)
+- Header: Payment ID (`PAY_8F2301`), Order ID (`ORD-1001`), Gross Amount, Status Badge
+- Tabbed Navigation:
+  - **Timeline Tab:** Vertical stepper timeline illustrating transition history (`Payment Created` -> `Processing` -> `Payment Successful`) with exact ISO timestamps.
+  - **Refunds Tab:** List of all full or partial refunds issued against this payment, remaining refundable amount calculator, and "+ Issue Refund" button.
+  - **Webhooks Tab:** Log of outbound webhook events dispatched for this payment with delivery status.
+
+---
+
+## 4. Admin Portal Layout (`/admin/*`)
+
+### 4.1 Dark Navy Sidebar
+- Dedicated "Admin Portal" badge with shield icon
+- Navigation Links:
+  - 📊 **Dashboard** (`/admin/dashboard`)
+  - 🏢 **Merchants** (`/admin/merchants`)
+  - 💳 **Payments** (`/admin/payments`)
+  - 🔄 **Refunds** (`/admin/refunds`)
+  - ⚖️ **Reconciliation** (`/admin/reconciliation`)
+  - ⚡ **Webhook Events** (`/admin/webhooks`)
+  - 📜 **Audit Logs** (`/admin/audit-logs`)
+  - 🖥️ **System Health** (`/admin/system`)
+
+### 4.2 Admin Dashboard Screen
+- Platform-wide Metric Cards:
+  - Total System Volume (`₹28,40,000`)
+  - Total Payments Processed (`9,284`)
+  - Total Refunds Issued (`1,230`)
+  - Platform Success Rate (`96.8%`)
+- Daily Payment Volume Bar Chart: Bar visualization over 7/30 days
+- Quick Merchant Telemetry overview
+
+### 4.3 Reconciliation Screen
+- "+ Run Reconciliation" primary action button triggering on-demand settlement audit
+- Summary Metric Cards:
+  - Matched Records count (`48,120` - Green)
+  - Mismatches count (`28` - Red)
+  - Missing in Provider (`12` - Orange)
+  - Missing in Internal Ledger (`14` - Orange)
+- Historical Batches Table with discrepancy drill-down modal
+
+### 4.4 Webhook Events Screen
+- Global filter by Event Type (`payment.success`, `refund.processed`, etc.)
+- Table displaying Event ID, Event Type, Merchant, Status, and Timestamp
+- JSON payload inspector drawer
