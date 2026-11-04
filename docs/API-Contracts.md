@@ -1,7 +1,7 @@
 # PAYCORE FRONTEND — API CONTRACTS & INTEGRATION SPECIFICATION
 
 ## 1. Overview
-The frontend communicates with the backend via the standardized `/api/v1` base route. All requests and responses are strictly typed via TypeScript interfaces that mirror the backend DTOs.
+The frontend communicates with the backend via the standardized `/api/v1` base route. All requests and responses are strictly typed via TypeScript interfaces located in `src/types/auth.ts` and `src/types/api.ts` that mirror the backend DTOs.
 
 ---
 
@@ -10,15 +10,12 @@ The frontend communicates with the backend via the standardized `/api/v1` base r
 ### 2.1 Dashboard Requests (Axios Client)
 All portal HTTP requests pass through an Axios request interceptor that injects:
 ```typescript
-config.headers.Authorization = `Bearer ${accessToken}`;
+const token = localStorage.getItem('paycore_access_token');
+if (token && config.headers) {
+  config.headers.Authorization = `Bearer ${token}`;
+}
 ```
-Upon receiving an HTTP 401 response, the response interceptor automatically initiates token refresh or redirects to `/login`.
-
-### 2.2 Payment Initiation
-When creating a test payment from the merchant UI:
-```typescript
-config.headers['Idempotency-Key'] = crypto.randomUUID();
-```
+Upon receiving an HTTP 401 response, the response interceptor automatically surfaces structured `ApiError` objects, and the `AuthContext` clears local session caches.
 
 ---
 
@@ -50,110 +47,105 @@ export interface PagedResponse<T> {
 
 // User & Auth Types
 export type UserRole = 'ROLE_ADMIN' | 'ROLE_MERCHANT' | 'ROLE_CUSTOMER';
+export type UserStatus = 'ACTIVE' | 'SUSPENDED' | 'LOCKED';
+export type MerchantStatus = 'PENDING' | 'ACTIVE' | 'SUSPENDED' | 'REJECTED';
 
 export interface UserProfile {
   id: number;
   username: string;
   email: string;
   fullName: string;
-  role: UserRole;
+  phoneNumber?: string;
+  status: UserStatus;
   merchantId?: number;
   merchantCode?: string;
+  roles: UserRole[];
+  createdAt: string;
 }
 
-export interface AuthResponseData {
+export interface AuthResponse {
   accessToken: string;
   tokenType: string;
   expiresIn: number;
   user: UserProfile;
 }
 
-// Payment Types
-export type PaymentStatus = 
-  | 'CREATED'
-  | 'PROCESSING'
-  | 'REQUIRES_ACTION'
-  | 'AUTHORIZED'
-  | 'SUCCESS'
-  | 'FAILED'
-  | 'CANCELLED'
-  | 'UNKNOWN';
-
-export interface PaymentSummary {
-  paymentId: string;
-  orderId: string;
-  amount: number;
-  currency: string;
-  status: PaymentStatus;
-  paymentMethod: string;
-  createdAt: string;
+export interface LoginCredentials {
+  email: string;
+  password: string;
 }
 
-export interface PaymentDetail extends PaymentSummary {
-  merchantId: number;
-  amountRefunded: number;
-  refundableAmount: number;
-  providerTransactionId?: string;
-  errorCode?: string;
-  errorMessage?: string;
-  attempts: PaymentAttempt[];
-  refunds: RefundSummary[];
-  webhooks: WebhookEventSummary[];
+export interface RegisterFormData {
+  fullName: string;
+  email: string;
+  password: string;
+  confirmPassword?: string;
+  phoneNumber?: string;
+  businessName?: string;
+  businessAddress?: string;
 }
 
-export interface PaymentAttempt {
-  attemptId: string;
-  attemptNumber: number;
-  status: string;
-  responseCode?: string;
-  createdAt: string;
-}
-
-// Refund Types
-export type RefundStatus = 'REQUESTED' | 'PROCESSING' | 'SUCCESS' | 'FAILED';
-
-export interface RefundSummary {
-  refundId: string;
-  paymentId: string;
-  amount: number;
-  currency: string;
-  status: RefundStatus;
-  reason?: string;
-  createdAt: string;
-}
-
-// Webhook Types
-export interface WebhookEndpoint {
+export interface MerchantProfile {
   id: number;
-  url: string;
-  status: 'ACTIVE' | 'DISABLED';
-  subscribedEvents: string[];
+  merchantCode: string;
+  businessName: string;
+  businessEmail: string;
+  contactNumber?: string;
+  businessAddress?: string;
+  status: MerchantStatus;
+  userId: number;
   createdAt: string;
+  updatedAt: string;
 }
 
-export interface WebhookEventSummary {
-  eventId: string;
-  eventType: string;
-  status: 'SUCCESS' | 'FAILED' | 'PENDING';
-  receivedAt: string;
+export interface MerchantUpdateRequest {
+  businessName: string;
+  contactNumber?: string;
+  businessAddress?: string;
 }
 
-// Reconciliation Types
-export interface ReconciliationSummary {
-  batchId: string;
-  runAt: string;
-  status: 'COMPLETED' | 'RUNNING' | 'FAILED';
-  matched: number;
-  mismatched: number;
-  missingProvider: number;
-  missingInternal: number;
+export interface ApiKeyItem {
+  id: number;
+  keyPrefix: string;
+  keyType: 'SECRET' | 'PUBLISHABLE';
+  environment: 'TEST' | 'LIVE';
+  status: 'ACTIVE' | 'REVOKED';
+  createdAt: string;
+  revokedAt?: string;
+  lastUsedAt?: string;
+}
+
+export interface ApiKeyCreatedResponse {
+  id: number;
+  keyPrefix: string;
+  secretKey: string;
+  keyType: string;
+  environment: string;
+  status: string;
+  createdAt: string;
+  warningMessage: string;
 }
 ```
 
 ---
 
-## 4. Sample vs Real Data Policy
+## 4. Frontend API Services (`src/services/api/`)
 
-- During early milestone UI prototyping, mock fixture data may be used solely for layout validation.
-- Mock fixtures must be placed in a dedicated `src/services/mock/` folder and strictly gated behind an environment flag (`VITE_USE_MOCK_DATA=false` by default).
-- Production and integration tests must always connect to the actual Spring Boot backend APIs.
+### 4.1 Authentication Service (`authService.ts`)
+- `login(credentials: LoginCredentials): Promise<AuthResponse>` -> `POST /api/v1/auth/login`
+- `register(data: RegisterFormData): Promise<UserProfile>` -> `POST /api/v1/auth/register`
+- `getMe(): Promise<UserProfile>` -> `GET /api/v1/auth/me`
+
+### 4.2 Merchant Service (`merchantService.ts`)
+- `getProfile(): Promise<MerchantProfile>` -> `GET /api/v1/merchants/profile`
+- `updateProfile(data: MerchantUpdateRequest): Promise<MerchantProfile>` -> `PUT /api/v1/merchants/profile`
+- `getMerchantById(id: number): Promise<MerchantProfile>` -> `GET /api/v1/merchants/{id}`
+- `listMerchants(params): Promise<PagedResponse<MerchantProfile>>` -> `GET /api/v1/admin/merchants`
+- `approveMerchant(id: number): Promise<MerchantProfile>` -> `PATCH /api/v1/admin/merchants/{id}/approve`
+- `suspendMerchant(id: number): Promise<MerchantProfile>` -> `PATCH /api/v1/admin/merchants/{id}/suspend`
+- `rejectMerchant(id: number): Promise<MerchantProfile>` -> `PATCH /api/v1/admin/merchants/{id}/reject`
+
+### 4.3 API Key Service (`apiKeyService.ts`)
+- `listApiKeys(): Promise<ApiKeyItem[]>` -> `GET /api/v1/merchants/api-keys`
+- `generateApiKey(payload): Promise<ApiKeyCreatedResponse>` -> `POST /api/v1/merchants/api-keys`
+- `revokeApiKey(id: number): Promise<ApiKeyItem>` -> `DELETE /api/v1/merchants/api-keys/{id}`

@@ -50,3 +50,37 @@ npm run dev
 ```
 
 Application starts at: `http://localhost:5173`
+
+### Build & Verification
+```bash
+# Typecheck TypeScript definitions
+npm run typecheck
+
+# Lint codebase (0 warnings permitted)
+npm run lint
+
+# Production build
+npm run build
+```
+
+---
+
+## 🚀 Implemented Modules (Stage 2 Complete)
+
+1. **Authentication & Session (`AuthContext`):**
+   - Centralized authentication state management with localStorage persistence and `/auth/me` token hydration.
+   - Axios Bearer token injection and error interception.
+2. **Route Guards:**
+   - `ProtectedRoute`: Guarantees only authenticated users can access protected sections.
+   - `RoleRoute`: Enforces role-based boundaries (`ROLE_ADMIN` vs `ROLE_MERCHANT`).
+   - `PublicOnlyRoute`: Prevents authenticated users from viewing guest login/register screens.
+3. **Public Auth Pages:**
+   - `/login`: Clean interface with password visibility toggle, developer quick-fill admin helper, and error alerts.
+   - `/register`: Comprehensive account creation with optional merchant business provisioning.
+4. **Merchant Workspace:**
+   - `/merchant/dashboard`: Portal telemetry overview, merchant code, and quick action cards.
+   - `/merchant/settings`: Business profile review, status badges (`PENDING`, `ACTIVE`, `SUSPENDED`), and editable contact details.
+   - `/merchant/api-keys`: API credential registry, generation modal, single-exposure secret key disclosure, and key revocation.
+5. **Admin Operations:**
+   - `/admin/dashboard`: Platform health and governance summary.
+   - `/admin/merchants`: Merchant auditing directory with search, status filtering, and approval/suspension lifecycle actions.
