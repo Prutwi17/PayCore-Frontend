@@ -6,12 +6,40 @@ import {
   PaymentAttemptItem,
   PaymentStatusResponse,
   PaymentStatus,
+  PaymentCreationResult,
 } from '@/types/payment';
 
 export const paymentService = {
-  async createPayment(payload: PaymentCreatePayload): Promise<PaymentItem> {
-    const response = await apiClient.post<ApiResponse<PaymentItem>>('/payments', payload);
-    return response.data.data;
+  /**
+   * Initiates payment under idempotency protection.
+   * If idempotencyKey is not provided, a fresh UUID is automatically generated.
+   */
+  async createPayment(
+    payload: PaymentCreatePayload,
+    idempotencyKey?: string
+  ): Promise<PaymentCreationResult> {
+    const key =
+      idempotencyKey ||
+      (typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : 'idemp_' + Math.random().toString(36).substring(2, 15) + '_' + Date.now());
+
+    const response = await apiClient.post<ApiResponse<PaymentItem>>('/payments', payload, {
+      headers: {
+        'Idempotency-Key': key,
+      },
+    });
+
+    const isReplay =
+      response.headers['idempotent-replay'] === 'true' ||
+      response.status === 200 ||
+      Boolean(response.data.data.idempotentReplay);
+
+    return {
+      payment: response.data.data,
+      isReplay,
+      httpStatus: response.status,
+    };
   },
 
   async listMerchantPayments(params?: {

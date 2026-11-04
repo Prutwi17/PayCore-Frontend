@@ -40,6 +40,7 @@ export interface PaymentItem {
   createdAt: string;
   updatedAt: string;
   processedAt?: string;
+  idempotentReplay?: boolean;
 }
 
 export interface PaymentAttemptItem {
@@ -63,6 +64,7 @@ export interface PaymentCreatePayload {
   paymentMethod?: PaymentMethodType;
   customerReference?: string;
   simulationScenario?: 'SUCCESS' | 'FAIL' | 'TIMEOUT' | 'REQUIRES_ACTION';
+  idempotencyKey?: string;
 }
 
 export interface PaymentStatusResponse {
@@ -73,4 +75,10 @@ export interface PaymentStatusResponse {
   failureCode?: string;
   failureMessage?: string;
   processedAt?: string;
+}
+
+export interface PaymentCreationResult {
+  payment: PaymentItem;
+  isReplay: boolean;
+  httpStatus: number;
 }
