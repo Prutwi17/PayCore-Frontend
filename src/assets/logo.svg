@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
+  <!-- Coin outer ring -->
+  <circle cx="50" cy="50" r="46" fill="url(#paycore-coin-grad)" stroke="#1D4ED8" stroke-width="3"/>
+  <circle cx="50" cy="50" r="41" stroke="#93C5FD" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.6"/>
+  
+  <!-- Stylized PayCore "P" payment mark -->
+  <path d="M38 28H54C61.732 28 68 34.268 68 42C68 49.732 61.732 56 54 56H48V72H38V28Z" fill="#FFFFFF"/>
+  <path d="M48 37H54C56.7614 37 59 39.2386 59 42C59 44.7614 56.7614 47 54 47H48V37Z" fill="url(#paycore-inner-grad)"/>
+  
+  <!-- Modern dynamic forward payment pip -->
+  <circle cx="54" cy="42" r="3" fill="#FFFFFF"/>
+
+  <defs>
+    <linearGradient id="paycore-coin-grad" x1="15" y1="15" x2="85" y2="85" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B82F6"/>
+      <stop offset="1" stop-color="#1D4ED8"/>
+    </linearGradient>
+    <linearGradient id="paycore-inner-grad" x1="48" y1="37" x2="59" y2="47" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#2563EB"/>
+      <stop offset="1" stop-color="#1E40AF"/>
+    </linearGradient>
+  </defs>
+</svg>
