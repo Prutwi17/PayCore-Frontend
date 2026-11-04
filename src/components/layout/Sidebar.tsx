@@ -1,5 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
 import {
   LayoutDashboard,
   CreditCard,
@@ -8,9 +9,10 @@ import {
   Scale,
   KeyRound,
   Settings,
-  Shield,
   Users,
   ScrollText,
+  LogOut,
+  UserCheck,
 } from 'lucide-react';
 import logoSvg from '@/assets/logo.svg';
 import { cn } from '@/utils/cn';
@@ -20,25 +22,27 @@ interface SidebarProps {
 }
 
 export const Sidebar: React.FC<SidebarProps> = ({ portalType }) => {
+  const { user, logout } = useAuth();
+
   const merchantNavItems = [
     { label: 'Dashboard', to: '/merchant/dashboard', icon: LayoutDashboard },
+    { label: 'API Keys', to: '/merchant/api-keys', icon: KeyRound },
+    { label: 'Settings', to: '/merchant/settings', icon: Settings },
     { label: 'Payments', to: '/merchant/payments', icon: CreditCard },
     { label: 'Refunds', to: '/merchant/refunds', icon: RotateCcw },
     { label: 'Webhooks', to: '/merchant/webhooks', icon: Webhook },
     { label: 'Reconciliation', to: '/merchant/reconciliation', icon: Scale },
-    { label: 'API Keys', to: '/merchant/api-keys', icon: KeyRound },
-    { label: 'Settings', to: '/merchant/settings', icon: Settings },
   ];
 
   const adminNavItems = [
     { label: 'Dashboard', to: '/admin/dashboard', icon: LayoutDashboard },
     { label: 'Merchants', to: '/admin/merchants', icon: Users },
+    { label: 'Settings', to: '/admin/settings', icon: Settings },
     { label: 'Payments', to: '/admin/payments', icon: CreditCard },
     { label: 'Refunds', to: '/admin/refunds', icon: RotateCcw },
     { label: 'Reconciliation', to: '/admin/reconciliation', icon: Scale },
     { label: 'Webhook Events', to: '/admin/webhooks', icon: Webhook },
     { label: 'Audit Logs', to: '/admin/audit-logs', icon: ScrollText },
-    { label: 'Settings', to: '/admin/settings', icon: Settings },
   ];
 
   const items = portalType === 'merchant' ? merchantNavItems : adminNavItems;
@@ -57,7 +61,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ portalType }) => {
       </div>
 
       {/* Nav List */}
-      <nav className="flex-1 px-3 py-6 space-y-1">
+      <nav className="flex-1 px-3 py-6 space-y-1 overflow-y-auto">
         {items.map((item) => {
           const Icon = item.icon;
           return (
@@ -80,13 +84,40 @@ export const Sidebar: React.FC<SidebarProps> = ({ portalType }) => {
         })}
       </nav>
 
-      {/* Footer Info */}
-      <div className="p-4 border-t border-slate-800 text-xs text-slate-500 flex items-center justify-between">
-        <span className="flex items-center space-x-1.5">
-          <Shield className="w-3.5 h-3.5 text-blue-500" />
-          <span>Stage 1 Foundation</span>
-        </span>
-        <span className="bg-slate-800 text-slate-300 px-1.5 py-0.5 rounded text-[10px]">v0.1</span>
+      {/* User Session Footer */}
+      <div className="p-4 border-t border-slate-800 bg-slate-950/40">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center space-x-2 min-w-0">
+            <div className="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-xs font-bold">
+              {user?.fullName?.charAt(0) || 'U'}
+            </div>
+            <div className="truncate">
+              <span className="block text-xs font-semibold text-white truncate">
+                {user?.fullName || 'User'}
+              </span>
+              <span className="block text-[10px] text-slate-400 truncate">
+                {user?.email}
+              </span>
+            </div>
+          </div>
+          <button
+            type="button"
+            onClick={logout}
+            className="p-1.5 hover:bg-slate-800 rounded-md text-slate-400 hover:text-rose-400 transition-colors"
+            title="Sign Out"
+          >
+            <LogOut className="w-4 h-4" />
+          </button>
+        </div>
+        <div className="flex items-center justify-between text-[10px] text-slate-500 pt-1 border-t border-slate-800/60">
+          <span className="flex items-center gap-1 text-blue-400 font-medium">
+            <UserCheck className="w-3 h-3" />
+            Stage 2 Authenticated
+          </span>
+          <span className="bg-slate-800 text-slate-300 px-1 py-0.5 rounded text-[9px] font-mono">
+            {portalType === 'merchant' ? 'MERCHANT' : 'ADMIN'}
+          </span>
+        </div>
       </div>
     </aside>
   );
