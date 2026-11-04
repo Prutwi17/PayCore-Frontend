@@ -65,7 +65,7 @@ npm run build
 
 ---
 
-## 🚀 Implemented Modules (Stage 3 Complete)
+## 🚀 Implemented Modules (Stage 4 Complete)
 
 1. **Authentication & Session (AuthContext):**
    - Centralized authentication state management with localStorage persistence and /auth/me token hydration.
@@ -77,10 +77,15 @@ npm run build
 3. **Public Auth Pages:**
    - /login: Clean interface with password visibility toggle, developer quick-fill admin helper, and error alerts.
    - /register: Comprehensive account creation with optional merchant business provisioning.
-4. **Merchant Workspace:**
-   - /merchant/dashboard: Portal telemetry overview, merchant code, quick action cards, and Stage 3 core payment engine status indicator.
-   - /merchant/payments: Interactive payment processing console, dynamic status filter tabs (ALL, SUCCESS, PROCESSING, REQUIRES_ACTION, FAILED, CANCELLED, UNKNOWN), search by reference/customer, and initiation modal with deterministic simulation scenario injection (NORMAL, FAIL, TIMEOUT, ACTION).
-   - /merchant/payments (Attempt Telemetry Inspection): Modal with granular attempt logs, provider transaction references, timestamps, error codes, in-place payment cancellation for eligible states, and self-healing status verification for UNKNOWN states.
+4. **Merchant Workspace & Reliability Features:**
+   - /merchant/dashboard: Portal telemetry overview, merchant code, quick action cards, and Stage 4 Idempotency Active status indicator.
+   - /merchant/payments (Idempotency Console):
+     - Mandatory `Idempotency-Key` auto-generated via UUID v4 with quick regenerate and copy controls.
+     - Double-submission defense: Buttons disabled with loading state during in-flight dispatch.
+     - In-modal verification shortcuts: "🔁 Test Idempotent Replay (200)" and "⚡ Test Altered Payload (409)" to demonstrate backend deduplication and conflict detection live.
+     - Visual Replay Badges: `⚡ Replay` badge in table, Replay alert banner, and dedicated banner in payment details modal confirming zero duplicate charges.
+     - Self-Healing UNKNOWN Verification: Prominent "Verify Status" button for timeout resolution with live spinner.
+     - Attempt Telemetry: Deep audit table recording sequential attempts, gateway references, timestamps, and error classifications.
    - /merchant/settings: Business profile review, status badges (PENDING, ACTIVE, SUSPENDED), and editable contact details.
    - /merchant/api-keys: API credential registry, generation modal, single-exposure secret key disclosure, and key revocation.
 5. **Admin Operations:**

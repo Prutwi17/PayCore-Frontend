@@ -22,6 +22,12 @@ import {
   Calendar,
   Layers,
   TrendingUp,
+  Key,
+  Copy,
+  Check,
+  RotateCcw,
+  Zap,
+  ShieldCheck,
 } from 'lucide-react';
 import { ApiError } from '@/types/api';
 
@@ -34,10 +40,14 @@ export const MerchantPaymentsPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [replayNotification, setReplayNotification] = useState<string | null>(null);
 
-  // Create Payment Modal State
+  // Create Payment Modal State & Idempotency Controls
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [idempotencyKey, setIdempotencyKey] = useState<string>('');
+  const [copiedKey, setCopiedKey] = useState(false);
+
   const [amount, setAmount] = useState('1000.00');
   const [currency, setCurrency] = useState('INR');
   const [description, setDescription] = useState('Online Checkout Order');
@@ -53,6 +63,29 @@ export const MerchantPaymentsPage: React.FC = () => {
   // Verification & Cancel Action State
   const [isVerifying, setIsVerifying] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
+
+  const generateNewIdempotencyKey = useCallback(() => {
+    const newKey =
+      typeof crypto !== 'undefined' && crypto.randomUUID
+        ? crypto.randomUUID()
+        : 'idemp_' + Math.random().toString(36).substring(2, 11) + '_' + Date.now();
+    setIdempotencyKey(newKey);
+    return newKey;
+  }, []);
+
+  const handleOpenCreateModal = () => {
+    generateNewIdempotencyKey();
+    setErrorMessage(null);
+    setIsCreateModalOpen(true);
+  };
+
+  const handleCopyKey = () => {
+    if (idempotencyKey) {
+      navigator.clipboard.writeText(idempotencyKey);
+      setCopiedKey(true);
+      setTimeout(() => setCopiedKey(false), 2000);
+    }
+  };
 
   const loadPayments = useCallback(async () => {
     setIsLoading(true);
@@ -97,6 +130,54 @@ export const MerchantPaymentsPage: React.FC = () => {
   const handleCreatePayment = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
+    setReplayNotification(null);
+
+    const parsedAmount = parseFloat(amount);
+    if (isNaN(parsedAmount) || parsedAmount <= 0) {
+      setErrorMessage('Payment amount must be greater than zero.');
+      return;
+    }
+
+    if (!idempotencyKey.trim()) {
+      setErrorMessage('Idempotency-Key header is required for reliable payment creation.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const result = await paymentService.createPayment(
+        {
+          amount: parsedAmount,
+          currency,
+          description: description.trim() || undefined,
+          paymentMethod,
+          customerReference: customerReference.trim() || undefined,
+          simulationScenario,
+        },
+        idempotencyKey.trim()
+      );
+
+      setIsCreateModalOpen(false);
+      await loadPayments();
+
+      if (result.isReplay) {
+        setReplayNotification(
+          `⚡ Idempotent Replay (HTTP 200 OK): Returned previously processed payment [${result.payment.paymentReference}]. No duplicate charge created.`
+        );
+      }
+
+      handleOpenDetails(result.payment);
+    } catch (err: unknown) {
+      const apiErr = err as ApiError;
+      setErrorMessage(apiErr.message || 'Failed to process payment');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleTestReplay = async () => {
+    setErrorMessage(null);
+    setReplayNotification(null);
 
     const parsedAmount = parseFloat(amount);
     if (isNaN(parsedAmount) || parsedAmount <= 0) {
@@ -106,22 +187,52 @@ export const MerchantPaymentsPage: React.FC = () => {
 
     setIsSubmitting(true);
     try {
-      const newPayment = await paymentService.createPayment({
-        amount: parsedAmount,
-        currency,
-        description: description.trim() || undefined,
-        paymentMethod,
-        customerReference: customerReference.trim() || undefined,
-        simulationScenario,
-      });
+      const result = await paymentService.createPayment(
+        {
+          amount: parsedAmount,
+          currency,
+          description: description.trim() || undefined,
+          paymentMethod,
+          customerReference: customerReference.trim() || undefined,
+          simulationScenario,
+        },
+        idempotencyKey.trim()
+      );
 
       setIsCreateModalOpen(false);
       await loadPayments();
-      // Automatically open the details of the created payment to display the result
-      handleOpenDetails(newPayment);
+      setReplayNotification(
+        `⚡ Idempotent Replay Verified: Duplicate request returned cached payment [${result.payment.paymentReference}] with HTTP 200 without duplicate provider charge.`
+      );
+      handleOpenDetails(result.payment);
     } catch (err: unknown) {
       const apiErr = err as ApiError;
-      setErrorMessage(apiErr.message || 'Failed to process payment');
+      setErrorMessage(apiErr.message || 'Replay test encountered error');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleTestConflict = async () => {
+    setErrorMessage(null);
+    setIsSubmitting(true);
+    try {
+      const parsedAmount = parseFloat(amount) + 50.0;
+      await paymentService.createPayment(
+        {
+          amount: parsedAmount,
+          currency,
+          description: (description + ' [TAMPERED]').trim(),
+          paymentMethod,
+          customerReference: customerReference.trim() || undefined,
+          simulationScenario,
+        },
+        idempotencyKey.trim()
+      );
+      setErrorMessage('Expected 409 Conflict, but request succeeded unexpectedly.');
+    } catch (err: unknown) {
+      const apiErr = err as ApiError;
+      setErrorMessage(`Idempotency Conflict (HTTP 409): ${apiErr.message || 'Payload altered for same key.'}`);
     } finally {
       setIsSubmitting(false);
     }
@@ -204,7 +315,7 @@ export const MerchantPaymentsPage: React.FC = () => {
             Payment Operations
           </h1>
           <p className="text-sm text-slate-500 mt-1">
-            Initiate test charges, monitor state machine transitions, and inspect provider attempt telemetry
+            Initiate idempotency-protected charges, monitor state machine transitions, and inspect provider attempt telemetry
           </p>
         </div>
         <div className="flex items-center space-x-3">
@@ -218,14 +329,31 @@ export const MerchantPaymentsPage: React.FC = () => {
           </Button>
           <Button
             variant="primary"
-            onClick={() => setIsCreateModalOpen(true)}
+            onClick={handleOpenCreateModal}
             className="flex items-center space-x-2"
           >
             <Plus className="w-4 h-4" />
-            <span>Create Test Payment</span>
+            <span>Create Protected Payment</span>
           </Button>
         </div>
       </div>
+
+      {/* Replay Notification Toast */}
+      {replayNotification && (
+        <div className="p-4 bg-emerald-50 border border-emerald-300 rounded-xl flex items-center justify-between text-emerald-900 text-sm shadow-sm animate-in fade-in duration-200">
+          <div className="flex items-center space-x-3">
+            <ShieldCheck className="w-5 h-5 text-emerald-600 flex-shrink-0" />
+            <span className="font-medium">{replayNotification}</span>
+          </div>
+          <button
+            type="button"
+            onClick={() => setReplayNotification(null)}
+            className="text-emerald-700 hover:text-emerald-900 text-xs font-bold ml-4"
+          >
+            ✕
+          </button>
+        </div>
+      )}
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -233,7 +361,10 @@ export const MerchantPaymentsPage: React.FC = () => {
           <span className="text-[11px] font-semibold uppercase tracking-wider text-slate-500">Total Transactions</span>
           <div className="mt-2 flex items-baseline justify-between">
             <span className="text-xl font-bold text-slate-900">{totalElements}</span>
-            <span className="text-xs text-blue-600 font-medium">Stage 3 Engine</span>
+            <span className="text-xs text-blue-600 font-medium flex items-center gap-1">
+              <ShieldCheck className="w-3.5 h-3.5" />
+              Idempotency Active
+            </span>
           </div>
         </Card>
 
@@ -394,9 +525,9 @@ export const MerchantPaymentsPage: React.FC = () => {
                 ? `No transactions match reference "${searchQuery}".`
                 : 'Initiate your first payment transaction to observe the payment state machine and attempt telemetry.'}
             </p>
-            <Button variant="primary" onClick={() => setIsCreateModalOpen(true)}>
+            <Button variant="primary" onClick={handleOpenCreateModal}>
               <Plus className="w-4 h-4 mr-1.5" />
-              Create Test Payment
+              Create Protected Payment
             </Button>
           </div>
         ) : (
@@ -418,7 +549,14 @@ export const MerchantPaymentsPage: React.FC = () => {
                   <tr key={p.id} className="hover:bg-slate-50/50 transition-colors">
                     <td className="px-6 py-4 font-mono font-medium text-slate-900">
                       <div className="flex flex-col">
-                        <span className="font-bold text-slate-800">{p.paymentReference}</span>
+                        <div className="flex items-center gap-1.5">
+                          <span className="font-bold text-slate-800">{p.paymentReference}</span>
+                          {p.idempotentReplay && (
+                            <span className="px-1.5 py-0.5 rounded text-[10px] bg-amber-100 text-amber-800 font-semibold font-sans">
+                              ⚡ Replay
+                            </span>
+                          )}
+                        </div>
                         {p.customerReference && (
                           <span className="text-[11px] font-sans text-slate-400 truncate max-w-xs">
                             {p.customerReference}
@@ -459,10 +597,10 @@ export const MerchantPaymentsPage: React.FC = () => {
                             type="button"
                             onClick={() => handleVerifyStatus(p.paymentReference)}
                             disabled={isVerifying}
-                            className="inline-flex items-center space-x-1 px-2 py-1 rounded text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200"
+                            className="inline-flex items-center space-x-1 px-2 py-1 rounded text-xs font-semibold text-amber-700 bg-amber-50 hover:bg-amber-100 border border-amber-200 transition-colors"
                             title="Verify UNKNOWN outcome with provider"
                           >
-                            <RefreshCw className="w-3 h-3" />
+                            <RefreshCw className={`w-3 h-3 ${isVerifying ? 'animate-spin' : ''}`} />
                             <span>Verify</span>
                           </button>
                         )}
@@ -515,14 +653,14 @@ export const MerchantPaymentsPage: React.FC = () => {
         )}
       </Card>
 
-      {/* Create Payment Modal */}
+      {/* Create Payment Modal with Idempotency Controls */}
       {isCreateModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200">
-          <Card className="w-full max-w-lg p-6 bg-white shadow-2xl space-y-5">
+          <Card className="w-full max-w-xl max-h-[95vh] overflow-y-auto p-6 bg-white shadow-2xl space-y-5">
             <div className="flex items-center justify-between pb-3 border-b border-slate-100">
               <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                 <CreditCard className="w-5 h-5 text-blue-600" />
-                Initiate Test Payment
+                Initiate Idempotent Payment
               </h3>
               <button
                 type="button"
@@ -531,6 +669,57 @@ export const MerchantPaymentsPage: React.FC = () => {
               >
                 ✕
               </button>
+            </div>
+
+            {/* Idempotency-Key Control Panel */}
+            <div className="p-3.5 bg-slate-50 border border-slate-200 rounded-xl space-y-2.5">
+              <div className="flex items-center justify-between">
+                <label className="text-xs font-bold text-slate-700 flex items-center gap-1.5 uppercase tracking-wider">
+                  <Key className="w-3.5 h-3.5 text-blue-600" />
+                  Idempotency-Key (Header)
+                </label>
+                <div className="flex items-center space-x-1.5">
+                  <button
+                    type="button"
+                    onClick={generateNewIdempotencyKey}
+                    className="inline-flex items-center space-x-1 text-[11px] font-semibold text-blue-600 hover:text-blue-800 bg-white px-2 py-0.5 border border-slate-200 rounded shadow-xs"
+                    title="Generate a fresh UUID idempotency key"
+                  >
+                    <RotateCcw className="w-3 h-3" />
+                    <span>Regenerate</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleCopyKey}
+                    className="inline-flex items-center space-x-1 text-[11px] font-semibold text-slate-600 hover:text-slate-800 bg-white px-2 py-0.5 border border-slate-200 rounded shadow-xs"
+                    title="Copy key to clipboard"
+                  >
+                    {copiedKey ? (
+                      <>
+                        <Check className="w-3 h-3 text-emerald-600" />
+                        <span className="text-emerald-600 font-bold">Copied</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-3 h-3" />
+                        <span>Copy</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              </div>
+
+              <input
+                type="text"
+                value={idempotencyKey}
+                onChange={(e) => setIdempotencyKey(e.target.value)}
+                required
+                placeholder="e.g. 9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d"
+                className="w-full px-3 py-1.5 bg-white border border-slate-300 rounded-lg text-xs font-mono text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              />
+              <p className="text-[11px] text-slate-500 leading-relaxed">
+                Scoped strictly to your merchant profile. Duplicate requests sharing this key and payload will return the cached response (HTTP 200 OK) without double charging.
+              </p>
             </div>
 
             <form onSubmit={handleCreatePayment} className="space-y-4">
@@ -680,6 +869,37 @@ export const MerchantPaymentsPage: React.FC = () => {
                 </div>
               </div>
 
+              {/* Idempotency Test Shortcut Buttons */}
+              <div className="p-3 bg-blue-50/50 border border-blue-200 rounded-xl space-y-2">
+                <span className="text-[11px] font-bold uppercase tracking-wider text-blue-800 block">
+                  Idempotency Verification Shortcuts
+                </span>
+                <div className="grid grid-cols-2 gap-2">
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleTestReplay}
+                    disabled={isSubmitting}
+                    className="text-xs text-blue-700 bg-white border-blue-300 hover:bg-blue-50 flex items-center justify-center gap-1.5"
+                  >
+                    <RotateCcw className="w-3.5 h-3.5 text-blue-600" />
+                    <span>Test Idempotent Replay (200)</span>
+                  </Button>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={handleTestConflict}
+                    disabled={isSubmitting}
+                    className="text-xs text-amber-800 bg-white border-amber-300 hover:bg-amber-50 flex items-center justify-center gap-1.5"
+                  >
+                    <Zap className="w-3.5 h-3.5 text-amber-600" />
+                    <span>Test Altered Payload (409)</span>
+                  </Button>
+                </div>
+              </div>
+
               <div className="pt-2 flex items-center justify-end space-x-3">
                 <Button
                   type="button"
@@ -693,8 +913,9 @@ export const MerchantPaymentsPage: React.FC = () => {
                   type="submit"
                   variant="primary"
                   isLoading={isSubmitting}
+                  disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Dispatching...' : 'Initiate Payment'}
+                  {isSubmitting ? 'Dispatching with Idempotency...' : 'Initiate Payment'}
                 </Button>
               </div>
             </form>
@@ -712,7 +933,15 @@ export const MerchantPaymentsPage: React.FC = () => {
                   <CreditCard className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="text-base font-bold text-slate-900">{selectedPayment.paymentReference}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-base font-bold text-slate-900">{selectedPayment.paymentReference}</h3>
+                    {selectedPayment.idempotentReplay && (
+                      <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-amber-100 text-amber-900 border border-amber-300 flex items-center gap-1">
+                        <Zap className="w-3 h-3 text-amber-600" />
+                        IDEMPOTENT REPLAY
+                      </span>
+                    )}
+                  </div>
                   <p className="text-xs text-slate-500">Merchant Code: {selectedPayment.merchantCode}</p>
                 </div>
               </div>
@@ -724,6 +953,19 @@ export const MerchantPaymentsPage: React.FC = () => {
                 ✕
               </button>
             </div>
+
+            {/* Idempotent Replay Banner */}
+            {selectedPayment.idempotentReplay && (
+              <div className="p-3.5 bg-amber-50/80 border border-amber-300 rounded-xl text-amber-900 text-xs flex items-center space-x-2.5">
+                <ShieldCheck className="w-5 h-5 text-amber-700 flex-shrink-0" />
+                <div>
+                  <span className="font-bold block">Idempotent Replay Verified</span>
+                  <p className="text-[11px] text-amber-800 mt-0.5">
+                    This response was returned from the database idempotency record (HTTP 200 OK). No duplicate charge was submitted to downstream providers.
+                  </p>
+                </div>
+              </div>
+            )}
 
             {/* Status & Amount Highlight */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 p-4 bg-slate-50 rounded-xl border border-slate-200 text-xs">
@@ -771,7 +1013,7 @@ export const MerchantPaymentsPage: React.FC = () => {
                     isLoading={isVerifying}
                     className="flex-shrink-0 text-xs"
                   >
-                    <RefreshCw className="w-3.5 h-3.5 mr-1" />
+                    <RefreshCw className={`w-3.5 h-3.5 mr-1 ${isVerifying ? 'animate-spin' : ''}`} />
                     Verify Status
                   </Button>
                 </div>
