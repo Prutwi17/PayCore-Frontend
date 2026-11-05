@@ -18,6 +18,7 @@ import { MerchantApiKeysPage } from '@/pages/merchant/MerchantApiKeysPage';
 import { MerchantPaymentsPage } from '@/pages/merchant/MerchantPaymentsPage';
 import { MerchantRefundsPage } from '@/pages/merchant/MerchantRefundsPage';
 import { MerchantTransactionsPage } from '@/pages/merchant/MerchantTransactionsPage';
+import { MerchantWebhooksPage } from '@/pages/merchant/MerchantWebhooksPage';
 
 // Admin Pages
 import { AdminDashboardPlaceholder } from '@/pages/admin/AdminDashboardPlaceholder';
@@ -25,6 +26,7 @@ import { AdminMerchantsPage } from '@/pages/admin/AdminMerchantsPage';
 import { AdminPaymentsPage } from '@/pages/admin/AdminPaymentsPage';
 import { AdminRefundsPage } from '@/pages/admin/AdminRefundsPage';
 import { AdminTransactionsPage } from '@/pages/admin/AdminTransactionsPage';
+import { AdminWebhooksPage } from '@/pages/admin/AdminWebhooksPage';
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -61,7 +63,7 @@ export const AppRoutes: React.FC = () => {
           <Route path="payments" element={<MerchantPaymentsPage />} />
           <Route path="refunds" element={<MerchantRefundsPage />} />
           <Route path="transactions" element={<MerchantTransactionsPage />} />
-          <Route path="webhooks" element={<MerchantDashboardPlaceholder />} />
+          <Route path="webhooks" element={<MerchantWebhooksPage />} />
           <Route path="reconciliation" element={<MerchantDashboardPlaceholder />} />
         </Route>
 
@@ -84,7 +86,7 @@ export const AppRoutes: React.FC = () => {
           <Route path="refunds" element={<AdminRefundsPage />} />
           <Route path="transactions" element={<AdminTransactionsPage />} />
           <Route path="reconciliation" element={<AdminDashboardPlaceholder />} />
-          <Route path="webhooks" element={<AdminDashboardPlaceholder />} />
+          <Route path="webhooks" element={<AdminWebhooksPage />} />
           <Route path="audit-logs" element={<AdminDashboardPlaceholder />} />
         </Route>
       </Route>

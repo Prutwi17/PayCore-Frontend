@@ -65,7 +65,71 @@ npm run build
 
 ---
 
-## 🚀 Implemented Modules (Stage 5 Complete)
+## 🚀 Implemented Modules (Stage 6 Complete)
+
+1. **Authentication & Session (AuthContext):**
+   - Centralized authentication state management with localStorage persistence and /auth/me token hydration.
+   - Axios Bearer token injection and error interception.
+2. **Route Guards:**
+   - ProtectedRoute: Guarantees only authenticated users can access protected sections.
+   - RoleRoute: Enforces role-based boundaries (ROLE_ADMIN vs ROLE_MERCHANT).
+   - PublicOnlyRoute: Prevents authenticated users from viewing guest login/register screens.
+3. **Public Auth Pages:**
+   - /login: Clean interface with password visibility toggle, developer quick-fill admin helper, and error alerts.
+   - /register: Comprehensive account creation with optional merchant business provisioning.
+4. **Merchant Workspace & Reliability Features:**
+   - /merchant/dashboard: Portal telemetry overview, merchant code, quick action cards, and Stage 4 Idempotency Active status indicator.
+   - /merchant/payments (Idempotency Console):
+     - Mandatory `Idempotency-Key` auto-generated via UUID v4 with quick regenerate and copy controls.
+     - Double-submission defense: Buttons disabled with loading state during in-flight dispatch.
+     - In-modal verification shortcuts: "🔁 Test Idempotent Replay (200)" and "⚡ Test Altered Payload (409)" to demonstrate backend deduplication and conflict detection live.
+     - Visual Replay Badges: `⚡ Replay` badge in table, Replay alert banner, and dedicated banner in payment details modal confirming zero duplicate charges.
+     - Self-Healing UNKNOWN Verification: Prominent "Verify Status" button for timeout resolution with live spinner.
+     - Attempt Telemetry: Deep audit table recording sequential attempts, gateway references, timestamps, and error classifications.
+   - /merchant/settings: Business profile review, status badges (PENDING, ACTIVE, SUSPENDED), and editable contact details.
+   - /merchant/api-keys: API credential registry, generation modal, single-exposure secret key disclosure, and key revocation.
+5. **Admin Operations:**
+   - /admin/dashboard: Platform health and governance summary.
+   - /admin/merchants: Merchant auditing directory with search, status filtering, and approval/suspension lifecycle actions.
+   - /admin/payments: Global payments ledger with cross-merchant auditing, status filters, reference search, and deep per-attempt telemetry inspection.
+
+6. **Refund Management & Financial Operations (Stage 5):**
+   - **/merchant/refunds:**
+     - Top metric cards: Total refunds count, settled refund volume, in-flight processing count, and unconfirmed UNKNOWN count.
+     - Search by refund reference, payment reference, or provider refund ID with status filter tabs (`ALL`, `SUCCESS`, `PROCESSING`, `REQUESTED`, `FAILED`, `UNKNOWN`).
+     - Interactive table with quick copy buttons, amount formatting, and status badges.
+     - Comprehensive Refund Details drawer with parent payment links and one-click provider verification for `UNKNOWN` outcomes.
+   - **/merchant/payments (Refund Experience):**
+     - Live **Refundable Balance Overview** card computing: `Remaining = Original - Settled - In-Flight Reserved`.
+     - "+ Initiate Refund" action modal with live remaining balance calculation, quick 100% full-refund and 50% partial-refund fill buttons.
+     - Intelligent safety guards: Automatic warning when requested amount equals remaining balance (payment transitions to `REFUNDED`), and warning when partial refund is selected.
+     - Optional `Idempotency-Key` support for refunds preventing double-refund execution.
+     - Deterministic provider simulation shortcuts: preset `[SIM_FAIL]` and `[SIM_TIMEOUT]` simulation triggers in reason dropdown.
+     - Embedded **Payment Refunds History** table in payment details drawer displaying all refunds linked to that charge.
+7. **Unified Transaction History Ledger (Stage 5):**
+   - **/merchant/transactions:**
+     - Unified multi-transaction ledger aggregating payments and refunds into a chronological timeline via database-level view (`v_transactions`).
+     - Transaction type filter pills (`All`, `Payments`, `Refunds`).
+     - Directional visual indicators: Green `+` and arrow for payments; Purple `-` and arrow for refunds.
+     - Date range filter (`From` and `To`), status filters, reference search, and pageable pagination.
+8. **Admin Operations & Platform Governance (Stage 5):**
+   - **/admin/refunds:** Cross-tenant platform-wide refund inspection with merchant ID filter, search, and admin verify actions.
+   - **/admin/transactions:** Global platform transaction history ledger providing complete visibility into inflows and outflows.
+9. **Webhooks & Event Delivery Console (Stage 6):**
+   - **/merchant/webhooks:**
+     - Dual-tab interface: Webhook Endpoints and Delivery History.
+     - Endpoint Registration: URL validation with SSRF advisory, subscribed event checkboxes, description.
+     - Single-Exposure Secret Reveal: High-visibility modal with copy action, HMAC-SHA256 signature guide (`X-PayCore-Signature: t=...,v1=...`), and security advisory.
+     - Endpoint Controls: Pause/Activate toggle, Edit Endpoint modal, Rotate Secret modal, and Delete action.
+     - Delivery Logs Explorer: Attempt counter (`#1/5`), status badges (`SUCCESS`, `RETRYING`, `DEAD_LETTER`, `FAILED`), HTTP status code, latency (ms), and timestamp.
+     - Delivery Inspector Drawer: Full URL, failure reason trace, next retry countdown, response snippet, and manual "Retry Now" action.
+10. **Webhook & Asynchronous Pipeline Governance (Stage 6):**
+    - **/admin/webhooks:**
+      - KPI Telemetry Cards: Total Deliveries, Delivery Success Rate (%), Outbox Pending, Outbox Failed, and Dead-Letter Queue count.
+      - **All Deliveries:** Multi-tenant delivery attempts table with status filters, latency metrics, and detailed inspection drawer.
+      - **Dead-Letter Queue:** Quarantined attempts that exhausted 5 retries or failed SSRF validation, with immediate Force Replay action.
+      - **Transactional Outbox:** Real-time outbox table showing aggregate types, payload JSON inspector, retry counters, and Force Republish action.
+      - **Idempotent Inbox Consumers:** Consumer telemetry showing duplicate message suppression records and processing statuses across Kafka worker components.
 
 1. **Authentication & Session (AuthContext):**
    - Centralized authentication state management with localStorage persistence and /auth/me token hydration.
