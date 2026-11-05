@@ -84,6 +84,33 @@ Applies to: **Login**, **Register**, **Forgot Password**, **Reset Password**
 
 ---
 
+
+### 3.6 Refunds Screen (`/merchant/refunds`)
+- **Top Metric Cards (4 Grid):**
+  - Total Refunds Count (all states)
+  - Settled Volume (sum of SUCCESS refunds)
+  - Pending / In-Flight Processing count
+  - Indeterminate UNKNOWN count (with prompt to verify)
+- **Controls & Filters:** Search by refund reference, payment reference, or provider refund ID; filter by status (`SUCCESS`, `PROCESSING`, `REQUESTED`, `FAILED`, `UNKNOWN`).
+- **Interactive Refunds Table:**
+  - Columns: `Refund Ref`, `Payment Ref`, `Amount`, `Status Badge`, `Reason / Memo`, `Created At`, `Actions`
+  - Actions: "View Details" drawer, "Verify Status" button for indeterminate refunds.
+- **Refund Details Drawer:**
+  - Complete refund metadata, parent payment reference, provider refund ID, timestamps.
+  - Failure categorization code and message if failed.
+  - One-click Authoritative Reconcile button for `UNKNOWN` outcomes.
+
+### 3.7 Transactions Screen (`/merchant/transactions`)
+- **Unified Financial Ledger:** Combines payments and refunds into a single chronologically sorted ledger.
+- **Controls & Filters:**
+  - Type Filter: `All`, `Payments` only, `Refunds` only.
+  - Status Filter: `SUCCESS`, `PARTIALLY_REFUNDED`, `REFUNDED`, `FAILED`, `UNKNOWN`.
+  - Date Range pickers (`From` and `To`).
+  - Text search across transaction references and parent payment references.
+- **Ledger Table:**
+  - Type indicator: Green `+` for Payments, Purple `-` for Refunds with directional icons.
+  - Formatted currency amounts, status badges, order/reason descriptions, and full timestamps.
+
 ## 4. Admin Portal Layout (`/admin/*`)
 
 ### 4.1 Dark Navy Sidebar
@@ -120,3 +147,12 @@ Applies to: **Login**, **Register**, **Forgot Password**, **Reset Password**
 - Global filter by Event Type (`payment.success`, `refund.processed`, etc.)
 - Table displaying Event ID, Event Type, Merchant, Status, and Timestamp
 - JSON payload inspector drawer
+
+### 4.5 Admin Refunds Screen (`/admin/refunds`)
+- Platform-wide refund inspection across all onboarded merchants.
+- Merchant ID filter, status filter, and keyword search.
+- Administrative status verification action for stuck or indeterminate refunds.
+
+### 4.6 Admin Transactions Screen (`/admin/transactions`)
+- Global multi-tenant ledger uniting all payments and refunds across the entire platform.
+- High-level platform cash inflow and outflow tracking with multi-criteria filtering.

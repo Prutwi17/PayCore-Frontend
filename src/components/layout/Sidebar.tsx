@@ -13,6 +13,7 @@ import {
   ScrollText,
   LogOut,
   UserCheck,
+  History,
 } from 'lucide-react';
 import logoSvg from '@/assets/logo.svg';
 import { cn } from '@/utils/cn';
@@ -30,6 +31,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ portalType }) => {
     { label: 'Settings', to: '/merchant/settings', icon: Settings },
     { label: 'Payments', to: '/merchant/payments', icon: CreditCard },
     { label: 'Refunds', to: '/merchant/refunds', icon: RotateCcw },
+    { label: 'Transactions', to: '/merchant/transactions', icon: History },
     { label: 'Webhooks', to: '/merchant/webhooks', icon: Webhook },
     { label: 'Reconciliation', to: '/merchant/reconciliation', icon: Scale },
   ];
@@ -40,6 +42,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ portalType }) => {
     { label: 'Settings', to: '/admin/settings', icon: Settings },
     { label: 'Payments', to: '/admin/payments', icon: CreditCard },
     { label: 'Refunds', to: '/admin/refunds', icon: RotateCcw },
+    { label: 'Transactions', to: '/admin/transactions', icon: History },
     { label: 'Reconciliation', to: '/admin/reconciliation', icon: Scale },
     { label: 'Webhook Events', to: '/admin/webhooks', icon: Webhook },
     { label: 'Audit Logs', to: '/admin/audit-logs', icon: ScrollText },

@@ -65,7 +65,7 @@ npm run build
 
 ---
 
-## 🚀 Implemented Modules (Stage 4 Complete)
+## 🚀 Implemented Modules (Stage 5 Complete)
 
 1. **Authentication & Session (AuthContext):**
    - Centralized authentication state management with localStorage persistence and /auth/me token hydration.
@@ -92,3 +92,26 @@ npm run build
    - /admin/dashboard: Platform health and governance summary.
    - /admin/merchants: Merchant auditing directory with search, status filtering, and approval/suspension lifecycle actions.
    - /admin/payments: Global payments ledger with cross-merchant auditing, status filters, reference search, and deep per-attempt telemetry inspection.
+
+6. **Refund Management & Financial Operations (Stage 5):**
+   - **/merchant/refunds:**
+     - Top metric cards: Total refunds count, settled refund volume, in-flight processing count, and unconfirmed UNKNOWN count.
+     - Search by refund reference, payment reference, or provider refund ID with status filter tabs (`ALL`, `SUCCESS`, `PROCESSING`, `REQUESTED`, `FAILED`, `UNKNOWN`).
+     - Interactive table with quick copy buttons, amount formatting, and status badges.
+     - Comprehensive Refund Details drawer with parent payment links and one-click provider verification for `UNKNOWN` outcomes.
+   - **/merchant/payments (Refund Experience):**
+     - Live **Refundable Balance Overview** card computing: `Remaining = Original - Settled - In-Flight Reserved`.
+     - "+ Initiate Refund" action modal with live remaining balance calculation, quick 100% full-refund and 50% partial-refund fill buttons.
+     - Intelligent safety guards: Automatic warning when requested amount equals remaining balance (payment transitions to `REFUNDED`), and warning when partial refund is selected.
+     - Optional `Idempotency-Key` support for refunds preventing double-refund execution.
+     - Deterministic provider simulation shortcuts: preset `[SIM_FAIL]` and `[SIM_TIMEOUT]` simulation triggers in reason dropdown.
+     - Embedded **Payment Refunds History** table in payment details drawer displaying all refunds linked to that charge.
+7. **Unified Transaction History Ledger (Stage 5):**
+   - **/merchant/transactions:**
+     - Unified multi-transaction ledger aggregating payments and refunds into a chronological timeline via database-level view (`v_transactions`).
+     - Transaction type filter pills (`All`, `Payments`, `Refunds`).
+     - Directional visual indicators: Green `+` and arrow for payments; Purple `-` and arrow for refunds.
+     - Date range filter (`From` and `To`), status filters, reference search, and pageable pagination.
+8. **Admin Operations & Platform Governance (Stage 5):**
+   - **/admin/refunds:** Cross-tenant platform-wide refund inspection with merchant ID filter, search, and admin verify actions.
+   - **/admin/transactions:** Global platform transaction history ledger providing complete visibility into inflows and outflows.

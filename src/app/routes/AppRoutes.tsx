@@ -16,11 +16,15 @@ import { MerchantDashboardPlaceholder } from '@/pages/merchant/MerchantDashboard
 import { MerchantProfilePage } from '@/pages/merchant/MerchantProfilePage';
 import { MerchantApiKeysPage } from '@/pages/merchant/MerchantApiKeysPage';
 import { MerchantPaymentsPage } from '@/pages/merchant/MerchantPaymentsPage';
+import { MerchantRefundsPage } from '@/pages/merchant/MerchantRefundsPage';
+import { MerchantTransactionsPage } from '@/pages/merchant/MerchantTransactionsPage';
 
 // Admin Pages
 import { AdminDashboardPlaceholder } from '@/pages/admin/AdminDashboardPlaceholder';
 import { AdminMerchantsPage } from '@/pages/admin/AdminMerchantsPage';
 import { AdminPaymentsPage } from '@/pages/admin/AdminPaymentsPage';
+import { AdminRefundsPage } from '@/pages/admin/AdminRefundsPage';
+import { AdminTransactionsPage } from '@/pages/admin/AdminTransactionsPage';
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -55,7 +59,8 @@ export const AppRoutes: React.FC = () => {
           <Route path="settings" element={<MerchantProfilePage />} />
           <Route path="api-keys" element={<MerchantApiKeysPage />} />
           <Route path="payments" element={<MerchantPaymentsPage />} />
-          <Route path="refunds" element={<MerchantDashboardPlaceholder />} />
+          <Route path="refunds" element={<MerchantRefundsPage />} />
+          <Route path="transactions" element={<MerchantTransactionsPage />} />
           <Route path="webhooks" element={<MerchantDashboardPlaceholder />} />
           <Route path="reconciliation" element={<MerchantDashboardPlaceholder />} />
         </Route>
@@ -76,7 +81,8 @@ export const AppRoutes: React.FC = () => {
           <Route path="merchants" element={<AdminMerchantsPage />} />
           <Route path="settings" element={<AdminDashboardPlaceholder />} />
           <Route path="payments" element={<AdminPaymentsPage />} />
-          <Route path="refunds" element={<AdminDashboardPlaceholder />} />
+          <Route path="refunds" element={<AdminRefundsPage />} />
+          <Route path="transactions" element={<AdminTransactionsPage />} />
           <Route path="reconciliation" element={<AdminDashboardPlaceholder />} />
           <Route path="webhooks" element={<AdminDashboardPlaceholder />} />
           <Route path="audit-logs" element={<AdminDashboardPlaceholder />} />

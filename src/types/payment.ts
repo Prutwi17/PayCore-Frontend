@@ -6,7 +6,9 @@ export type PaymentStatus =
   | 'SUCCESS'
   | 'FAILED'
   | 'CANCELLED'
-  | 'UNKNOWN';
+  | 'UNKNOWN'
+  | 'PARTIALLY_REFUNDED'
+  | 'REFUNDED';
 
 export type PaymentMethodType =
   | 'CARD'
@@ -29,6 +31,8 @@ export interface PaymentItem {
   merchantCode: string;
   customerReference?: string;
   amount: number;
+  amountRefunded?: number;
+  remainingRefundableAmount?: number;
   currency: string;
   description?: string;
   paymentMethod: PaymentMethodType;
