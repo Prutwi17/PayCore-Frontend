@@ -24,10 +24,19 @@
 - Handling of `UNKNOWN` / pending verification state with poll / refresh alerts.
 - Conflict (409) and Payload Mismatch (422) error banner components.
 
-## Milestone 5: Refund Management
-- Merchant Refunds Explorer view with status badges.
-- "+ New Refund" modal with dynamic validation against remaining refundable balance.
-- Refund tab embedded inside Payment Details view showing partial refund history.
+## Milestone 5: Refund Management & Transaction History [COMPLETED]
+- **Merchant Refunds Page (`/merchant/refunds`):** Top KPI metric cards (Total Refunds, Settled Volume, Processing In-Flight, Unconfirmed UNKNOWN), status filter tabs, search across references, paginated table, and details drawer with one-click provider verification.
+- **Merchant Transactions Ledger (`/merchant/transactions`):** Unified financial ledger combining payments and refunds with transaction type pills (`All`, `Payments`, `Refunds`), status badges, date range filter, and pageable table.
+- **Payment Details Refund Workflow (`/merchant/payments`):**
+  - Live Refundable Balance Overview card displaying original amount, total refunded, pending reserved, and remaining refundable balance.
+  - "+ Initiate Refund" modal with live validation against available balance, quick 100% and 50% autofill buttons, and full/partial refund warnings.
+  - Optional `Idempotency-Key` support with quick generation and copy controls.
+  - Deterministic simulation shortcuts (`[SIM_FAIL]`, `[SIM_TIMEOUT]`).
+  - Embedded Payment Refunds History table tracking all refunds issued for that payment.
+- **Admin Operations:**
+  - `/admin/refunds`: Global refund auditing across all merchants with filter by merchant ID and status.
+  - `/admin/transactions`: Unified platform-wide transaction ledger.
+- **Navigation & Routing:** Integrated into sidebar for Merchant and Admin portals with active link highlights; all routes protected by authentication and role guards.
 
 ## Milestone 6: Webhooks Telemetry
 - Merchant Webhook Configuration screen (register endpoint URL, select subscribed events, display signing secret `whsec_...`).

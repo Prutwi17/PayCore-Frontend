@@ -238,3 +238,84 @@ export interface PaymentStatusResponse {
 - listAdminPayments(params): Promise<PagedResponse<PaymentItem>> -> GET /api/v1/admin/payments
 - getAdminPayment(ref: string): Promise<PaymentItem> -> GET /api/v1/admin/payments/{paymentReference}
 - getAdminPaymentAttempts(ref: string): Promise<PaymentAttemptItem[]> -> GET /api/v1/admin/payments/{paymentReference}/attempts
+
+---
+
+### 4.5 Refund Types & Service (src/types/refund.ts & src/services/api/refundService.ts)
+
+```typescript
+export type RefundStatus = 'REQUESTED' | 'PROCESSING' | 'SUCCESS' | 'FAILED' | 'UNKNOWN';
+
+export interface RefundItem {
+  id: number;
+  refundReference: string;
+  paymentReference: string;
+  merchantId: number;
+  merchantCode: string;
+  amount: number;
+  currency: string;
+  reason?: string;
+  status: RefundStatus;
+  providerRefundId?: string;
+  failureCode?: string;
+  failureMessage?: string;
+  requestedAt: string;
+  processedAt?: string;
+  createdAt: string;
+  updatedAt: string;
+  idempotentReplay?: boolean;
+}
+
+export interface RefundCreatePayload {
+  amount: number;
+  currency: string;
+  reason?: string;
+}
+
+export interface RefundableAmountResponse {
+  paymentReference: string;
+  originalAmount: number;
+  totalRefundedAmount: number;
+  pendingRefundAmount: number;
+  remainingRefundableAmount: number;
+  currency: string;
+  refundable: boolean;
+}
+```
+
+**Refund Service Methods:**
+- `initiateRefund(paymentReference, payload, idempotencyKey)`: `POST /api/v1/payments/{paymentReference}/refunds`
+- `getRefundableAmount(paymentReference)`: `GET /api/v1/payments/{paymentReference}/refundable-amount`
+- `listMerchantRefunds(params)`: `GET /api/v1/refunds`
+- `getRefund(refundReference)`: `GET /api/v1/refunds/{refundReference}`
+- `getPaymentRefunds(paymentReference)`: `GET /api/v1/payments/{paymentReference}/refunds`
+- `verifyRefund(refundReference)`: `POST /api/v1/refunds/{refundReference}/verify`
+- `listAdminRefunds(params)`: `GET /api/v1/admin/refunds`
+- `getAdminRefund(refundReference)`: `GET /api/v1/admin/refunds/{refundReference}`
+- `verifyAdminRefund(refundReference)`: `POST /api/v1/admin/refunds/{refundReference}/verify`
+
+---
+
+### 4.6 Transaction Types & Service (src/types/transaction.ts & src/services/api/transactionService.ts)
+
+```typescript
+export type TransactionType = 'PAYMENT' | 'REFUND';
+
+export interface TransactionItem {
+  transactionId: string;
+  transactionReference: string;
+  parentReference: string;
+  merchantId: number;
+  type: TransactionType;
+  amount: number;
+  currency: string;
+  status: string;
+  description?: string;
+  createdAt: string;
+  processedAt?: string;
+}
+```
+
+**Transaction Service Methods:**
+- `listMerchantTransactions(filters)`: `GET /api/v1/transactions`
+- `listAdminTransactions(filters)`: `GET /api/v1/admin/transactions`
