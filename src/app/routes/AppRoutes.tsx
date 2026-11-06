@@ -21,12 +21,16 @@ import { MerchantTransactionsPage } from '@/pages/merchant/MerchantTransactionsP
 import { MerchantWebhooksPage } from '@/pages/merchant/MerchantWebhooksPage';
 
 // Admin Pages
+import { AdminDashboardPage } from '@/pages/admin/AdminDashboardPage';
 import { AdminDashboardPlaceholder } from '@/pages/admin/AdminDashboardPlaceholder';
 import { AdminMerchantsPage } from '@/pages/admin/AdminMerchantsPage';
 import { AdminPaymentsPage } from '@/pages/admin/AdminPaymentsPage';
 import { AdminRefundsPage } from '@/pages/admin/AdminRefundsPage';
 import { AdminTransactionsPage } from '@/pages/admin/AdminTransactionsPage';
 import { AdminWebhooksPage } from '@/pages/admin/AdminWebhooksPage';
+import { AdminReconciliationPage } from '@/pages/admin/AdminReconciliationPage';
+import { AdminReconciliationDetailPage } from '@/pages/admin/AdminReconciliationDetailPage';
+import { AdminAuditLogsPage } from '@/pages/admin/AdminAuditLogsPage';
 
 export const AppRoutes: React.FC = () => {
   return (
@@ -79,15 +83,16 @@ export const AppRoutes: React.FC = () => {
           }
         >
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
-          <Route path="dashboard" element={<AdminDashboardPlaceholder />} />
+          <Route path="dashboard" element={<AdminDashboardPage />} />
           <Route path="merchants" element={<AdminMerchantsPage />} />
           <Route path="settings" element={<AdminDashboardPlaceholder />} />
           <Route path="payments" element={<AdminPaymentsPage />} />
           <Route path="refunds" element={<AdminRefundsPage />} />
           <Route path="transactions" element={<AdminTransactionsPage />} />
-          <Route path="reconciliation" element={<AdminDashboardPlaceholder />} />
+          <Route path="reconciliation" element={<AdminReconciliationPage />} />
+          <Route path="reconciliation/:reference" element={<AdminReconciliationDetailPage />} />
           <Route path="webhooks" element={<AdminWebhooksPage />} />
-          <Route path="audit-logs" element={<AdminDashboardPlaceholder />} />
+          <Route path="audit-logs" element={<AdminAuditLogsPage />} />
         </Route>
       </Route>
     </Routes>
