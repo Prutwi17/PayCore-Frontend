@@ -12,6 +12,7 @@ interface AuthContextType {
   isCustomer: boolean;
   hasRole: (role: UserRole | string) => boolean;
   login: (credentials: LoginCredentials) => Promise<AuthResponse>;
+  loginWithGoogle: (idToken: string) => Promise<AuthResponse>;
   register: (data: RegisterFormData) => Promise<UserProfile>;
   logout: () => void;
   refreshUser: () => Promise<void>;
@@ -114,6 +115,23 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     }
   }, []);
 
+  const loginWithGoogle = useCallback(async (idToken: string): Promise<AuthResponse> => {
+    setIsLoading(true);
+    try {
+      const authData = await authService.loginWithGoogle(idToken);
+      localStorage.setItem(TOKEN_KEY, authData.accessToken);
+      if (authData.refreshToken) {
+        localStorage.setItem(REFRESH_TOKEN_KEY, authData.refreshToken);
+      }
+      localStorage.setItem(USER_KEY, JSON.stringify(authData.user));
+      setToken(authData.accessToken);
+      setUser(authData.user);
+      return authData;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   const register = useCallback(async (data: RegisterFormData): Promise<UserProfile> => {
     setIsLoading(true);
     try {
@@ -144,10 +162,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     isCustomer,
     hasRole,
     login,
+    loginWithGoogle,
     register,
     logout,
     refreshUser,
-  }), [user, token, isAuthenticated, isLoading, isAdmin, isMerchant, isCustomer, hasRole, login, register, logout, refreshUser]);
+  }), [user, token, isAuthenticated, isLoading, isAdmin, isMerchant, isCustomer, hasRole, login, loginWithGoogle, register, logout, refreshUser]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
