@@ -1,23 +1,19 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
-  <!-- Coin outer ring -->
-  <circle cx="50" cy="50" r="46" fill="url(#paycore-coin-grad)" stroke="#1D4ED8" stroke-width="3"/>
-  <circle cx="50" cy="50" r="41" stroke="#93C5FD" stroke-width="1.5" stroke-dasharray="2 2" opacity="0.6"/>
+  <!-- Outer circle with vibrant blue gradient -->
+  <circle cx="50" cy="50" r="48" fill="url(#paycore-blue-grad)" />
   
-  <!-- Stylized PayCore "P" payment mark -->
-  <path d="M38 28H54C61.732 28 68 34.268 68 42C68 49.732 61.732 56 54 56H48V72H38V28Z" fill="#FFFFFF"/>
-  <path d="M48 37H54C56.7614 37 59 39.2386 59 42C59 44.7614 56.7614 47 54 47H48V37Z" fill="url(#paycore-inner-grad)"/>
-  
-  <!-- Modern dynamic forward payment pip -->
-  <circle cx="54" cy="42" r="3" fill="#FFFFFF"/>
+  <!-- Subtle inner glowing rim -->
+  <circle cx="50" cy="50" r="45" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="2" />
+
+  <!-- Clean, bold white Bitcoin symbol matching UI reference -->
+  <path d="M48 20V26H54V20H58V26H61V32H58V40H63V46H58V54H63V60H58V66H54V60H48V66H44V60H34V20H48ZM48 32H40V40H48C51.3137 40 54 38.2091 54 36C54 33.7909 51.3137 32 48 32ZM48 46H40V54H48C51.3137 54 54 52.2091 54 50C54 47.7909 51.3137 46 48 46Z" fill="#FFFFFF"/>
+  <!-- Bitcoin vertical spine bars -->
+  <path d="M46 16H50V22H46V16ZM54 16H58V22H54V16ZM46 78H50V84H46V78ZM54 78H58V84H54V78Z" fill="#FFFFFF" opacity="0.9"/>
 
   <defs>
-    <linearGradient id="paycore-coin-grad" x1="15" y1="15" x2="85" y2="85" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#3B82F6"/>
-      <stop offset="1" stop-color="#1D4ED8"/>
-    </linearGradient>
-    <linearGradient id="paycore-inner-grad" x1="48" y1="37" x2="59" y2="47" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#2563EB"/>
-      <stop offset="1" stop-color="#1E40AF"/>
+    <linearGradient id="paycore-blue-grad" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#3B82F6" />
+      <stop offset="1" stop-color="#1D4ED8" />
     </linearGradient>
   </defs>
 </svg>
