@@ -170,3 +170,29 @@ Applies to: **Login**, **Register**, **Forgot Password**, **Reset Password**
 ### 4.6 Admin Transactions Screen (`/admin/transactions`)
 - Global multi-tenant ledger uniting all payments and refunds across the entire platform.
 - High-level platform cash inflow and outflow tracking with multi-criteria filtering.
+
+
+---
+
+## 4. Admin Portal Layout (`/admin/*`) — Stage 7 Enhancements
+
+### 4.1 System Admin Dashboard (`/admin/dashboard`)
+- **Real Database Operational KPIs:** Live payment volume, success conversion percentage, settled refund volume, active dispute count, webhook failures, pending retries, latest reconciliation status, and count of unresolved discrepancies.
+- **Responsive Inline SVG Trends:** Payment volume throughput and refund trends over selectable time ranges (`24h`, `7d`, `30d`, `all`).
+- **Payment Lifecycle Distribution:** Colored distribution progress bars representing `SUCCESS`, `FAILED`, `PROCESSING`, and `UNKNOWN`.
+- **Operational Quick Actions:** Immediate modal trigger for reconciliation runs, recent discrepancies table, and live immutable audit trail.
+
+### 4.2 Reconciliation Center (`/admin/reconciliation`)
+- **Trigger Run Modal:** Selectable scope (`FULL`, `PAYMENTS`, `REFUNDS`) with date range picker.
+- **Reconciliation Runs Tab:** Table of previous runs showing run reference, type, status badge, matched records count, discrepancy count, initiated by, timestamp, and link to inspect.
+- **Active Discrepancies Tab:** Global list of all unresolved discrepancies across the platform with filters by discrepancy type, record status, and entity (`PAYMENT`/`REFUND`).
+- **Manual Discrepancy Resolution Modal:** Selectable reason (`FEE_ADJUSTMENT`, `REFUND_TIMING_DELAY`, `DUPLICATE_SETTLED`, `MANUAL_CORRECTION`, `PROVIDER_UNAVAILABLE`, `OTHER`) with mandatory audit notes.
+
+### 4.3 Reconciliation Run Detail Page (`/admin/reconciliation/:reference`)
+- **Run Overview Banner:** Run reference, status badge, scope, initiator, and start/completion timestamps.
+- **Filtered Record Views:** `ALL`, `DISCREPANCIES`, `MATCHED`, `REVIEW_REQUIRED`.
+- **Side-by-Side Comparison Drawer:** Side-by-side inspection comparing Internal Database attributes (reference, amount, currency, status) against Independent External Statement Ledger attributes.
+
+### 4.4 Immutable Audit Logs Viewer (`/admin/audit-logs`)
+- **Comprehensive Filter Bar:** Filter by actor, action, resource type, resource ID, merchant ID, and date range.
+- **Detailed JSON Inspector Drawer:** Modal displaying sanitized pre-action (`before_data`) and post-action (`after_data`) JSON state diffs, administrator justification reason, IP address, and user agent.
