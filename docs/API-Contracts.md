@@ -319,3 +319,81 @@ export interface TransactionItem {
 **Transaction Service Methods:**
 - `listMerchantTransactions(filters)`: `GET /api/v1/transactions`
 - `listAdminTransactions(filters)`: `GET /api/v1/admin/transactions`
+
+---
+
+### 4.7 Webhook Types & Service (src/types/webhook.ts & src/services/api/webhookService.ts)
+
+```typescript
+export type EndpointStatus = 'ACTIVE' | 'INACTIVE' | 'DISABLED';
+export type WebhookDeliveryStatus = 'PENDING' | 'SUCCESS' | 'RETRYING' | 'FAILED' | 'DEAD_LETTER';
+export type OutboxStatus = 'PENDING' | 'PUBLISHED' | 'FAILED';
+export type InboxStatus = 'RECEIVED' | 'PROCESSING' | 'PROCESSED' | 'FAILED';
+
+export interface WebhookEndpointItem {
+  id: number;
+  endpointReference: string;
+  merchantId: number;
+  url: string;
+  maskedSecret: string;
+  secret?: string | null;
+  subscribedEvents: string;
+  status: EndpointStatus;
+  description?: string;
+  failureCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface WebhookDeliveryItem {
+  id: number;
+  attemptReference: string;
+  eventReference: string;
+  eventType: string;
+  endpointReference: string;
+  merchantId: number;
+  requestUrl: string;
+  attemptNumber: number;
+  deliveryStatus: WebhookDeliveryStatus;
+  httpStatusCode?: number | null;
+  responseBody?: string | null;
+  executionDurationMs?: number | null;
+  nextRetryAt?: string | null;
+  failureReason?: string | null;
+  attemptedAt: string;
+  createdAt: string;
+}
+
+export interface WebhookMetricsResponse {
+  pendingOutboxCount: number;
+  failedOutboxCount: number;
+  totalDeliveries: number;
+  successfulDeliveries: number;
+  failedDeliveries: number;
+  deadLetterDeliveries: number;
+  deliverySuccessRate: number;
+}
+```
+
+**Webhook Service Methods:**
+- Merchant Endpoints:
+  - `listEndpoints()`: `GET /api/v1/webhooks/endpoints`
+  - `createEndpoint(payload)`: `POST /api/v1/webhooks/endpoints`
+  - `getEndpoint(ref)`: `GET /api/v1/webhooks/endpoints/{endpointReference}`
+  - `updateEndpoint(ref, payload)`: `PUT /api/v1/webhooks/endpoints/{endpointReference}`
+  - `updateEndpointStatus(ref, status)`: `PATCH /api/v1/webhooks/endpoints/{endpointReference}/status`
+  - `rotateSecret(ref)`: `POST /api/v1/webhooks/endpoints/{endpointReference}/rotate-secret`
+  - `deleteEndpoint(ref)`: `DELETE /api/v1/webhooks/endpoints/{endpointReference}`
+- Merchant Deliveries & Events:
+  - `listDeliveries(params)`: `GET /api/v1/webhooks/deliveries`
+  - `getDelivery(ref)`: `GET /api/v1/webhooks/deliveries/{attemptReference}`
+  - `retryDelivery(ref)`: `POST /api/v1/webhooks/deliveries/{attemptReference}/retry`
+  - `listEvents(params)`: `GET /api/v1/webhooks/events`
+- Admin Governance & Pipeline:
+  - `getMetrics()`: `GET /api/v1/admin/webhooks/metrics`
+  - `listOutboxEvents(params)`: `GET /api/v1/admin/webhooks/outbox`
+  - `republishOutboxEvent(eventId)`: `POST /api/v1/admin/webhooks/outbox/{eventId}/republish`
+  - `listInboxEvents(params)`: `GET /api/v1/admin/webhooks/inbox`
+  - `listAdminDeliveries(params)`: `GET /api/v1/admin/webhooks/deliveries`
+  - `listDeadLetterDeliveries(params)`: `GET /api/v1/admin/webhooks/deliveries/dead-letter`
+  - `replayDelivery(ref)`: `POST /api/v1/admin/webhooks/deliveries/{attemptReference}/replay`

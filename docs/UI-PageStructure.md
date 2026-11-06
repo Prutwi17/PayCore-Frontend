@@ -111,6 +111,17 @@ Applies to: **Login**, **Register**, **Forgot Password**, **Reset Password**
   - Type indicator: Green `+` for Payments, Purple `-` for Refunds with directional icons.
   - Formatted currency amounts, status badges, order/reason descriptions, and full timestamps.
 
+### 3.8 Webhooks & Notifications Screen (`/merchant/webhooks`)
+- **Dual Tab Architecture:**
+  - **Endpoints Tab:**
+    - List of registered endpoints displaying destination URL, subscribed event badges (`PAYMENT_SUCCESS`, `REFUND_SUCCESS`, or `*`), active status badge, consecutive failure counter, and masked signing secret (`whsec_***`).
+    - Actions: Pause/Activate toggle, Edit Endpoint, Rotate Secret, Delete.
+    - "+ Register Webhook" modal with SSRF guidance and event multi-select checkboxes.
+    - Secret Reveal modal (one-time exposure with copy button and HMAC-SHA256 verification guide).
+  - **Delivery History Tab:**
+    - Delivery attempts table displaying Event Type, destination URL, attempt count (`#1/5`), status badge (`SUCCESS`, `RETRYING`, `DEAD_LETTER`, `FAILED`), HTTP status code, latency (ms), and timestamp.
+    - Inspect Delivery modal with request URL, failure reasons, next scheduled retry time, response body snippet, and "Retry Now" action.
+
 ## 4. Admin Portal Layout (`/admin/*`)
 
 ### 4.1 Dark Navy Sidebar
@@ -143,10 +154,13 @@ Applies to: **Login**, **Register**, **Forgot Password**, **Reset Password**
   - Missing in Internal Ledger (`14` - Orange)
 - Historical Batches Table with discrepancy drill-down modal
 
-### 4.4 Webhook Events Screen
-- Global filter by Event Type (`payment.success`, `refund.processed`, etc.)
-- Table displaying Event ID, Event Type, Merchant, Status, and Timestamp
-- JSON payload inspector drawer
+### 4.4 Webhook Pipeline Governance Screen (`/admin/webhooks`)
+- High-level pipeline KPI cards: Total Deliveries, Success Rate (%), Outbox Pending, Outbox Failed, and Dead-Letter Queue Quarantine count.
+- Four comprehensive governance tabs:
+  - **All Deliveries:** Multi-tenant delivery attempts table with status filters, latency metrics, and detailed inspection drawer.
+  - **Dead-Letter Queue:** Quarantined attempts that exhausted 5 retries or failed SSRF validation, with immediate Force Replay action.
+  - **Transactional Outbox:** Real-time outbox table showing aggregate types, payload JSON inspector, retry counters, and Force Republish action.
+  - **Idempotent Inbox Consumers:** Consumer telemetry showing duplicate message suppression records and processing statuses across Kafka worker components.
 
 ### 4.5 Admin Refunds Screen (`/admin/refunds`)
 - Platform-wide refund inspection across all onboarded merchants.

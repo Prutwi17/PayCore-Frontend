@@ -38,9 +38,21 @@
   - `/admin/transactions`: Unified platform-wide transaction ledger.
 - **Navigation & Routing:** Integrated into sidebar for Merchant and Admin portals with active link highlights; all routes protected by authentication and role guards.
 
-## Milestone 6: Webhooks Telemetry
-- Merchant Webhook Configuration screen (register endpoint URL, select subscribed events, display signing secret `whsec_...`).
-- Webhook Delivery History view: HTTP status indicators, latency, payload inspector drawer, and manual "Retry Delivery" button.
+## Milestone 6: Webhooks Telemetry [COMPLETED]
+- **Merchant Webhooks Page (`/merchant/webhooks`):**
+  - Registered Endpoints management: destination URL, subscribed event badges, active toggle, consecutive failure counts, and masked signing secret (`whsec_***`).
+  - "+ Register Webhook" modal with destination URL validation, description, and event selection checkboxes (`PAYMENT_CREATED`, `PAYMENT_SUCCESS`, `REFUND_SUCCESS`, etc.).
+  - Secret Reveal Modal: One-time plain secret exposure banner with copy button, security guidance, and HMAC-SHA256 signature verification standards (`X-PayCore-Signature`, `X-PayCore-Event`).
+  - Actions: Pause/Activate, Edit Endpoint, Rotate Secret, Delete.
+  - Delivery History tab: Filter by delivery status (`SUCCESS`, `RETRYING`, `DEAD_LETTER`, `FAILED`), table showing attempt count, HTTP code, latency (ms), and timestamp.
+  - Delivery Inspection drawer: Request URL, failure reason, next scheduled retry time, response body snippet, and manual "Retry Now" action.
+- **Admin Webhook Pipeline Governance (`/admin/webhooks`):**
+  - KPI Metrics cards: Total Deliveries, Delivery Success Rate (%), Outbox Pending, Outbox Failed, and Dead-Letter Queue count.
+  - Four governance tabs: All Deliveries multi-tenant explorer, Dead-Letter Queue quarantine with Force Replay action, Transactional Outbox monitor with Force Republish action, and Idempotent Inbox Consumers telemetry.
+- **Integration & Verification:**
+  - Sidebar and router integration (`/merchant/webhooks`, `/admin/webhooks`).
+  - TypeScript compilation and ESLint pass with 0 errors, 0 warnings.
+  - Vite production bundle builds in under 7 seconds.
 
 ## Milestone 7: Admin Portal & Reconciliation
 - Admin Portal shell with dedicated dark navy navigation.
