@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
+import { authService } from '@/services/api/authService';
 import { Button } from '@/components/common/Button';
 import { Card } from '@/components/common/Card';
 import logoSvg from '@/assets/logo.svg';
-import { Mail, Lock, Eye, EyeOff, AlertCircle, ShieldCheck } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, AlertCircle, ShieldCheck, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { ApiError } from '@/types/api';
 
 export const LoginPage: React.FC = () => {
@@ -17,12 +18,17 @@ export const LoginPage: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [isUnverified, setIsUnverified] = useState(false);
+  const [isResending, setIsResending] = useState(false);
+  const [resendStatus, setResendStatus] = useState<string | null>(null);
 
   const from = (location.state as { from?: { pathname: string } })?.from?.pathname;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
+    setIsUnverified(false);
+    setResendStatus(null);
 
     if (!email.trim() || !password) {
       setErrorMessage('Please enter both email and password.');
@@ -32,7 +38,7 @@ export const LoginPage: React.FC = () => {
     setIsLoading(true);
     try {
       const authData = await login({ email: email.trim(), password });
-      
+
       if (from) {
         navigate(from, { replace: true });
         return;
@@ -48,16 +54,34 @@ export const LoginPage: React.FC = () => {
       }
     } catch (err: unknown) {
       const apiErr = err as ApiError;
-      setErrorMessage(apiErr.message || 'Invalid email or password. Please verify your credentials.');
+      if (apiErr.code === 'EMAIL_NOT_VERIFIED' || apiErr.message?.toLowerCase().includes('not been verified')) {
+        setIsUnverified(true);
+        setErrorMessage('Your email address has not been verified. Please verify your email before signing in.');
+      } else {
+        setErrorMessage(apiErr.message || 'Invalid email or password. Please verify your credentials.');
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  const fillDemoAdmin = () => {
-    setEmail('admin@paycore.internal');
-    setPassword('AdminPassword123!');
-    setErrorMessage(null);
+  const handleResendVerification = async () => {
+    if (!email.trim()) {
+      setErrorMessage('Please enter your email address to receive a verification link.');
+      return;
+    }
+
+    setIsResending(true);
+    setResendStatus(null);
+    try {
+      const msg = await authService.resendVerification(email.trim());
+      setResendStatus(msg || 'A fresh verification link has been dispatched to your email.');
+    } catch (err: unknown) {
+      const apiErr = err as ApiError;
+      setResendStatus(apiErr.message || 'If an account exists with this email, a verification link has been sent.');
+    } finally {
+      setIsResending(false);
+    }
   };
 
   return (
@@ -80,6 +104,33 @@ export const LoginPage: React.FC = () => {
           <div className="mb-6 p-3.5 bg-rose-50 border border-rose-200 rounded-lg flex items-start space-x-3 text-rose-700 text-sm">
             <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-rose-500" />
             <div className="flex-1 font-medium leading-relaxed">{errorMessage}</div>
+          </div>
+        )}
+
+        {isUnverified && (
+          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg space-y-3 text-amber-900 text-xs">
+            <div className="flex items-center gap-2 font-semibold">
+              <RefreshCw className="w-4 h-4 text-amber-600" />
+              <span>Need a new verification link?</span>
+            </div>
+            <p className="text-amber-700">
+              Check your inbox or click below to receive a new link at <strong className="font-semibold">{email}</strong>.
+            </p>
+            {resendStatus && (
+              <div className="p-2 bg-white/80 rounded border border-amber-200 text-emerald-700 font-medium flex items-center gap-1.5">
+                <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
+                <span>{resendStatus}</span>
+              </div>
+            )}
+            <Button
+              type="button"
+              variant="outline"
+              onClick={handleResendVerification}
+              className="w-full py-1.5 text-xs font-semibold bg-white"
+              isLoading={isResending}
+            >
+              Resend Verification Link
+            </Button>
           </div>
         )}
 
@@ -109,6 +160,12 @@ export const LoginPage: React.FC = () => {
               <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
                 Password
               </label>
+              <Link
+                to="/forgot-password"
+                className="text-xs text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors"
+              >
+                Forgot password?
+              </Link>
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -143,27 +200,23 @@ export const LoginPage: React.FC = () => {
           </Button>
         </form>
 
-        {/* Demo Fast Login Helper */}
+        {/* Initial Administrator Setup Callout */}
         <div className="mt-6 pt-5 border-t border-slate-100">
-          <div className="flex items-center justify-between text-xs text-slate-500 mb-2">
-            <span className="font-medium flex items-center gap-1">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-500" />
-              Developer / Demo Access
-            </span>
-          </div>
-          <button
-            type="button"
-            onClick={fillDemoAdmin}
-            className="w-full text-left p-2.5 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-lg transition-colors text-xs flex items-center justify-between group"
-          >
+          <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-600 flex items-center justify-between">
             <div>
-              <span className="font-semibold text-slate-800 block">Default Platform Admin</span>
-              <span className="text-slate-500 text-[11px]">admin@paycore.internal</span>
+              <span className="font-semibold text-slate-800 flex items-center gap-1">
+                <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
+                Initial Platform Admin
+              </span>
+              <span className="text-slate-500 text-[11px] block mt-0.5">omp27614@gmail.com</span>
             </div>
-            <span className="text-blue-600 font-medium group-hover:underline text-[11px]">
-              Fill Credentials
-            </span>
-          </button>
+            <Link
+              to="/admin-setup"
+              className="text-blue-600 font-semibold hover:underline text-xs bg-white px-2.5 py-1 border border-slate-200 rounded shadow-sm"
+            >
+              Admin Setup
+            </Link>
+          </div>
         </div>
 
         <div className="mt-6 text-center text-xs text-slate-600">

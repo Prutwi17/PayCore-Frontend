@@ -14,11 +14,15 @@ export interface UserProfile {
   merchantId?: number;
   merchantCode?: string;
   roles: UserRole[];
+  emailVerified?: boolean;
+  emailVerifiedAt?: string;
+  lastLoginAt?: string;
   createdAt: string;
 }
 
 export interface AuthResponse {
   accessToken: string;
+  refreshToken?: string;
   tokenType: string;
   expiresIn: number;
   user: UserProfile;
@@ -37,6 +41,42 @@ export interface RegisterFormData {
   phoneNumber?: string;
   businessName?: string;
   businessAddress?: string;
+}
+
+export interface VerifyEmailRequest {
+  token: string;
+}
+
+export interface ResendVerificationRequest {
+  email: string;
+}
+
+export interface ForgotPasswordRequest {
+  email: string;
+}
+
+export interface ResetPasswordRequest {
+  token: string;
+  newPassword: string;
+  confirmPassword?: string;
+}
+
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}
+
+export interface AdminSetupRequest {
+  token: string;
+  password: string;
+  confirmPassword?: string;
+}
+
+export interface EmailStatusResponse {
+  configured: boolean;
+  provider: string;
+  senderEmail: string;
+  redirectUri: string;
+  missingProperties: string[];
 }
 
 export interface MerchantProfile {
