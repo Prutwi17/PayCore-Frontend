@@ -65,7 +65,23 @@ npm run build
 
 ---
 
-## 🚀 Implemented Modules (Stage 6 Complete)
+## 🚀 Implemented Modules (Stage 7.5 Complete)
+
+1. **Real Email Authentication & Identity (Stage 7.5):**
+   - **/verify-email:** Handles URL query token verification (`/verify-email?token=...`), animated status states, auto-redirect on success, and self-service resend form.
+   - **/forgot-password:** Clean, anti-enumeration recovery form with reassuring confirmation alerts.
+   - **/reset-password:** Token-authenticated password reset interface with real-time password policy checklist (minimum 8 characters, confirmation matching) and active session invalidation notices.
+   - **/admin-setup:** Initial platform administrator onboarding interface for `omp27614@gmail.com` with master password configuration and setup link generation.
+   - **/login enhancements:** Unverified email warning alert with inline one-click verification resend link, "Forgot password?" navigation, and administrator onboarding callout.
+   - **/register enhancements:** Confirm password validation, real-time error feedback, and post-registration Verification-Pending screen with resend link.
+   - **Session & Token Management:** Refresh token storage in `localStorage` (`paycore_refresh_token`), automated background token refreshing, and server-side token revocation on logout.
+
+2. **Reconciliation, Audit Logs & Admin Dashboard (Stage 7):**
+   - **/admin/dashboard:** Platform-wide transaction volume, dispute ratios, active merchant metrics, and system telemetry.
+   - **/admin/reconciliation:** Reconciliation run management, discrepancy inspector, and manual adjustment resolution.
+   - **/admin/audit-logs:** Immutable event logs with actor, IP address, resource, and timestamp filtering.
+
+3. **Previous Stage 6 Modules:
 
 1. **Authentication & Session (AuthContext):**
    - Centralized authentication state management with localStorage persistence and /auth/me token hydration.

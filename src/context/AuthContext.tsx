@@ -20,6 +20,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 const TOKEN_KEY = 'paycore_access_token';
+const REFRESH_TOKEN_KEY = 'paycore_refresh_token';
 const USER_KEY = 'paycore_user_cache';
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -38,7 +39,12 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const logout = useCallback(() => {
+    const activeRefreshToken = localStorage.getItem(REFRESH_TOKEN_KEY);
+    if (activeRefreshToken) {
+      authService.logout(activeRefreshToken);
+    }
     localStorage.removeItem(TOKEN_KEY);
+    localStorage.removeItem(REFRESH_TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
     setToken(null);
     setUser(null);
@@ -73,7 +79,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             setUser(profile);
             localStorage.setItem(USER_KEY, JSON.stringify(profile));
           }
-        } catch (error) {
+        } catch {
           if (isMounted) {
             logout();
           }
@@ -96,6 +102,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     try {
       const authData = await authService.login(credentials);
       localStorage.setItem(TOKEN_KEY, authData.accessToken);
+      if (authData.refreshToken) {
+        localStorage.setItem(REFRESH_TOKEN_KEY, authData.refreshToken);
+      }
       localStorage.setItem(USER_KEY, JSON.stringify(authData.user));
       setToken(authData.accessToken);
       setUser(authData.user);

@@ -6,6 +6,10 @@ import { DashboardLayout } from '@/layouts/DashboardLayout';
 import { LandingPage } from '@/pages/public/LandingPage';
 import { LoginPage } from '@/pages/public/LoginPage';
 import { RegisterPage } from '@/pages/public/RegisterPage';
+import { VerifyEmailPage } from '@/pages/public/VerifyEmailPage';
+import { ForgotPasswordPage } from '@/pages/public/ForgotPasswordPage';
+import { ResetPasswordPage } from '@/pages/public/ResetPasswordPage';
+import { AdminSetupPage } from '@/pages/public/AdminSetupPage';
 import { NotFoundPage } from '@/pages/public/NotFoundPage';
 import { ProtectedRoute } from '@/components/common/ProtectedRoute';
 import { RoleRoute } from '@/components/common/RoleRoute';
@@ -44,7 +48,13 @@ export const AppRoutes: React.FC = () => {
           <Route element={<PublicOnlyRoute />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+            <Route path="/reset-password" element={<ResetPasswordPage />} />
+            <Route path="/admin-setup" element={<AdminSetupPage />} />
           </Route>
+
+          {/* Email verification is accessible to both guests and users */}
+          <Route path="/verify-email" element={<VerifyEmailPage />} />
 
           <Route path="*" element={<NotFoundPage />} />
         </Route>
