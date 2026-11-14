@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { BitcoinHeroCard } from '@/components/common/BitcoinHeroCard';
+import { GoldenCoin3D } from '@/components/common/GoldenCoin3D';
 import {
   CreditCard,
   RotateCcw,
@@ -251,14 +251,14 @@ export const LandingPage: React.FC = () => {
               </div>
             </motion.div>
 
-            {/* Right Hero Visual: 3D Bitcoin & Financial Artwork matching UI Reference */}
+            {/* Right Hero Visual: 3D Golden Bitcoin-Inspired Coin with Continuous Rotation */}
             <motion.div
               initial={{ opacity: 0, scale: 0.95 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
               className="lg:col-span-5 flex justify-center"
             >
-              <BitcoinHeroCard />
+              <GoldenCoin3D />
             </motion.div>
           </div>
 
