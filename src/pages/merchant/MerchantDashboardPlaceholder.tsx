@@ -22,7 +22,7 @@ export const MerchantDashboardPlaceholder: React.FC = () => {
   return (
     <PageContainer
       title={`Welcome, ${user?.fullName || 'Merchant'}`}
-      description="Stage 3 Core Payment Processing Engine is active. Process simulated charges, audit attempt telemetry, and manage API credentials."
+      description="Production payment processing engine active. Manage merchant credentials, initiate charges, and review transaction telemetry."
     >
       {/* Stage 3 Active Features Banner */}
       <div className="mb-6 p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
@@ -32,8 +32,8 @@ export const MerchantDashboardPlaceholder: React.FC = () => {
           </div>
           <div>
             <div className="flex items-center space-x-2">
-              <h3 className="font-bold text-sm tracking-wide">Stage 3 Live: Core Payment Engine</h3>
-              <Badge variant="success">Stage 3 Operational</Badge>
+              <h3 className="font-bold text-sm tracking-wide">Payment Processing Engine: Live</h3>
+              <Badge variant="success">System Operational</Badge>
             </div>
             <p className="text-xs text-blue-100 mt-0.5">
               Merchant Code: <span className="font-mono font-semibold text-white">{user?.merchantCode || 'Unassigned'}</span> | Role: <span className="font-semibold text-white">{user?.roles?.join(', ')}</span>
@@ -112,8 +112,8 @@ export const MerchantDashboardPlaceholder: React.FC = () => {
             </div>
           </div>
           <div className="mt-3">
-            <span className="text-2xl font-bold text-slate-900">Stage 4</span>
-            <span className="block text-xs text-slate-400 mt-1">Ready for Milestone 4</span>
+            <span className="text-2xl font-bold text-slate-900">Active</span>
+            <span className="block text-xs text-slate-400 mt-1">Full & Partial Processing</span>
           </div>
         </Card>
       </div>

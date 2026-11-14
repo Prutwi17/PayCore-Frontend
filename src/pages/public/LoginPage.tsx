@@ -3,9 +3,9 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { authService } from '@/services/api/authService';
 import { Button } from '@/components/common/Button';
-import { Card } from '@/components/common/Card';
+import { GoogleSignInButton } from '@/components/common/GoogleSignInButton';
 import logoSvg from '@/assets/logo.svg';
-import { Mail, Lock, Eye, EyeOff, AlertCircle, ShieldCheck, RefreshCw, CheckCircle2 } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, AlertCircle, RefreshCw, CheckCircle2 } from 'lucide-react';
 import { ApiError } from '@/types/api';
 
 export const LoginPage: React.FC = () => {
@@ -16,6 +16,7 @@ export const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [rememberMe, setRememberMe] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isUnverified, setIsUnverified] = useState(false);
@@ -85,39 +86,45 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-8rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative">
-      {/* Background ambient lighting matching PayCore brand */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-blue-100 rounded-full blur-3xl opacity-50 pointer-events-none" />
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 relative overflow-hidden">
+      {/* Background soft ambient glowing curves matching UI Reference */}
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-blue-100/50 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-10 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl pointer-events-none" />
 
-      <Card className="w-full max-w-md p-8 relative z-10 shadow-xl border-slate-200">
-        <div className="flex flex-col items-center mb-8 text-center">
-          <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center p-2 mb-3 shadow-inner">
-            <img src={logoSvg} alt="PayCore" className="w-10 h-10" />
-          </div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Sign in to PayCore</h1>
-          <p className="text-sm text-slate-500 mt-1">
-            Access your payment infrastructure and merchant operations
-          </p>
+      {/* Centered Auth Card matching UI reference */}
+      <div className="relative w-full max-w-md bg-white border border-slate-200/80 rounded-3xl shadow-xl p-8 sm:p-10 z-10">
+        {/* Brand Header */}
+        <div className="flex flex-col items-center text-center mb-8">
+          <Link to="/" className="flex items-center space-x-2.5 mb-5 group">
+            <img src={logoSvg} alt="PayCore" className="h-9 w-9 drop-shadow group-hover:scale-105 transition-transform" />
+            <span className="text-2xl font-bold tracking-tight text-slate-900 font-sans">
+              Pay<span className="text-blue-600">Core</span>
+            </span>
+          </Link>
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Login</h1>
+          <p className="text-xs text-slate-500 mt-1">Access your account</p>
         </div>
 
+        {/* Error Alert */}
         {errorMessage && (
-          <div className="mb-6 p-3.5 bg-rose-50 border border-rose-200 rounded-lg flex items-start space-x-3 text-rose-700 text-sm">
-            <AlertCircle className="w-5 h-5 flex-shrink-0 mt-0.5 text-rose-500" />
+          <div className="mb-5 p-3.5 bg-rose-50 border border-rose-200 rounded-xl flex items-start space-x-3 text-rose-700 text-xs">
+            <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5 text-rose-500" />
             <div className="flex-1 font-medium leading-relaxed">{errorMessage}</div>
           </div>
         )}
 
+        {/* Unverified Email Notice */}
         {isUnverified && (
-          <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-lg space-y-3 text-amber-900 text-xs">
-            <div className="flex items-center gap-2 font-semibold">
-              <RefreshCw className="w-4 h-4 text-amber-600" />
-              <span>Need a new verification link?</span>
+          <div className="mb-5 p-3.5 bg-amber-50 border border-amber-200 rounded-xl space-y-2.5 text-amber-900 text-xs">
+            <div className="flex items-center gap-1.5 font-semibold">
+              <RefreshCw className="w-3.5 h-3.5 text-amber-600" />
+              <span>Email verification pending</span>
             </div>
-            <p className="text-amber-700">
-              Check your inbox or click below to receive a new link at <strong className="font-semibold">{email}</strong>.
+            <p className="text-amber-700 text-[11px]">
+              Check your inbox for the verification link sent to <strong>{email}</strong>.
             </p>
             {resendStatus && (
-              <div className="p-2 bg-white/80 rounded border border-amber-200 text-emerald-700 font-medium flex items-center gap-1.5">
+              <div className="p-2 bg-white rounded border border-amber-200 text-emerald-700 font-medium flex items-center gap-1.5 text-[11px]">
                 <CheckCircle2 className="w-3.5 h-3.5 flex-shrink-0" />
                 <span>{resendStatus}</span>
               </div>
@@ -134,10 +141,26 @@ export const LoginPage: React.FC = () => {
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        {/* Google Authentication */}
+        <div className="mb-5">
+          <GoogleSignInButton onError={(err) => setErrorMessage(err)} />
+        </div>
+
+        {/* Divider */}
+        <div className="relative my-5">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-slate-200" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-white px-3 text-slate-400 font-medium text-[11px]">Or continue with email</span>
+          </div>
+        </div>
+
+        {/* Email & Password Form */}
+        <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700 mb-1.5">
-              Email Address
+            <label className="block text-xs font-bold text-slate-700 mb-1.5">
+              Enter email
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -149,20 +172,20 @@ export const LoginPage: React.FC = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
-                placeholder="you@company.com"
-                className="w-full pl-10 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                placeholder="name@company.com"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
               />
             </div>
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-semibold uppercase tracking-wider text-slate-700">
-                Password
+              <label className="block text-xs font-bold text-slate-700">
+                Enter password
               </label>
               <Link
                 to="/forgot-password"
-                className="text-xs text-blue-600 hover:text-blue-700 font-medium hover:underline transition-colors"
+                className="text-xs text-blue-600 hover:text-blue-700 font-semibold transition-colors"
               >
                 Forgot password?
               </Link>
@@ -177,8 +200,8 @@ export const LoginPage: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
-                placeholder="••••••••••••"
-                className="w-full pl-10 pr-11 py-2.5 bg-slate-50 border border-slate-300 rounded-lg text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"
+                placeholder="Enter password"
+                className="w-full pl-10 pr-10 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
               />
               <button
                 type="button"
@@ -190,42 +213,38 @@ export const LoginPage: React.FC = () => {
             </div>
           </div>
 
+          {/* Remember me option */}
+          <div className="flex items-center">
+            <input
+              id="remember-me"
+              type="checkbox"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
+              className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+            />
+            <label htmlFor="remember-me" className="ml-2 block text-xs text-slate-600 cursor-pointer">
+              Remember me on this browser
+            </label>
+          </div>
+
           <Button
             type="submit"
             variant="primary"
-            className="w-full py-2.5 text-sm font-semibold shadow-md shadow-blue-500/10"
+            className="w-full py-2.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md shadow-blue-500/20"
             isLoading={isLoading}
           >
-            {isLoading ? 'Authenticating...' : 'Sign In'}
+            {isLoading ? 'Authenticating...' : 'Login'}
           </Button>
         </form>
 
-        {/* Initial Administrator Setup Callout */}
-        <div className="mt-6 pt-5 border-t border-slate-100">
-          <div className="p-3 bg-slate-50 border border-slate-200 rounded-lg text-xs text-slate-600 flex items-center justify-between">
-            <div>
-              <span className="font-semibold text-slate-800 flex items-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-blue-600" />
-                Initial Platform Admin
-              </span>
-              <span className="text-slate-500 text-[11px] block mt-0.5">omp27614@gmail.com</span>
-            </div>
-            <Link
-              to="/admin-setup"
-              className="text-blue-600 font-semibold hover:underline text-xs bg-white px-2.5 py-1 border border-slate-200 rounded shadow-sm"
-            >
-              Admin Setup
-            </Link>
-          </div>
-        </div>
-
-        <div className="mt-6 text-center text-xs text-slate-600">
-          New to PayCore?{' '}
-          <Link to="/register" className="font-semibold text-blue-600 hover:text-blue-700 hover:underline">
-            Register your merchant account
+        {/* Footer Link */}
+        <div className="mt-6 pt-5 border-t border-slate-100 text-center text-xs text-slate-600">
+          Don't have an account?{' '}
+          <Link to="/register" className="font-bold text-blue-600 hover:text-blue-700 hover:underline">
+            Register
           </Link>
         </div>
-      </Card>
+      </div>
     </div>
   );
 };

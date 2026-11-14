@@ -20,9 +20,9 @@ export const AdminDashboardPlaceholder: React.FC = () => {
   return (
     <PageContainer
       title="Platform Administration"
-      description="Stage 2 Authentication & Merchant Management active. Control system access, audit onboarded merchants, and inspect security parameters."
+      description="Platform administration and merchant governance. Control system access, audit onboarded merchants, and inspect security parameters."
     >
-      {/* Stage 2 Active Features Banner */}
+      {/* RBAC Active Features Banner */}
       <div className="mb-6 p-4 bg-slate-900 text-white rounded-xl shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4 border border-slate-800">
         <div className="flex items-center space-x-3.5">
           <div className="w-10 h-10 bg-blue-600/20 text-blue-400 rounded-xl flex items-center justify-center border border-blue-500/30">
@@ -128,7 +128,7 @@ export const AdminDashboardPlaceholder: React.FC = () => {
             <div className="w-10 h-10 bg-slate-100 text-slate-700 rounded-xl flex items-center justify-center">
               <Shield className="w-5 h-5" />
             </div>
-            <Badge variant="processing">Stage 2 Active</Badge>
+            <Badge variant="processing">RBAC Active</Badge>
           </div>
           <h3 className="text-base font-bold text-slate-900 mt-4">Role-Based Access Control (RBAC)</h3>
           <p className="text-xs text-slate-500 mt-1 leading-relaxed">
