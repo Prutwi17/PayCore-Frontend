@@ -1,875 +1,688 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
-import { HeroInfrastructureVisual } from '@/assets/visuals/HeroInfrastructureVisual';
-// PaymentWorkflowVisual omitted
-import { PaymentDashboardVisual } from '@/assets/visuals/PaymentDashboardVisual';
-import { RefundWorkflowVisual } from '@/assets/visuals/RefundWorkflowVisual';
-import { TransactionMonitoringVisual } from '@/assets/visuals/TransactionMonitoringVisual';
-import { MerchantManagementVisual } from '@/assets/visuals/MerchantManagementVisual';
-import { WebhookFlowVisual } from '@/assets/visuals/WebhookFlowVisual';
-import { ReconciliationVisual } from '@/assets/visuals/ReconciliationVisual';
-import { AuditTimelineVisual } from '@/assets/visuals/AuditTimelineVisual';
-import { AdminDashboardVisual } from '@/assets/visuals/AdminDashboardVisual';
+import { motion } from 'framer-motion';
+import { BitcoinHeroCard } from '@/components/common/BitcoinHeroCard';
 import {
   CreditCard,
   RotateCcw,
-  Globe,
+  Webhook,
   Scale,
-  ShieldCheck,
-  Building2,
-  Code2,
-  ScrollText,
-  CheckCircle2,
+  ShoppingBag,
+  Store,
+  Plane,
+  GraduationCap,
+  Cloud,
+  Repeat,
   ArrowRight,
-  Lock,
+  ShieldCheck,
+  CheckCircle2,
+  TrendingUp,
+  Activity,
+  Users,
+  Bell,
+  ScrollText,
+  BarChart3,
   Layers,
-  Cpu,
-  Key,
-  Shield,
-  Check,
-  Copy,
+  Lock,
 } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
-  const [activeTab, setActiveTab] = useState<'curl' | 'node' | 'python'>('curl');
-  const [copiedCode, setCopiedCode] = useState(false);
-
-  const codeSnippets = {
-    curl: `curl -X POST https://api.paycore.internal/api/v1/payments \\
-  -H "Authorization: Bearer sk_live_948a7b1c..." \\
-  -H "X-Idempotency-Key: 8f47b2c0-e019-4b92" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "amount": 125000,
-    "currency": "USD",
-    "paymentMethod": "CARD",
-    "customerEmail": "customer@example.com",
-    "description": "Invoice #10492"
-  }'`,
-    node: `import axios from 'axios';
-
-const response = await axios.post(
-  'https://api.paycore.internal/api/v1/payments',
-  {
-    amount: 125000,
-    currency: 'USD',
-    paymentMethod: 'CARD',
-    customerEmail: 'customer@example.com',
-    description: 'Invoice #10492'
-  },
-  {
-    headers: {
-      'Authorization': 'Bearer sk_live_948a7b1c...',
-      'X-Idempotency-Key': '8f47b2c0-e019-4b92'
-    }
-  }
-);`,
-    python: `import requests
-
-headers = {
-    "Authorization": "Bearer sk_live_948a7b1c...",
-    "X-Idempotency-Key": "8f47b2c0-e019-4b92",
-    "Content-Type": "application/json"
-}
-
-payload = {
-    "amount": 125000,
-    "currency": "USD",
-    "paymentMethod": "CARD",
-    "customerEmail": "customer@example.com",
-    "description": "Invoice #10492"
-}
-
-response = requests.post("https://api.paycore.internal/api/v1/payments", json=payload, headers=headers)`
+  // Animation variants
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.6 } },
   };
 
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(codeSnippets[activeTab]);
-    setCopiedCode(true);
-    setTimeout(() => setCopiedCode(false), 2000);
+  const stagger = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.12,
+      },
+    },
   };
+
+  // Industries list for brand trust showcase
+  const industries = [
+    { title: 'E-commerce', desc: 'Frictionless checkouts & instant authorizations', icon: ShoppingBag },
+    { title: 'Retail', desc: 'Unified digital point of sale & in-store payments', icon: Store },
+    { title: 'Travel & Hospitality', desc: 'Multi-currency booking & dynamic card settlement', icon: Plane },
+    { title: 'Education', desc: 'Structured installment plans & automated receipts', icon: GraduationCap },
+    { title: 'Digital Services', desc: 'Flexible recurring usage & instant digital delivery', icon: Cloud },
+    { title: 'Subscription Business', desc: 'Automated billing cycles & dunning management', icon: Repeat },
+  ];
+
+  // Solutions list
+  const solutions = [
+    {
+      title: 'Online Payment Management',
+      desc: 'Seamless multi-currency card and wallet checkout processing with intelligent routing and fraud protection.',
+      icon: CreditCard,
+      highlight: '99.99% Availability',
+      to: '/solutions#payments',
+      visualGradient: 'from-blue-500 to-indigo-600',
+    },
+    {
+      title: 'Refund Management',
+      desc: 'Automated full and partial balance refunds with instant verification and transparent customer status updates.',
+      icon: RotateCcw,
+      highlight: 'Instant Balance Releases',
+      to: '/solutions#refunds',
+      visualGradient: 'from-emerald-500 to-teal-600',
+    },
+    {
+      title: 'Transaction Tracking',
+      desc: 'Unified transaction lifecycle monitoring with comprehensive filtering, order cross-referencing, and export capabilities.',
+      icon: TrendingUp,
+      highlight: 'Unified Ledger Search',
+      to: '/solutions#transactions',
+      visualGradient: 'from-sky-500 to-blue-600',
+    },
+    {
+      title: 'Merchant Management',
+      desc: 'Rapid onboarding, merchant workspace provisioning, granular role controls, and secure credential isolation.',
+      icon: Users,
+      highlight: 'Multi-Tenant Security',
+      to: '/solutions#merchants',
+      visualGradient: 'from-violet-500 to-purple-600',
+    },
+    {
+      title: 'Payment Monitoring',
+      desc: 'Real-time telemetry, transaction volume trends, success rate metrics, and intelligent operational anomaly detection.',
+      icon: Activity,
+      highlight: 'Sub-second Telemetry',
+      to: '/solutions#monitoring',
+      visualGradient: 'from-amber-500 to-orange-600',
+    },
+    {
+      title: 'Business Operations',
+      desc: 'Automated ledger reconciliation against provider statements, immutable audit logs, and compliance reporting.',
+      icon: Scale,
+      highlight: 'Zero-Discrepancy Engine',
+      to: '/solutions#operations',
+      visualGradient: 'from-rose-500 to-pink-600',
+    },
+  ];
+
+  // Features list
+  const features = [
+    {
+      title: 'Payment Management',
+      desc: 'Manage payment requests, process customer authorizations, and monitor real-time transaction outcomes with zero friction.',
+      icon: CreditCard,
+      badge: 'Core Engine',
+    },
+    {
+      title: 'Refund Management',
+      desc: 'Handle full and partial refunds with balance reservations, automated workflows, and customer email confirmations.',
+      icon: RotateCcw,
+      badge: 'Two-Phase Protocol',
+    },
+    {
+      title: 'Transaction Tracking',
+      desc: 'View comprehensive payment and refund history in one centralized dashboard with instant search and status filtering.',
+      icon: TrendingUp,
+      badge: 'Unified History',
+    },
+    {
+      title: 'Merchant Management',
+      desc: 'Provision merchant workspaces, manage business profiles, and maintain strict role-based access control.',
+      icon: Users,
+      badge: 'Role Isolation',
+    },
+    {
+      title: 'Payment Notifications',
+      desc: 'Receive instant notifications regarding payment completions, authorization failures, and refund progress.',
+      icon: Bell,
+      badge: 'Real-Time Alerts',
+    },
+    {
+      title: 'Reconciliation',
+      desc: 'Automatically identify and flag discrepancies between internal payment ledgers and external provider statement records.',
+      icon: Scale,
+      badge: 'Discrepancy Detection',
+    },
+    {
+      title: 'Activity Monitoring',
+      desc: 'Track every important account change, permission update, and transaction modification with complete forensic transparency.',
+      icon: ScrollText,
+      badge: 'Immutable Trails',
+    },
+    {
+      title: 'Business Dashboard',
+      desc: 'Monitor gross payment volume, success rates, pending requests, and operational financial metrics in real time.',
+      icon: BarChart3,
+      badge: 'Live Analytics',
+    },
+  ];
+
+  // 4 Steps for How It Works
+  const steps = [
+    {
+      number: '01',
+      title: 'Create your PayCore account',
+      desc: 'Sign up in seconds using your business email or Google account with enterprise-grade identity protection.',
+    },
+    {
+      number: '02',
+      title: 'Set up your business account',
+      desc: 'Configure your company profile, specify operational currencies, and assign team access permissions.',
+    },
+    {
+      number: '03',
+      title: 'Manage payment operations',
+      desc: 'Initiate payments, manage transactions, process customer authorizations, and handle refunds from one dashboard.',
+    },
+    {
+      number: '04',
+      title: 'Track transactions and refunds',
+      desc: 'Monitor financial performance in real time with comprehensive analytics, reconciliation tools, and audit logs.',
+    },
+  ];
 
   return (
-    <div className="w-full bg-white text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-800">
-      
-      {/* =================================================================== */}
-      {/* 1. HERO SECTION (Section 3.2)                                       */}
-      {/* =================================================================== */}
-      <section className="relative pt-12 pb-20 md:pt-20 md:pb-32 overflow-hidden bg-gradient-to-b from-slate-50 via-white to-slate-50/50 border-b border-slate-200/60">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Left Content */}
-            <div className="lg:col-span-6 space-y-6 text-center lg:text-left">
-              <div className="inline-flex items-center space-x-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-xs font-semibold">
+    <div className="min-h-screen bg-white text-slate-900 selection:bg-blue-100 selection:text-blue-700">
+      {/* =========================================================================
+          SECTION B: HERO SECTION
+          ========================================================================= */}
+      <section className="relative pt-12 pb-20 lg:pt-20 lg:pb-28 overflow-hidden bg-gradient-to-b from-blue-50/50 via-white to-slate-50/50">
+        {/* Ambient background soft waves */}
+        <div className="absolute top-0 inset-x-0 h-96 bg-gradient-to-b from-blue-100/40 via-blue-50/20 to-transparent pointer-events-none" />
+        <div className="absolute top-1/4 -right-48 w-96 h-96 bg-blue-300/20 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute top-1/3 -left-48 w-96 h-96 bg-sky-200/20 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+            {/* Left Hero Copy */}
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={fadeIn}
+              className="lg:col-span-7 text-center lg:text-left"
+            >
+              <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/60 text-blue-700 text-xs font-semibold mb-6 shadow-2xs">
                 <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                <span>Enterprise Payment Infrastructure</span>
+                <span>Next-Generation Payment Infrastructure</span>
               </div>
 
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 tracking-tight leading-[1.15]">
-                Payment Infrastructure Built for Reliable Transactions.
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.12] mb-6">
+                Powering Payments. <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800">
+                  Simplifying Business.
+                </span>
               </h1>
 
-              <p className="text-base sm:text-lg text-slate-600 leading-relaxed max-w-xl mx-auto lg:mx-0">
-                Initiate payments, manage refunds, monitor transactions, and connect payment workflows through one unified platform.
+              <p className="text-lg sm:text-xl text-slate-600 max-w-2xl mx-auto lg:mx-0 mb-8 leading-relaxed font-normal">
+                One platform to manage payments, transactions, refunds, and your business payment operations.
               </p>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-3.5 pt-2">
+              {/* Action Buttons */}
+              <div className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                 <Link
                   to="/register"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-sm shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/30"
+                  className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold text-white bg-blue-600 hover:bg-blue-700 px-7 py-3.5 rounded-full shadow-lg shadow-blue-500/25 hover:shadow-xl hover:shadow-blue-500/35 transition-all transform hover:-translate-y-0.5"
                 >
-                  Get Started
-                  <ArrowRight className="w-4 h-4 ml-2" />
+                  <span>Get Started</span>
+                  <ArrowRight className="w-4 h-4" />
                 </Link>
-                <a
-                  href="#what-paycore-does"
-                  className="w-full sm:w-auto inline-flex items-center justify-center px-6 py-3.5 rounded-xl bg-white hover:bg-slate-50 text-slate-700 font-semibold text-sm border border-slate-300 shadow-xs transition-all"
+                <Link
+                  to="/solutions"
+                  className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold text-slate-700 hover:text-blue-600 bg-white hover:bg-slate-50 border border-slate-300 px-7 py-3.5 rounded-full transition-all shadow-2xs"
                 >
-                  Explore Platform
-                </a>
+                  <span>Explore Solutions</span>
+                </Link>
               </div>
 
-              <div className="pt-4 flex items-center justify-center lg:justify-start space-x-6 text-xs text-slate-500">
-                <span className="flex items-center gap-1.5 font-medium">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Idempotent Requests
-                </span>
-                <span className="flex items-center gap-1.5 font-medium">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Signed Webhooks
-                </span>
-                <span className="flex items-center gap-1.5 font-medium">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Reconciliation
-                </span>
+              {/* Security & Reliability Badges */}
+              <div className="mt-10 pt-8 border-t border-slate-200/60 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-500 font-medium">
+                <div className="flex items-center gap-1.5">
+                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                  <span>Enterprise Security</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4 text-blue-600" />
+                  <span>99.99% Guaranteed Uptime</span>
+                </div>
+                <div className="flex items-center gap-1.5">
+                  <Lock className="w-4 h-4 text-indigo-600" />
+                  <span>Role-Based Data Isolation</span>
+                </div>
               </div>
-            </div>
+            </motion.div>
 
-            {/* Right Hero Visual: Merchant Application ➔ PayCore ➔ Payment Processing ➔ Transaction Result */}
-            <div className="lg:col-span-6">
-              <HeroInfrastructureVisual />
-            </div>
+            {/* Right Hero Visual: 3D Bitcoin & Financial Artwork matching UI Reference */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="lg:col-span-5 flex justify-center"
+            >
+              <BitcoinHeroCard />
+            </motion.div>
+          </div>
 
+          {/* Connected Wave with 4 Quick Feature Cards matching UI Reference */}
+          <div className="mt-16 lg:mt-24">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              {[
+                { title: 'Payments', desc: 'Multi-currency checkout', icon: CreditCard, to: '/solutions#payments' },
+                { title: 'Refunds', desc: 'Instant balance releases', icon: RotateCcw, to: '/solutions#refunds' },
+                { title: 'Webhooks', desc: 'Real-time event alerts', icon: Webhook, to: '/features#notifications' },
+                { title: 'Reconciliation', desc: 'Automated ledger audit', icon: Scale, to: '/features#reconciliation' },
+              ].map((card) => {
+                const Icon = card.icon;
+                return (
+                  <Link
+                    key={card.title}
+                    to={card.to}
+                    className="p-5 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md hover:border-blue-300 transition-all group flex flex-col items-center text-center sm:items-start sm:text-left"
+                  >
+                    <div className="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                      <Icon className="w-5 h-5" />
+                    </div>
+                    <div className="text-sm font-bold text-slate-900 group-hover:text-blue-600 transition-colors">
+                      {card.title}
+                    </div>
+                    <div className="text-xs text-slate-500 mt-0.5">{card.desc}</div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* =================================================================== */}
-      {/* 2. WHAT PAYCORE DOES (Section 3.3)                                  */}
-      {/* =================================================================== */}
-      <section id="what-paycore-does" className="py-20 bg-white border-b border-slate-200/80">
+      {/* =========================================================================
+          SECTION C: COMPANY TRUST / BRAND SHOWCASE
+          ========================================================================= */}
+      <section className="py-16 bg-slate-50/80 border-y border-slate-200/60">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-12">
+            <h2 className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-2">Industry Solutions</h2>
+            <p className="text-2xl font-extrabold text-slate-900">
+              Designed for businesses across industries
+            </p>
+            <p className="text-sm text-slate-500 mt-2">
+              Powering payment processing workflows from digital retailers to global enterprises.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {industries.map((item) => {
+              const Icon = item.icon;
+              return (
+                <div
+                  key={item.title}
+                  className="bg-white p-5 rounded-2xl border border-slate-200 shadow-2xs hover:shadow-md hover:border-blue-200 transition-all text-center flex flex-col items-center justify-center group"
+                >
+                  <div className="w-12 h-12 rounded-2xl bg-slate-100 text-slate-700 flex items-center justify-center mb-3 group-hover:bg-blue-50 group-hover:text-blue-600 transition-colors">
+                    <Icon className="w-6 h-6" />
+                  </div>
+                  <h3 className="text-xs font-bold text-slate-900 mb-1">{item.title}</h3>
+                  <p className="text-[11px] text-slate-500 leading-tight">{item.desc}</p>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION D: ABOUT PAYCORE
+          ========================================================================= */}
+      <section className="py-20 lg:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+            {/* Left Content */}
+            <div className="lg:col-span-6">
+              <span className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-3 block">
+                About PayCore
+              </span>
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 leading-tight mb-6">
+                Making Payment Operations Simpler
+              </h2>
+              <p className="text-base sm:text-lg text-slate-600 leading-relaxed mb-6">
+                PayCore brings payment processing, transaction tracking, refund management, and payment monitoring together in one platform.
+              </p>
+              <p className="text-sm text-slate-500 leading-relaxed mb-8">
+                Rather than coordinating disconnected payment providers, reconciliations, and reporting spreadsheets, PayCore unifies your complete payment lifecycle into a single command center with role-based visibility.
+              </p>
+
+              <div className="space-y-4">
+                {[
+                  'Unified multi-currency transaction processing',
+                  'Frictionless full and partial refund balance handling',
+                  'Real-time discrepancy detection and ledger verification',
+                  'Dedicated workspace control for merchants and administrators',
+                ].map((item, idx) => (
+                  <div key={idx} className="flex items-start space-x-3">
+                    <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <CheckCircle2 className="w-3.5 h-3.5" />
+                    </div>
+                    <span className="text-sm font-medium text-slate-700">{item}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-8">
+                <Link
+                  to="/about"
+                  className="inline-flex items-center space-x-2 text-sm font-bold text-blue-600 hover:text-blue-700 group"
+                >
+                  <span>Learn more about our company</span>
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </Link>
+              </div>
+            </div>
+
+            {/* Right Fintech Illustration */}
+            <div className="lg:col-span-6">
+              <div className="relative rounded-3xl bg-gradient-to-tr from-slate-900 via-slate-800 to-blue-950 p-6 sm:p-8 text-white shadow-2xl border border-slate-700 overflow-hidden">
+                <div className="absolute top-0 right-0 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="flex items-center justify-between pb-6 border-b border-slate-700/80 mb-6">
+                  <div>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-blue-400">Operations Console</span>
+                    <h4 className="text-base font-bold text-white">Live Payment Telemetry</h4>
+                  </div>
+                  <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
+                    System Healthy
+                  </span>
+                </div>
+
+                {/* Simulated Financial KPIs */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                    <div className="text-[11px] text-slate-400 font-medium">Daily Processing Volume</div>
+                    <div className="text-xl font-extrabold text-white mt-1">$128,450.00</div>
+                    <div className="text-[10px] text-emerald-400 font-semibold mt-1 flex items-center gap-1">
+                      <TrendingUp className="w-3 h-3" /> +14.2% vs last week
+                    </div>
+                  </div>
+                  <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
+                    <div className="text-[11px] text-slate-400 font-medium">Settlement Rate</div>
+                    <div className="text-xl font-extrabold text-white mt-1">99.82%</div>
+                    <div className="text-[10px] text-blue-400 font-semibold mt-1">0.02s avg latency</div>
+                  </div>
+                </div>
+
+                {/* Simulated Ledger Activity */}
+                <div className="space-y-2.5">
+                  <div className="text-xs font-bold text-slate-300">Recent Transactions</div>
+                  {[
+                    { id: 'TXN-89241', amount: '$420.00', status: 'Settled', time: 'Just now' },
+                    { id: 'TXN-89240', amount: '$1,250.00', status: 'Settled', time: '2m ago' },
+                    { id: 'TXN-89239', amount: '$85.00', status: 'Refunded', time: '5m ago' },
+                  ].map((tx) => (
+                    <div key={tx.id} className="flex items-center justify-between p-2.5 rounded-xl bg-white/5 border border-white/5 text-xs">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 rounded-full bg-emerald-400" />
+                        <span className="font-mono text-slate-300">{tx.id}</span>
+                      </div>
+                      <span className="font-bold text-white">{tx.amount}</span>
+                      <span className="text-[10px] text-slate-400">{tx.time}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION E: SOLUTIONS
+          ========================================================================= */}
+      <section id="solutions" className="py-20 lg:py-28 bg-slate-50/70 border-t border-slate-200/60">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-2">Core Capabilities</span>
-            <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-              Everything Your Business Needs to Process and Reconcile Payments
+            <span className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-2 block">
+              Platform Solutions
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Comprehensive Solutions for Modern Businesses
             </h2>
-            <p className="text-sm text-slate-600 mt-3 leading-relaxed">
-              PayCore abstracts payment complexities into high-reliability primitives designed for continuous operation without silent transaction failure.
+            <p className="text-base text-slate-600 mt-4 leading-relaxed">
+              Engineered to simplify financial operations, reduce administrative overhead, and ensure dependable payment processing.
+            </p>
+          </div>
+
+          <motion.div
+            variants={stagger}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: '-100px' }}
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+          >
+            {solutions.map((sol) => {
+              const Icon = sol.icon;
+              return (
+                <div
+                  key={sol.title}
+                  className="bg-white rounded-3xl p-7 border border-slate-200/80 shadow-xs hover:shadow-xl hover:border-blue-300 transition-all duration-300 flex flex-col justify-between group"
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-5">
+                      <div className={`w-12 h-12 rounded-2xl bg-gradient-to-tr ${sol.visualGradient} text-white flex items-center justify-center shadow-md`}>
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 text-slate-600">
+                        {sol.highlight}
+                      </span>
+                    </div>
+                    <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-2">
+                      {sol.title}
+                    </h3>
+                    <p className="text-sm text-slate-600 leading-relaxed">
+                      {sol.desc}
+                    </p>
+                  </div>
+
+                  <div className="mt-6 pt-4 border-t border-slate-100">
+                    <Link
+                      to={sol.to}
+                      className="inline-flex items-center space-x-1.5 text-xs font-bold text-blue-600 hover:text-blue-700 group-hover:translate-x-0.5 transition-transform"
+                    >
+                      <span>Learn More</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              );
+            })}
+          </motion.div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION F: FEATURES
+          ========================================================================= */}
+      <section id="features" className="py-20 lg:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <span className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-2 block">
+              Core Capabilities
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Engineered for Precision and Scale
+            </h2>
+            <p className="text-base text-slate-600 mt-4 leading-relaxed">
+              Every feature is built from the ground up to provide clear visibility, fast response times, and dependable records.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {/* 1. Payment Initiation */}
-            <div className="p-6 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all bg-slate-50/50">
-              <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-4">
-                <CreditCard className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-1.5">Payment Initiation</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Accept programmatic charges with deterministic idempotency keys, currency support, and validation rules.
-              </p>
-            </div>
-
-            {/* 2. Payment Processing */}
-            <div className="p-6 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all bg-slate-50/50">
-              <div className="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4">
-                <Cpu className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-1.5">Payment Processing</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Two-phase provider dispatch handles network timeouts, card declines, and 3D Secure verification smoothly.
-              </p>
-            </div>
-
-            {/* 3. Transaction Management */}
-            <div className="p-6 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all bg-slate-50/50">
-              <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-4">
-                <Layers className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-1.5">Transaction Management</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Unified ledger view tracking charges, refunds, references, and statuses with real-time filtering and search.
-              </p>
-            </div>
-
-            {/* 4. Refund Handling */}
-            <div className="p-6 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all bg-slate-50/50">
-              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center mb-4">
-                <RotateCcw className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-1.5">Refund Handling</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Execute partial and full refunds with atomic balance locking to mathematically eliminate over-refund exploitation.
-              </p>
-            </div>
-
-            {/* 5. Payment Notifications */}
-            <div className="p-6 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all bg-slate-50/50">
-              <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4">
-                <Globe className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-1.5">Payment Notifications</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Deliver signed Kafka-backed webhooks to merchant endpoints with guaranteed exponential backoff retry schedules.
-              </p>
-            </div>
-
-            {/* 6. Reconciliation */}
-            <div className="p-6 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all bg-slate-50/50">
-              <div className="w-10 h-10 rounded-xl bg-teal-100 text-teal-700 flex items-center justify-center mb-4">
-                <Scale className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-1.5">Reconciliation</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Automated runs comparing internal payments and refunds against external provider transaction statements.
-              </p>
-            </div>
-
-            {/* 7. Merchant Management */}
-            <div className="p-6 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all bg-slate-50/50">
-              <div className="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4">
-                <Building2 className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-1.5">Merchant Management</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Multi-tenant merchant isolation, secret key generation, webhook configuration, and credential rotation.
-              </p>
-            </div>
-
-            {/* 8. API Integration */}
-            <div className="p-6 rounded-2xl border border-slate-200 hover:border-blue-400 hover:shadow-md transition-all bg-slate-50/50">
-              <div className="w-10 h-10 rounded-xl bg-sky-100 text-sky-600 flex items-center justify-center mb-4">
-                <Code2 className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-1.5">API Integration</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Developer-first OpenAPI documentation, structured error codes, standard HTTP status codes, and JSON payloads.
-              </p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =================================================================== */}
-      {/* 3. PRODUCT FEATURES (Section 3.4) — 10 Feature Cards                */}
-      {/* =================================================================== */}
-      <section id="features" className="py-20 bg-slate-50/70 border-b border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-2">Engineered for Reliability</span>
-            <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-              10 Enterprise Primitives for Resilient Financial Operations
-            </h2>
-            <p className="text-sm text-slate-600 mt-3 leading-relaxed">
-              Every component is built to withstand network partitions, duplicate requests, and transient third-party downtime.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {/* Feature 1: Reliable Payment Processing */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition-all">
-              <div className="w-9 h-9 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-3.5">
-                <CreditCard className="w-4 h-4" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Reliable Payment Processing</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Coordinates the payment lifecycle through state machines, ensuring consistent transactions and safe terminal status resolution.
-              </p>
-              <Link to="/features" className="inline-flex items-center text-xs font-semibold text-blue-600 hover:underline mt-4">
-                Learn more <ArrowRight className="w-3 h-3 ml-1" />
-              </Link>
-            </div>
-
-            {/* Feature 2: Idempotent Payment Requests */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition-all">
-              <div className="w-9 h-9 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3.5">
-                <Lock className="w-4 h-4" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Idempotent Payment Requests</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Prevents accidental double billing by fingerprinting payloads and caching execution records using client-supplied keys.
-              </p>
-              <Link to="/features" className="inline-flex items-center text-xs font-semibold text-blue-600 hover:underline mt-4">
-                Learn more <ArrowRight className="w-3 h-3 ml-1" />
-              </Link>
-            </div>
-
-            {/* Feature 3: Payment Lifecycle Management */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition-all">
-              <div className="w-9 h-9 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center mb-3.5">
-                <Layers className="w-4 h-4" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Payment Lifecycle Management</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Tracks state changes from CREATED and PROCESSING to terminal states with full attempt auditing and latency metrics.
-              </p>
-              <Link to="/features" className="inline-flex items-center text-xs font-semibold text-blue-600 hover:underline mt-4">
-                Learn more <ArrowRight className="w-3 h-3 ml-1" />
-              </Link>
-            </div>
-
-            {/* Feature 4: Refund Management */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition-all">
-              <div className="w-9 h-9 rounded-xl bg-amber-50 text-amber-700 flex items-center justify-center mb-3.5">
-                <RotateCcw className="w-4 h-4" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Refund Management</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Enables flexible partial and full refunds with server-side validation that guarantees total refunded sums never exceed charges.
-              </p>
-              <Link to="/features" className="inline-flex items-center text-xs font-semibold text-blue-600 hover:underline mt-4">
-                Learn more <ArrowRight className="w-3 h-3 ml-1" />
-              </Link>
-            </div>
-
-            {/* Feature 5: Webhook Notifications */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition-all">
-              <div className="w-9 h-9 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-3.5">
-                <Globe className="w-4 h-4" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Webhook Notifications</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Dispatches HMAC-SHA256 signed event notifications to merchant webhooks via Kafka event streams and scheduled background workers.
-              </p>
-              <Link to="/features" className="inline-flex items-center text-xs font-semibold text-blue-600 hover:underline mt-4">
-                Learn more <ArrowRight className="w-3 h-3 ml-1" />
-              </Link>
-            </div>
-
-            {/* Feature 6: Transaction Monitoring */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition-all">
-              <div className="w-9 h-9 rounded-xl bg-rose-50 text-rose-600 flex items-center justify-center mb-3.5">
-                <ScrollText className="w-4 h-4" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Transaction Monitoring</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Provides real-time visibility into transaction history, decline codes, attempt counts, and settled volumes across accounts.
-              </p>
-              <Link to="/features" className="inline-flex items-center text-xs font-semibold text-blue-600 hover:underline mt-4">
-                Learn more <ArrowRight className="w-3 h-3 ml-1" />
-              </Link>
-            </div>
-
-            {/* Feature 7: Reconciliation */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition-all">
-              <div className="w-9 h-9 rounded-xl bg-teal-50 text-teal-700 flex items-center justify-center mb-3.5">
-                <Scale className="w-4 h-4" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Reconciliation</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Cross-references internal payment and refund ledgers against independent provider transaction logs to detect discrepancies.
-              </p>
-              <Link to="/features" className="inline-flex items-center text-xs font-semibold text-blue-600 hover:underline mt-4">
-                Learn more <ArrowRight className="w-3 h-3 ml-1" />
-              </Link>
-            </div>
-
-            {/* Feature 8: Audit Logging */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition-all">
-              <div className="w-9 h-9 rounded-xl bg-slate-100 text-slate-700 flex items-center justify-center mb-3.5">
-                <ShieldCheck className="w-4 h-4" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Audit Logging</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Records immutable audit trails capturing actor identities, state diffs, IP addresses, and timestamps for every administrative action.
-              </p>
-              <Link to="/features" className="inline-flex items-center text-xs font-semibold text-blue-600 hover:underline mt-4">
-                Learn more <ArrowRight className="w-3 h-3 ml-1" />
-              </Link>
-            </div>
-
-            {/* Feature 9: Merchant API Integration */}
-            <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs hover:shadow-md transition-all">
-              <div className="w-9 h-9 rounded-xl bg-sky-50 text-sky-600 flex items-center justify-center mb-3.5">
-                <Key className="w-4 h-4" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Merchant API Integration</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Enables programmatic access with scoped API keys (sk_live_...), granular permissions, and automated rate limiting.
-              </p>
-              <Link to="/features" className="inline-flex items-center text-xs font-semibold text-blue-600 hover:underline mt-4">
-                Learn more <ArrowRight className="w-3 h-3 ml-1" />
-              </Link>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =================================================================== */}
-      {/* 4. APPLICATION MODULES (Section 3.5) — 8 Detailed Sections         */}
-      {/* =================================================================== */}
-      <section id="modules" className="py-20 bg-white border-b border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-24">
-          <div className="text-center max-w-3xl mx-auto">
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-2">Application Modules</span>
-            <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-              Modular Monolith Architecture Built for Scale
-            </h2>
-            <p className="text-sm text-slate-600 mt-3 leading-relaxed">
-              Explore the actual production modules operating within PayCore, complete with database entities and service workflows.
-            </p>
-          </div>
-
-          {/* Module 1: Payment Management */}
-          <div id="module-payments" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-8 border-t border-slate-100">
-            <div className="lg:col-span-5 space-y-4">
-              <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-blue-50 text-blue-700 font-mono">MODULE 01</span>
-              <h3 className="text-2xl font-bold text-slate-900">Payment Management</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Initiate payments, inspect attempt telemetry, search transactions, and monitor state transitions. The payment engine guarantees deterministic handling for successes, declines, and timeouts without lingering unconfirmed states.
-              </p>
-              <ul className="space-y-2 text-xs text-slate-700">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-blue-600" /> Granular status tracking (CREATED, PROCESSING, SUCCESS, FAILED)</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-blue-600" /> Automatic attempt recording with provider latency metrics</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-blue-600" /> Multi-currency support and customer reference binding</li>
-              </ul>
-            </div>
-            <div className="lg:col-span-7">
-              <PaymentDashboardVisual />
-            </div>
-          </div>
-
-          {/* Module 2: Refund Management */}
-          <div id="module-refunds" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-8 border-t border-slate-100">
-            <div className="lg:col-span-7 order-2 lg:order-1">
-              <RefundWorkflowVisual />
-            </div>
-            <div className="lg:col-span-5 space-y-4 order-1 lg:order-2">
-              <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-amber-50 text-amber-700 font-mono">MODULE 02</span>
-              <h3 className="text-2xl font-bold text-slate-900">Refund Management</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Two-phase balance refund protocol ensures partial and full refunds are executed against current verified refundable sums. Prevents over-refunding and races between simultaneous refund requests.
-              </p>
-              <ul className="space-y-2 text-xs text-slate-700">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-amber-600" /> Deterministic refundable balance verification</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-amber-600" /> Concurrent refund deduplication and pessimistic locking</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-amber-600" /> Detailed refund audit reason and provider reversal logging</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Module 3: Transaction Management */}
-          <div id="module-transactions" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-8 border-t border-slate-100">
-            <div className="lg:col-span-5 space-y-4">
-              <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-purple-50 text-purple-700 font-mono">MODULE 03</span>
-              <h3 className="text-2xl font-bold text-slate-900">Transaction Management</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Unified database transaction view unifying both payments and refunds into a chronological ledger with pagination, date range filtering, reference indexing, and merchant tenancy.
-              </p>
-              <ul className="space-y-2 text-xs text-slate-700">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-purple-600" /> Unified SQL view joining payments and refunds</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-purple-600" /> Indexed searching across references and customer emails</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-purple-600" /> Strict tenant isolation ensuring zero cross-merchant data leaks</li>
-              </ul>
-            </div>
-            <div className="lg:col-span-7">
-              <TransactionMonitoringVisual />
-            </div>
-          </div>
-
-          {/* Module 4: Merchant Management */}
-          <div id="module-merchants" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-8 border-t border-slate-100">
-            <div className="lg:col-span-7 order-2 lg:order-1">
-              <MerchantManagementVisual />
-            </div>
-            <div className="lg:col-span-5 space-y-4 order-1 lg:order-2">
-              <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-emerald-50 text-emerald-700 font-mono">MODULE 04</span>
-              <h3 className="text-2xl font-bold text-slate-900">Merchant Management</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Onboard merchants with business profile verification, generate 256-bit cryptographically random API keys stored with SHA-256 salt hashes, and manage live operational status.
-              </p>
-              <ul className="space-y-2 text-xs text-slate-700">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> One-way SHA-256 hashed secret keys (sk_live_...)</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Instant key rotation and revocation capabilities</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" /> Merchant status lifecycle (PENDING, ACTIVE, SUSPENDED)</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Module 5: Webhook Management */}
-          <div id="module-webhooks" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-8 border-t border-slate-100">
-            <div className="lg:col-span-5 space-y-4">
-              <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-blue-50 text-blue-700 font-mono">MODULE 05</span>
-              <h3 className="text-2xl font-bold text-slate-900">Webhook Management</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Event-driven asynchronous processing pipeline using the Transactional Outbox pattern and Apache Kafka. Delivers events to registered endpoints with cryptographic HMAC-SHA256 signatures.
-              </p>
-              <ul className="space-y-2 text-xs text-slate-700">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-blue-600" /> Transactional outbox prevents event loss during crashes</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-blue-600" /> Kafka partition concurrency with idempotent consumer processing</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-blue-600" /> Configurable exponential retry backoff and dead-letter queue</li>
-              </ul>
-            </div>
-            <div className="lg:col-span-7">
-              <WebhookFlowVisual />
-            </div>
-          </div>
-
-          {/* Module 6: Reconciliation */}
-          <div id="module-reconciliation" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-8 border-t border-slate-100">
-            <div className="lg:col-span-7 order-2 lg:order-1">
-              <ReconciliationVisual />
-            </div>
-            <div className="lg:col-span-5 space-y-4 order-1 lg:order-2">
-              <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-teal-50 text-teal-700 font-mono">MODULE 06</span>
-              <h3 className="text-2xl font-bold text-slate-900">Reconciliation Engine</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Multi-source settlement reconciliation engine that queries independent provider statement stores to identify discrepancies, amount mismatches, and missing transactions.
-              </p>
-              <ul className="space-y-2 text-xs text-slate-700">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-teal-600" /> Automated matching across references, currencies, and amounts</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-teal-600" /> Discrepancy triage workflow with manual operator resolution</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-teal-600" /> Complete discrepancy history and audit justification logs</li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Module 7: Audit Logs */}
-          <div id="module-audit" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-8 border-t border-slate-100">
-            <div className="lg:col-span-5 space-y-4">
-              <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-slate-100 text-slate-700 font-mono">MODULE 07</span>
-              <h3 className="text-2xl font-bold text-slate-900">Audit Logs & Forensics</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Enterprise forensic audit logging for critical financial operations, administrative overrides, and credential rotations. Provides immutable proof of who performed each action.
-              </p>
-              <ul className="space-y-2 text-xs text-slate-700">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-slate-600" /> Immutable append-only operational audit store</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-slate-600" /> Captures Actor ID, Role, Client IP, and Before/After snapshots</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-slate-600" /> Structured querying by date range, resource type, and action</li>
-              </ul>
-            </div>
-            <div className="lg:col-span-7">
-              <AuditTimelineVisual />
-            </div>
-          </div>
-
-          {/* Module 8: Admin Dashboard */}
-          <div id="module-admin" className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center pt-8 border-t border-slate-100">
-            <div className="lg:col-span-7 order-2 lg:order-1">
-              <AdminDashboardVisual />
-            </div>
-            <div className="lg:col-span-5 space-y-4 order-1 lg:order-2">
-              <span className="px-2.5 py-1 rounded-md text-[11px] font-bold bg-blue-50 text-blue-700 font-mono">MODULE 08</span>
-              <h3 className="text-2xl font-bold text-slate-900">Platform Command Center</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Real-time operational dashboard for platform administrators aggregating live payment volumes, refund rates, merchant onboarding counts, webhook retries, and reconciliation runs.
-              </p>
-              <ul className="space-y-2 text-xs text-slate-700">
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-blue-600" /> Real database queries calculating true volume and counts</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-blue-600" /> Instant triggering of ad-hoc reconciliation runs</li>
-                <li className="flex items-center gap-2"><CheckCircle2 className="w-3.5 h-3.5 text-blue-600" /> High-priority alert banner for pending discrepancy reviews</li>
-              </ul>
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      {/* =================================================================== */}
-      {/* 5. HOW PAYCORE WORKS (Section 3.6) — 10-Step Flow Diagram           */}
-      {/* =================================================================== */}
-      <section id="how-it-works" className="py-20 bg-slate-900 text-white border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-400 block mb-2">Process Architecture</span>
-            <h2 className="text-3xl font-extrabold text-white tracking-tight">
-              How PayCore Processes Transactions
-            </h2>
-            <p className="text-sm text-slate-400 mt-3 leading-relaxed">
-              Step-by-step end-to-end execution path from merchant API initiation to final settlement and reconciliation.
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            {/* Step 1 */}
-            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-              <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center mb-3">1</span>
-              <h4 className="text-xs font-bold text-slate-200">Merchant Integration</h4>
-              <p className="text-[11px] text-slate-400 mt-1">Merchant application integrates PayCore REST APIs using provisioned secret keys.</p>
-            </div>
-
-            {/* Step 2 */}
-            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-              <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center mb-3">2</span>
-              <h4 className="text-xs font-bold text-slate-200">Payment Request</h4>
-              <p className="text-[11px] text-slate-400 mt-1">Initiates charge with amount, currency, and mandatory X-Idempotency-Key header.</p>
-            </div>
-
-            {/* Step 3 */}
-            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-              <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center mb-3">3</span>
-              <h4 className="text-xs font-bold text-slate-200">Request Validation</h4>
-              <p className="text-[11px] text-slate-400 mt-1">PayCore verifies API key signature, merchant status, and input field schema.</p>
-            </div>
-
-            {/* Step 4 */}
-            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-              <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center mb-3">4</span>
-              <h4 className="text-xs font-bold text-slate-200">Idempotency Guard</h4>
-              <p className="text-[11px] text-slate-400 mt-1">Fingerprints payload. If duplicate key detected, safely returns cached response.</p>
-            </div>
-
-            {/* Step 5 */}
-            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-              <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center mb-3">5</span>
-              <h4 className="text-xs font-bold text-slate-200">Provider Dispatch</h4>
-              <p className="text-[11px] text-slate-400 mt-1">Transitions to PROCESSING and communicates with provider without DB locks.</p>
-            </div>
-
-            {/* Step 6 */}
-            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-              <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center mb-3">6</span>
-              <h4 className="text-xs font-bold text-slate-200">Response Handling</h4>
-              <p className="text-[11px] text-slate-400 mt-1">Parses provider authorization or decline code and logs attempt latency.</p>
-            </div>
-
-            {/* Step 7 */}
-            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-              <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center mb-3">7</span>
-              <h4 className="text-xs font-bold text-slate-200">Status Settlement</h4>
-              <p className="text-[11px] text-slate-400 mt-1">State machine atomically transitions payment record to SUCCESS or FAILED.</p>
-            </div>
-
-            {/* Step 8 */}
-            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-              <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center mb-3">8</span>
-              <h4 className="text-xs font-bold text-slate-200">Outbox Event Stage</h4>
-              <p className="text-[11px] text-slate-400 mt-1">Outbox row written in same ACID transaction; Kafka publishes event asynchronously.</p>
-            </div>
-
-            {/* Step 9 */}
-            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-              <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center mb-3">9</span>
-              <h4 className="text-xs font-bold text-slate-200">Signed Webhook</h4>
-              <p className="text-[11px] text-slate-400 mt-1">Merchant endpoint receives HTTP POST with HMAC signature and verifies authenticity.</p>
-            </div>
-
-            {/* Step 10 */}
-            <div className="p-4 rounded-xl bg-slate-800/80 border border-slate-700/80">
-              <span className="w-6 h-6 rounded-full bg-blue-600 text-white text-xs font-bold flex items-center justify-center mb-3">10</span>
-              <h4 className="text-xs font-bold text-slate-200">Reconciliation</h4>
-              <p className="text-[11px] text-slate-400 mt-1">Records are cross-matched in nightly reconciliation runs for discrepancy resolution.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* =================================================================== */}
-      {/* 6. DEVELOPER INTEGRATION SECTION (Section 3.7)                      */}
-      {/* =================================================================== */}
-      <section id="developers" className="py-20 bg-slate-950 text-white border-b border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Left Description */}
-            <div className="lg:col-span-5 space-y-6">
-              <span className="text-xs font-bold uppercase tracking-wider text-blue-400 block">Developer First</span>
-              <h2 className="text-3xl font-extrabold text-white tracking-tight">
-                Designed for Developers, Engineered for Production
-              </h2>
-              <p className="text-xs text-slate-300 leading-relaxed">
-                Connect in minutes with predictable REST APIs, strict idempotency headers, standard HTTP status codes, and signed event payloads.
-              </p>
-
-              <div className="space-y-3 font-sans text-xs">
-                <div className="flex items-center gap-2.5 text-slate-200">
-                  <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0" />
-                  <span>X-Api-Key and Bearer JWT authentication</span>
-                </div>
-                <div className="flex items-center gap-2.5 text-slate-200">
-                  <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0" />
-                  <span>Deterministic idempotency key caching</span>
-                </div>
-                <div className="flex items-center gap-2.5 text-slate-200">
-                  <CheckCircle2 className="w-4 h-4 text-blue-400 flex-shrink-0" />
-                  <span>HMAC-SHA256 signature verification code</span>
-                </div>
-              </div>
-
-              <div className="pt-2">
-                <Link
-                  to="/docs"
-                  className="inline-flex items-center justify-center px-5 py-3 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition-all shadow-md"
+            {features.map((feat) => {
+              const Icon = feat.icon;
+              return (
+                <div
+                  key={feat.title}
+                  className="p-6 rounded-2xl bg-slate-50/70 border border-slate-200/80 hover:bg-white hover:shadow-lg hover:border-blue-200 transition-all duration-200 flex flex-col justify-between"
                 >
-                  Explore Developer Documentation
-                  <ArrowRight className="w-4 h-4 ml-2" />
-                </Link>
-              </div>
-            </div>
-
-            {/* Right Interactive Code Box */}
-            <div className="lg:col-span-7">
-              <div className="bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden font-mono text-xs">
-                {/* Code header bar */}
-                <div className="flex items-center justify-between px-4 py-3 bg-slate-950 border-b border-slate-800">
-                  <div className="flex items-center space-x-2">
-                    <button
-                      onClick={() => setActiveTab('curl')}
-                      className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
-                        activeTab === 'curl' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
-                      }`}
-                    >
-                      cURL
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('node')}
-                      className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
-                        activeTab === 'node' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
-                      }`}
-                    >
-                      Node.js
-                    </button>
-                    <button
-                      onClick={() => setActiveTab('python')}
-                      className={`px-2.5 py-1 rounded text-xs font-medium transition-colors ${
-                        activeTab === 'python' ? 'bg-blue-600 text-white' : 'text-slate-400 hover:text-white'
-                      }`}
-                    >
-                      Python
-                    </button>
+                  <div>
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center">
+                        <Icon className="w-5 h-5" />
+                      </div>
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+                        {feat.badge}
+                      </span>
+                    </div>
+                    <h3 className="text-base font-bold text-slate-900 mb-2">{feat.title}</h3>
+                    <p className="text-xs text-slate-600 leading-relaxed">{feat.desc}</p>
                   </div>
-                  <button
-                    onClick={copyToClipboard}
-                    className="flex items-center space-x-1.5 text-slate-400 hover:text-white text-[11px] transition-colors"
-                  >
-                    {copiedCode ? <Check className="w-3.5 h-3.5 text-emerald-400" /> : <Copy className="w-3.5 h-3.5" />}
-                    <span>{copiedCode ? 'Copied' : 'Copy'}</span>
-                  </button>
                 </div>
+              );
+            })}
+          </div>
 
-                {/* Code Snippet */}
-                <div className="p-4 overflow-x-auto text-slate-300 leading-relaxed">
-                  <pre>{codeSnippets[activeTab]}</pre>
-                </div>
-              </div>
-            </div>
-
+          <div className="mt-12 text-center">
+            <Link
+              to="/features"
+              className="inline-flex items-center space-x-2 text-sm font-bold text-blue-600 hover:text-blue-700"
+            >
+              <span>Explore all feature specifications in detail</span>
+              <ArrowRight className="w-4 h-4" />
+            </Link>
           </div>
         </div>
       </section>
 
-      {/* =================================================================== */}
-      {/* 7. SECURITY SECTION (Section 3.8) — Genuine Security Features       */}
-      {/* =================================================================== */}
-      <section id="security" className="py-20 bg-white border-b border-slate-200/80">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <span className="text-xs font-bold uppercase tracking-wider text-blue-600 block mb-2">Security Architecture</span>
-            <h2 className="text-3xl font-extrabold text-slate-900 tracking-tight">
-              Rigorous Security at Every Application Boundary
+      {/* =========================================================================
+          SECTION G: HOW IT WORKS
+          ========================================================================= */}
+      <section className="py-20 lg:py-28 bg-slate-900 text-white relative overflow-hidden">
+        <div className="absolute top-0 right-1/4 w-96 h-96 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+        <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <span className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-2 block">
+              Onboarding Journey
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
+              Get Started in Four Simple Steps
             </h2>
-            <p className="text-sm text-slate-600 mt-3 leading-relaxed">
-              PayCore implements verified security primitives. We accurately detail implemented technical defenses without unverified external compliance claims.
+            <p className="text-slate-400 text-sm sm:text-base mt-3">
+              Fast, intuitive setup designed to get your business operational without unnecessary delays.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {/* Sec 1 */}
-            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/60">
-              <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center mb-4">
-                <ShieldCheck className="w-5 h-5" />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 relative">
+            {steps.map((st) => (
+              <div
+                key={st.number}
+                className="relative bg-slate-800/60 backdrop-blur-xs p-6 rounded-3xl border border-slate-700/80 flex flex-col justify-between"
+              >
+                <div>
+                  <div className="text-2xl font-black text-blue-400 mb-4">{st.number}</div>
+                  <h3 className="text-base font-bold text-white mb-2">{st.title}</h3>
+                  <p className="text-xs text-slate-400 leading-relaxed">{st.desc}</p>
+                </div>
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Cryptographic Token Auth</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                HMAC-SHA384 signed JWT tokens with 15-minute expiration and rotating persistent refresh tokens stored with SHA-256 hashes.
-              </p>
-            </div>
-
-            {/* Sec 2 */}
-            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/60">
-              <div className="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center mb-4">
-                <Lock className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">BCrypt Password Hashing</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Adaptive BCrypt hashing with work factor 12 protects stored passwords against dictionary and offline rainbow-table attacks.
-              </p>
-            </div>
-
-            {/* Sec 3 */}
-            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/60">
-              <div className="w-10 h-10 rounded-xl bg-indigo-100 text-indigo-600 flex items-center justify-center mb-4">
-                <Globe className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Webhook HMAC Signatures</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                All outgoing webhook dispatches include an HMAC-SHA256 signature calculated with the merchant's secret key to prevent spoofing.
-              </p>
-            </div>
-
-            {/* Sec 4 */}
-            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/60">
-              <div className="w-10 h-10 rounded-xl bg-purple-100 text-purple-600 flex items-center justify-center mb-4">
-                <Building2 className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Strict Tenant Isolation</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Granular Spring Security method-level annotations (@PreAuthorize) verify merchant ownership before executing any transaction read or write.
-              </p>
-            </div>
-
-            {/* Sec 5 */}
-            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/60">
-              <div className="w-10 h-10 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center mb-4">
-                <Shield className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Google OpenID Connect</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Real server-side cryptographic verification of Google ID tokens with audience, issuer, expiration, and email-verification claim enforcement.
-              </p>
-            </div>
-
-            {/* Sec 6 */}
-            <div className="p-6 rounded-2xl border border-slate-200 bg-slate-50/60">
-              <div className="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center mb-4">
-                <ScrollText className="w-5 h-5" />
-              </div>
-              <h3 className="text-base font-bold text-slate-900 mb-2">Immutable Audit Logging</h3>
-              <p className="text-xs text-slate-600 leading-relaxed">
-                Critical administrative decisions, key generations, and state overrides are captured in an append-only audit trail with actor IDs and IP addresses.
-              </p>
-            </div>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* =================================================================== */}
-      {/* 8. FINAL CTA (Section 3.9)                                          */}
-      {/* =================================================================== */}
-      <section className="py-20 bg-gradient-to-r from-blue-700 via-blue-600 to-indigo-700 text-white text-center">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-            Start Building with PayCore
+      {/* =========================================================================
+          SECTION H: WHY PAYCORE
+          ========================================================================= */}
+      <section className="py-20 lg:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center max-w-2xl mx-auto mb-16">
+            <span className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-2 block">
+              The PayCore Advantage
+            </span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
+              Why Businesses Choose PayCore
+            </h2>
+            <p className="text-base text-slate-600 mt-3">
+              Dependable payment infrastructure built around clarity, speed, and security.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[
+              {
+                title: 'Centralized Payment Operations',
+                desc: 'Consolidate multiple payment gateways, settlement accounts, and currency stores into a single manageable portal.',
+                icon: Layers,
+              },
+              {
+                title: 'Easy Transaction Monitoring',
+                desc: 'Instant lookup for any payment reference, customer ID, or order identifier with real-time status visibility.',
+                icon: TrendingUp,
+              },
+              {
+                title: 'Refund Management',
+                desc: 'Process full and partial refunds with balance checks, automated status updates, and customer email alerts.',
+                icon: RotateCcw,
+              },
+              {
+                title: 'Clear Payment History',
+                desc: 'Complete immutable records of every payment lifecycle event, preventing disputes and simplifying audits.',
+                icon: ScrollText,
+              },
+              {
+                title: 'Business-Focused Dashboard',
+                desc: 'Intuitive analytics and performance summaries giving merchants and administrators actionable insights.',
+                icon: BarChart3,
+              },
+              {
+                title: 'Secure Account Access',
+                desc: 'Enterprise authentication with Google Sign-In, multi-factor support, and strict role isolation.',
+                icon: ShieldCheck,
+              },
+            ].map((adv) => {
+              const Icon = adv.icon;
+              return (
+                <div key={adv.title} className="p-6 rounded-2xl bg-slate-50 border border-slate-200/80 flex items-start space-x-4">
+                  <div className="w-10 h-10 rounded-xl bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
+                    <Icon className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-bold text-slate-900 mb-1">{adv.title}</h3>
+                    <p className="text-xs text-slate-600 leading-relaxed">{adv.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* =========================================================================
+          SECTION I: FINAL CALL TO ACTION
+          ========================================================================= */}
+      <section className="py-20 bg-gradient-to-tr from-blue-700 via-blue-600 to-indigo-800 text-white text-center relative overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent pointer-events-none" />
+
+        <div className="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight leading-tight mb-4">
+            Take Control of Your Payment Operations
           </h2>
-          <p className="text-base text-blue-100 max-w-xl mx-auto leading-relaxed">
-            Integrate high-availability payment processing, idempotent charges, and automated multi-source reconciliation into your application today.
+          <p className="text-base sm:text-lg text-blue-100 max-w-2xl mx-auto mb-8 font-normal">
+            Manage your payment activities with PayCore.
           </p>
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
               to="/register"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-white text-blue-700 font-bold text-sm shadow-lg hover:bg-blue-50 transition-all"
+              className="w-full sm:w-auto inline-flex items-center justify-center text-sm font-bold text-blue-700 bg-white hover:bg-blue-50 px-8 py-4 rounded-full shadow-xl transition-all transform hover:-translate-y-0.5"
             >
               Create Account
             </Link>
             <Link
-              to="/features"
-              className="w-full sm:w-auto px-8 py-3.5 rounded-xl bg-blue-800/60 hover:bg-blue-800 text-white font-bold text-sm border border-blue-400/30 transition-all"
+              to="/login"
+              className="w-full sm:w-auto inline-flex items-center justify-center text-sm font-bold text-white bg-blue-800/60 hover:bg-blue-800 border border-white/20 px-8 py-4 rounded-full transition-all"
             >
-              Explore Platform
+              Login
             </Link>
           </div>
         </div>
       </section>
-
     </div>
   );
 };

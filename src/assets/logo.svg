@@ -1,19 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none">
-  <!-- Outer circle with vibrant blue gradient -->
-  <circle cx="50" cy="50" r="48" fill="url(#paycore-blue-grad)" />
+  <defs>
+    <linearGradient id="paycore-blue-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2563EB" />
+      <stop offset="100%" stop-color="#1D4ED8" />
+    </linearGradient>
+    <filter id="soft-glow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="4" flood-color="#2563EB" flood-opacity="0.25"/>
+    </filter>
+  </defs>
+
+  <!-- Outer circle with vibrant blue gradient and shadow -->
+  <circle cx="50" cy="50" r="46" fill="url(#paycore-blue-grad)" filter="url(#soft-glow)" />
   
   <!-- Subtle inner glowing rim -->
-  <circle cx="50" cy="50" r="45" stroke="#FFFFFF" stroke-opacity="0.25" stroke-width="2" />
+  <circle cx="50" cy="50" r="44" stroke="#FFFFFF" stroke-opacity="0.3" stroke-width="1.5" />
 
   <!-- Clean, bold white Bitcoin symbol matching UI reference -->
-  <path d="M48 20V26H54V20H58V26H61V32H58V40H63V46H58V54H63V60H58V66H54V60H48V66H44V60H34V20H48ZM48 32H40V40H48C51.3137 40 54 38.2091 54 36C54 33.7909 51.3137 32 48 32ZM48 46H40V54H48C51.3137 54 54 52.2091 54 50C54 47.7909 51.3137 46 48 46Z" fill="#FFFFFF"/>
-  <!-- Bitcoin vertical spine bars -->
-  <path d="M46 16H50V22H46V16ZM54 16H58V22H54V16ZM46 78H50V84H46V78ZM54 78H58V84H54V78Z" fill="#FFFFFF" opacity="0.9"/>
-
-  <defs>
-    <linearGradient id="paycore-blue-grad" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
-      <stop stop-color="#3B82F6" />
-      <stop offset="1" stop-color="#1D4ED8" />
-    </linearGradient>
-  </defs>
+  <text x="50" y="66" 
+        text-anchor="middle" 
+        font-family="system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+        font-weight="800" 
+        font-size="52" 
+        fill="#FFFFFF">₿</text>
 </svg>

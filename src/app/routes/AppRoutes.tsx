@@ -4,9 +4,12 @@ import { RootLayout } from '@/layouts/RootLayout';
 import { PublicLayout } from '@/layouts/PublicLayout';
 import { DashboardLayout } from '@/layouts/DashboardLayout';
 import { LandingPage } from '@/pages/public/LandingPage';
+import { SolutionsPage } from '@/pages/public/SolutionsPage';
 import { FeaturesPage } from '@/pages/public/FeaturesPage';
-import { ModulesPage } from '@/pages/public/ModulesPage';
-import { DocsPage } from '@/pages/public/DocsPage';
+import { AboutPage } from '@/pages/public/AboutPage';
+import { ContactPage } from '@/pages/public/ContactPage';
+import { TermsPage } from '@/pages/public/TermsPage';
+import { PrivacyPage } from '@/pages/public/PrivacyPage';
 import { LoginPage } from '@/pages/public/LoginPage';
 import { RegisterPage } from '@/pages/public/RegisterPage';
 import { VerifyEmailPage } from '@/pages/public/VerifyEmailPage';
@@ -45,10 +48,13 @@ export const AppRoutes: React.FC = () => {
         {/* Public Routes with Navbar and Footer */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<LandingPage />} />
+          <Route path="/solutions" element={<SolutionsPage />} />
           <Route path="/features" element={<FeaturesPage />} />
-          <Route path="/modules" element={<ModulesPage />} />
-          <Route path="/docs" element={<DocsPage />} />
-          
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+
           {/* Guest-only routes (redirect authenticated users) */}
           <Route element={<PublicOnlyRoute />}>
             <Route path="/login" element={<LoginPage />} />
