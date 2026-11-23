@@ -1,7 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import logoSvg from '@/assets/logo.svg';
-import { ShieldCheck, Lock, Globe2 } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -19,20 +18,6 @@ export const Footer: React.FC = () => {
             <p className="text-sm text-slate-400 max-w-sm mb-6 leading-relaxed">
               Powering modern payments and simplifying business operations. One centralized platform to manage transactions, handle refunds, and streamline global settlements.
             </p>
-            <div className="flex items-center space-x-4 text-xs text-slate-400">
-              <div className="flex items-center space-x-1.5">
-                <ShieldCheck className="w-4 h-4 text-blue-400" />
-                <span>Enterprise Security</span>
-              </div>
-              <div className="flex items-center space-x-1.5">
-                <Lock className="w-4 h-4 text-emerald-400" />
-                <span>Bank-Grade Encryption</span>
-              </div>
-              <div className="flex items-center space-x-1.5">
-                <Globe2 className="w-4 h-4 text-blue-400" />
-                <span>Multi-Currency</span>
-              </div>
-            </div>
           </div>
 
           {/* Solutions Column */}

@@ -39,7 +39,7 @@ export const PrivacyPage: React.FC = () => {
           <section>
             <h2 className="text-base font-bold text-slate-900 mb-2">3. Data Security & Storage</h2>
             <p>
-              All customer and merchant credentials are cryptographically protected using BCrypt hashing, TLS 1.3 in-transit encryption, and role-based data isolation partitions. Sensitive API keys and signing secrets are stored strictly on backend servers and never exposed to client browsers.
+              All customer and merchant credentials are cryptographically protected using BCrypt hashing, TLS 1.3 in-transit encryption, and role-based access controls. Sensitive API keys and signing secrets are stored strictly on backend servers and never exposed to client browsers.
             </p>
           </section>
 

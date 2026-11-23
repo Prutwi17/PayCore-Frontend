@@ -9,7 +9,6 @@ import {
   Scale,
   CheckCircle2,
   ArrowRight,
-  ShieldCheck,
   Zap,
 } from 'lucide-react';
 
@@ -175,27 +174,26 @@ export const SolutionsPage: React.FC = () => {
                   </div>
 
                   <div className="lg:col-span-5">
-                    <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-sm flex flex-col justify-center space-y-4">
-                      <div className="flex items-center justify-between pb-3 border-b border-slate-100">
-                        <span className="text-xs font-bold text-slate-900">Operational Guarantee</span>
-                        <ShieldCheck className="w-4 h-4 text-emerald-600" />
+                    <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-center space-y-3">
+                      <div className="text-xs font-bold text-slate-900 pb-2 border-b border-slate-100">
+                        Operational Scope
                       </div>
-                      <div className="text-xs text-slate-600 space-y-2">
+                      <div className="text-xs text-slate-600 space-y-2.5">
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Response SLA:</span>
-                          <span className="font-semibold text-slate-800">&lt; 150ms</span>
+                          <span className="text-slate-400">Processing:</span>
+                          <span className="font-semibold text-slate-800">Cards & Wallets</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Security Standard:</span>
-                          <span className="font-semibold text-slate-800">Bank-Grade TLS & AES-256</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span className="text-slate-400">Currency Support:</span>
+                          <span className="text-slate-400">Currencies:</span>
                           <span className="font-semibold text-slate-800">USD, EUR, GBP, INR</span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-slate-400">Audit Status:</span>
-                          <span className="font-semibold text-emerald-600">Continuous Logging</span>
+                          <span className="text-slate-400">Access:</span>
+                          <span className="font-semibold text-slate-800">Merchant Portal & API</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span className="text-slate-400">Records:</span>
+                          <span className="font-semibold text-emerald-600">Audit Logged</span>
                         </div>
                       </div>
                     </div>

@@ -15,7 +15,6 @@ import {
   RefreshCw,
   Plus,
   ArrowRight,
-  TrendingUp,
 } from 'lucide-react';
 
 export const MerchantDashboardPage: React.FC = () => {
@@ -129,10 +128,10 @@ export const MerchantDashboardPage: React.FC = () => {
             <span className="text-[11px] font-bold text-slate-400 uppercase tracking-wider">Total Volume</span>
           </div>
           <div className="text-2xl font-extrabold text-slate-900 tracking-tight">
-            {summary?.totalPaymentVolume ? formatCurrency(summary.totalPaymentVolume) : '₹12,56,000'}
+            {summary?.totalPaymentVolume ? formatCurrency(summary.totalPaymentVolume) : '₹0'}
           </div>
           <div className="text-xs text-slate-500 font-medium mt-1">
-            Total Payments: <span className="font-semibold text-slate-700">{summary?.totalPayments || 3842}</span>
+            Total Payments: <span className="font-semibold text-slate-700">{summary?.totalPayments ?? 0}</span>
           </div>
         </Card>
 
@@ -145,10 +144,10 @@ export const MerchantDashboardPage: React.FC = () => {
             <span className="text-[11px] font-bold text-emerald-600 uppercase tracking-wider">Successful</span>
           </div>
           <div className="text-2xl font-extrabold text-slate-900 tracking-tight">
-            {summary?.successfulPayments || 3842}
+            {summary?.successfulPayments ?? 0}
           </div>
-          <div className="text-xs text-emerald-600 font-medium mt-1 flex items-center gap-1">
-            <TrendingUp className="w-3.5 h-3.5" /> 96.8% Success Rate
+          <div className="text-xs text-emerald-600 font-medium mt-1">
+            Completed transactions
           </div>
         </Card>
 
@@ -161,10 +160,10 @@ export const MerchantDashboardPage: React.FC = () => {
             <span className="text-[11px] font-bold text-rose-600 uppercase tracking-wider">Failed</span>
           </div>
           <div className="text-2xl font-extrabold text-slate-900 tracking-tight">
-            {summary?.failedPayments || 126}
+            {summary?.failedPayments ?? 0}
           </div>
           <div className="text-xs text-rose-600 font-medium mt-1">
-            3.2% Declined or Expired
+            Unsuccessful authorizations
           </div>
         </Card>
 
@@ -177,10 +176,10 @@ export const MerchantDashboardPage: React.FC = () => {
             <span className="text-[11px] font-bold text-amber-600 uppercase tracking-wider">Refunded</span>
           </div>
           <div className="text-2xl font-extrabold text-slate-900 tracking-tight">
-            {summary?.totalRefundVolume ? formatCurrency(summary.totalRefundVolume) : '₹4,32,000'}
+            {summary?.totalRefundVolume ? formatCurrency(summary.totalRefundVolume) : '₹0'}
           </div>
           <div className="text-xs text-slate-500 font-medium mt-1">
-            Settled Refunds: <span className="font-semibold text-slate-700">{summary?.successfulRefunds || 48}</span>
+            Settled Refunds: <span className="font-semibold text-slate-700">{summary?.successfulRefunds ?? 0}</span>
           </div>
         </Card>
       </div>

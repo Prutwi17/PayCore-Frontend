@@ -23,7 +23,6 @@ import {
   ScrollText,
   BarChart3,
   Layers,
-  Lock,
 } from 'lucide-react';
 
 export const LandingPage: React.FC = () => {
@@ -57,49 +56,49 @@ export const LandingPage: React.FC = () => {
   const solutions = [
     {
       title: 'Online Payment Management',
-      desc: 'Seamless multi-currency card and wallet checkout processing with intelligent routing and fraud protection.',
+      desc: 'Accept cards and digital wallets with secure processing and real-time status updates.',
       icon: CreditCard,
-      highlight: '99.99% Availability',
+      highlight: 'Checkout',
       to: '/solutions#payments',
       visualGradient: 'from-blue-500 to-indigo-600',
     },
     {
       title: 'Refund Management',
-      desc: 'Automated full and partial balance refunds with instant verification and transparent customer status updates.',
+      desc: 'Process full and partial refunds with balance verification and customer email notices.',
       icon: RotateCcw,
-      highlight: 'Instant Balance Releases',
+      highlight: 'Refunds',
       to: '/solutions#refunds',
       visualGradient: 'from-emerald-500 to-teal-600',
     },
     {
       title: 'Transaction Tracking',
-      desc: 'Unified transaction lifecycle monitoring with comprehensive filtering, order cross-referencing, and export capabilities.',
+      desc: 'Search, filter, and review payment records across accounts and date ranges.',
       icon: TrendingUp,
-      highlight: 'Unified Ledger Search',
+      highlight: 'Ledger',
       to: '/solutions#transactions',
       visualGradient: 'from-sky-500 to-blue-600',
     },
     {
       title: 'Merchant Management',
-      desc: 'Rapid onboarding, merchant workspace provisioning, granular role controls, and secure credential isolation.',
+      desc: 'Manage merchant accounts, access permissions, and workspace credentials.',
       icon: Users,
-      highlight: 'Multi-Tenant Security',
+      highlight: 'Workspaces',
       to: '/solutions#merchants',
       visualGradient: 'from-violet-500 to-purple-600',
     },
     {
       title: 'Payment Monitoring',
-      desc: 'Real-time telemetry, transaction volume trends, success rate metrics, and intelligent operational anomaly detection.',
+      desc: 'Monitor transaction flows and system health through unified dashboards.',
       icon: Activity,
-      highlight: 'Sub-second Telemetry',
+      highlight: 'Monitoring',
       to: '/solutions#monitoring',
       visualGradient: 'from-amber-500 to-orange-600',
     },
     {
       title: 'Business Operations',
-      desc: 'Automated ledger reconciliation against provider statements, immutable audit logs, and compliance reporting.',
+      desc: 'Reconcile settlement records against external statements with immutable audit logs.',
       icon: Scale,
-      highlight: 'Zero-Discrepancy Engine',
+      highlight: 'Operations',
       to: '/solutions#operations',
       visualGradient: 'from-rose-500 to-pink-600',
     },
@@ -109,51 +108,51 @@ export const LandingPage: React.FC = () => {
   const features = [
     {
       title: 'Payment Management',
-      desc: 'Manage payment requests, process customer authorizations, and monitor real-time transaction outcomes with zero friction.',
+      desc: 'Process customer payments across currencies with instant status updates.',
       icon: CreditCard,
-      badge: 'Core Engine',
+      badge: 'Payments',
     },
     {
       title: 'Refund Management',
-      desc: 'Handle full and partial refunds with balance reservations, automated workflows, and customer email confirmations.',
+      desc: 'Issue full or partial refunds with balance reservation controls.',
       icon: RotateCcw,
-      badge: 'Two-Phase Protocol',
+      badge: 'Refunds',
     },
     {
       title: 'Transaction Tracking',
-      desc: 'View comprehensive payment and refund history in one centralized dashboard with instant search and status filtering.',
+      desc: 'Find any payment by reference or date with instant filtering.',
       icon: TrendingUp,
-      badge: 'Unified History',
+      badge: 'Ledger',
     },
     {
       title: 'Merchant Management',
-      desc: 'Provision merchant workspaces, manage business profiles, and maintain strict role-based access control.',
+      desc: 'Organize merchant workspaces with role-based access controls.',
       icon: Users,
-      badge: 'Role Isolation',
+      badge: 'Access',
     },
     {
       title: 'Payment Notifications',
-      desc: 'Receive instant notifications regarding payment completions, authorization failures, and refund progress.',
+      desc: 'Get immediate event updates for authorizations and refunds.',
       icon: Bell,
-      badge: 'Real-Time Alerts',
+      badge: 'Alerts',
     },
     {
       title: 'Reconciliation',
-      desc: 'Automatically identify and flag discrepancies between internal payment ledgers and external provider statement records.',
+      desc: 'Match transactions against provider statements automatically.',
       icon: Scale,
-      badge: 'Discrepancy Detection',
+      badge: 'Reconciliation',
     },
     {
       title: 'Activity Monitoring',
-      desc: 'Track every important account change, permission update, and transaction modification with complete forensic transparency.',
+      desc: 'Maintain chronological audit records of all account actions.',
       icon: ScrollText,
-      badge: 'Immutable Trails',
+      badge: 'Audit',
     },
     {
       title: 'Business Dashboard',
-      desc: 'Monitor gross payment volume, success rates, pending requests, and operational financial metrics in real time.',
+      desc: 'View key payment volumes and operational activity at a glance.',
       icon: BarChart3,
-      badge: 'Live Analytics',
+      badge: 'Dashboard',
     },
   ];
 
@@ -161,23 +160,23 @@ export const LandingPage: React.FC = () => {
   const steps = [
     {
       number: '01',
-      title: 'Create your PayCore account',
-      desc: 'Sign up in seconds using your business email or Google account with enterprise-grade identity protection.',
+      title: 'Create your account',
+      desc: 'Sign up using your business email or Google account.',
     },
     {
       number: '02',
-      title: 'Set up your business account',
-      desc: 'Configure your company profile, specify operational currencies, and assign team access permissions.',
+      title: 'Set up your workspace',
+      desc: 'Configure business details and currency preferences.',
     },
     {
       number: '03',
-      title: 'Manage payment operations',
-      desc: 'Initiate payments, manage transactions, process customer authorizations, and handle refunds from one dashboard.',
+      title: 'Process payments',
+      desc: 'Accept payments and manage refunds directly from the dashboard.',
     },
     {
       number: '04',
-      title: 'Track transactions and refunds',
-      desc: 'Monitor financial performance in real time with comprehensive analytics, reconciliation tools, and audit logs.',
+      title: 'Track and reconcile',
+      desc: 'Monitor transactions and review reconciliation reports in real time.',
     },
   ];
 
@@ -201,11 +200,6 @@ export const LandingPage: React.FC = () => {
               variants={fadeIn}
               className="lg:col-span-7 text-center lg:text-left"
             >
-              <div className="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/60 text-blue-700 text-xs font-semibold mb-6 shadow-2xs">
-                <span className="w-2 h-2 rounded-full bg-blue-600 animate-pulse" />
-                <span>Next-Generation Payment Infrastructure</span>
-              </div>
-
               <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-slate-900 leading-[1.12] mb-6">
                 Powering Payments. <br />
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-800">
@@ -232,22 +226,6 @@ export const LandingPage: React.FC = () => {
                 >
                   <span>Explore Solutions</span>
                 </Link>
-              </div>
-
-              {/* Security & Reliability Badges */}
-              <div className="mt-10 pt-8 border-t border-slate-200/60 flex flex-wrap items-center justify-center lg:justify-start gap-6 text-xs text-slate-500 font-medium">
-                <div className="flex items-center gap-1.5">
-                  <ShieldCheck className="w-4 h-4 text-emerald-600" />
-                  <span>Enterprise Security</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <CheckCircle2 className="w-4 h-4 text-blue-600" />
-                  <span>99.99% Guaranteed Uptime</span>
-                </div>
-                <div className="flex items-center gap-1.5">
-                  <Lock className="w-4 h-4 text-indigo-600" />
-                  <span>Role-Based Data Isolation</span>
-                </div>
               </div>
             </motion.div>
 
@@ -391,19 +369,17 @@ export const LandingPage: React.FC = () => {
                   </span>
                 </div>
 
-                {/* Simulated Financial KPIs */}
+                {/* Operational Status */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
                   <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
-                    <div className="text-[11px] text-slate-400 font-medium">Daily Processing Volume</div>
-                    <div className="text-xl font-extrabold text-white mt-1">$128,450.00</div>
-                    <div className="text-[10px] text-emerald-400 font-semibold mt-1 flex items-center gap-1">
-                      <TrendingUp className="w-3 h-3" /> +14.2% vs last week
-                    </div>
+                    <div className="text-[11px] text-slate-400 font-medium">Payment Gateway</div>
+                    <div className="text-base font-bold text-white mt-1">Connected</div>
+                    <div className="text-[10px] text-emerald-400 font-medium mt-1">Cards & Wallets</div>
                   </div>
                   <div className="p-4 rounded-2xl bg-white/5 border border-white/10">
-                    <div className="text-[11px] text-slate-400 font-medium">Settlement Rate</div>
-                    <div className="text-xl font-extrabold text-white mt-1">99.82%</div>
-                    <div className="text-[10px] text-blue-400 font-semibold mt-1">0.02s avg latency</div>
+                    <div className="text-[11px] text-slate-400 font-medium">Settlement Engine</div>
+                    <div className="text-base font-bold text-white mt-1">Active</div>
+                    <div className="text-[10px] text-blue-400 font-medium mt-1">Real-time sync</div>
                   </div>
                 </div>
 
@@ -438,13 +414,13 @@ export const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-2 block">
-              Platform Solutions
+              Solutions
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Comprehensive Solutions for Modern Businesses
+              Solutions for Modern Business
             </h2>
             <p className="text-base text-slate-600 mt-4 leading-relaxed">
-              Engineered to simplify financial operations, reduce administrative overhead, and ensure dependable payment processing.
+              Tools to process payments, manage refunds, and track transactions with ease.
             </p>
           </div>
 
@@ -505,10 +481,10 @@ export const LandingPage: React.FC = () => {
               Core Capabilities
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
-              Engineered for Precision and Scale
+              Platform Features
             </h2>
             <p className="text-base text-slate-600 mt-4 leading-relaxed">
-              Every feature is built from the ground up to provide clear visibility, fast response times, and dependable records.
+              Everything you need to run daily payment and refund operations.
             </p>
           </div>
 
@@ -559,13 +535,13 @@ export const LandingPage: React.FC = () => {
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-2 block">
-              Onboarding Journey
+              How It Works
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight">
-              Get Started in Four Simple Steps
+              Simple Setup in Four Steps
             </h2>
             <p className="text-slate-400 text-sm sm:text-base mt-3">
-              Fast, intuitive setup designed to get your business operational without unnecessary delays.
+              Start processing payments and managing operations quickly.
             </p>
           </div>
 
@@ -593,46 +569,46 @@ export const LandingPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-16">
             <span className="text-xs font-bold uppercase tracking-widest text-blue-600 mb-2 block">
-              The PayCore Advantage
+              Why PayCore
             </span>
             <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight">
               Why Businesses Choose PayCore
             </h2>
             <p className="text-base text-slate-600 mt-3">
-              Dependable payment infrastructure built around clarity, speed, and security.
+              Clear payment workflows, accurate records, and intuitive tools.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                title: 'Centralized Payment Operations',
-                desc: 'Consolidate multiple payment gateways, settlement accounts, and currency stores into a single manageable portal.',
+                title: 'Centralized Operations',
+                desc: 'Manage all payment and settlement activities in one central place.',
                 icon: Layers,
               },
               {
                 title: 'Easy Transaction Monitoring',
-                desc: 'Instant lookup for any payment reference, customer ID, or order identifier with real-time status visibility.',
+                desc: 'Look up any payment or customer record with real-time status.',
                 icon: TrendingUp,
               },
               {
                 title: 'Refund Management',
-                desc: 'Process full and partial refunds with balance checks, automated status updates, and customer email alerts.',
+                desc: 'Handle full and partial refunds with balance checks and email notifications.',
                 icon: RotateCcw,
               },
               {
                 title: 'Clear Payment History',
-                desc: 'Complete immutable records of every payment lifecycle event, preventing disputes and simplifying audits.',
+                desc: 'Review complete chronological transaction records without discrepancies.',
                 icon: ScrollText,
               },
               {
-                title: 'Business-Focused Dashboard',
-                desc: 'Intuitive analytics and performance summaries giving merchants and administrators actionable insights.',
+                title: 'Business Dashboard',
+                desc: 'Check payment volumes and operational status with clean summaries.',
                 icon: BarChart3,
               },
               {
                 title: 'Secure Account Access',
-                desc: 'Enterprise authentication with Google Sign-In, multi-factor support, and strict role isolation.',
+                desc: 'Log in securely with email/password or Google Sign-In.',
                 icon: ShieldCheck,
               },
             ].map((adv) => {

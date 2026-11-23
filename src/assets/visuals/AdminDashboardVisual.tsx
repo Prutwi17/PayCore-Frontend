@@ -19,7 +19,7 @@ export const AdminDashboardVisual: React.FC = () => {
         <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
           <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold block">Total Volume</span>
           <span className="text-base font-bold text-slate-900 block mt-1">$482,900.00</span>
-          <span className="text-[10px] text-emerald-600 font-medium block mt-0.5">99.1% Settled</span>
+          <span className="text-[10px] text-emerald-600 font-medium block mt-0.5">Live Processing</span>
         </div>
         <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
           <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold block">Active Merchants</span>
@@ -33,8 +33,8 @@ export const AdminDashboardVisual: React.FC = () => {
         </div>
         <div className="p-3 rounded-xl bg-slate-50 border border-slate-200">
           <span className="text-[10px] text-slate-500 uppercase tracking-wider font-semibold block">Webhook Health</span>
-          <span className="text-base font-bold text-emerald-700 block mt-1">99.8%</span>
-          <span className="text-[10px] text-emerald-600 font-medium block mt-0.5">Delivery Success Rate</span>
+          <span className="text-base font-bold text-emerald-700 block mt-1">Active</span>
+          <span className="text-[10px] text-emerald-600 font-medium block mt-0.5">Real-time Deliveries</span>
         </div>
       </div>
 
