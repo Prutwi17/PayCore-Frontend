@@ -9,9 +9,9 @@ import logoSvg from '@/assets/logo.svg';
 
 export const AboutPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100">
+    <div className="min-h-screen bg-white dark:bg-black text-slate-900 dark:text-white transition-colors">
       {/* Header */}
-      <section className="pt-16 pb-20 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-b border-slate-200/60 dark:border-slate-800 text-center">
+      <section className="pt-16 pb-20 bg-white dark:bg-black border-b border-slate-200/60 dark:border-zinc-800 text-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-xs font-semibold mb-4">
             <Award className="w-3.5 h-3.5" />

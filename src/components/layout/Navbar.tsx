@@ -98,7 +98,7 @@ export const Navbar: React.FC = () => {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 dark:border-slate-800 bg-white/90 dark:bg-slate-950/90 backdrop-blur-md transition-colors">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200/80 dark:border-zinc-800 bg-white/95 dark:bg-black/95 backdrop-blur-md transition-colors">
       <div className="max-w-7xl mx-auto flex h-16 items-center justify-between px-4 sm:px-6 lg:px-8">
         {/* Brand Logo with Bitcoin Icon */}
         <Link to="/" className="flex items-center space-x-2.5 group">
@@ -134,7 +134,7 @@ export const Navbar: React.FC = () => {
                   exit={{ opacity: 0, y: 8, scale: 0.98 }}
                   transition={{ duration: 0.2 }}
                   onMouseLeave={() => setSolutionsOpen(false)}
-                  className="absolute top-full -left-28 mt-1 w-96 rounded-2xl bg-white dark:bg-slate-900 shadow-2xl border border-slate-100 dark:border-slate-800 p-3 z-50"
+                  className="absolute top-full -left-28 mt-1 w-96 rounded-2xl bg-white dark:bg-zinc-950 shadow-2xl border border-slate-100 dark:border-zinc-800 p-3 z-50"
                 >
                   <div className="text-[11px] font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 px-3 py-1.5">
                     Solutions
@@ -233,7 +233,7 @@ export const Navbar: React.FC = () => {
                       exit={{ opacity: 0, y: 6, scale: 0.98 }}
                       transition={{ duration: 0.15 }}
                       onMouseLeave={() => setAuthDropdownOpen(false)}
-                      className="absolute right-0 mt-1 w-60 rounded-2xl bg-white dark:bg-slate-900 shadow-xl border border-slate-100 dark:border-slate-800 p-2 z-50"
+                      className="absolute right-0 mt-1 w-60 rounded-2xl bg-white dark:bg-zinc-950 shadow-xl border border-slate-100 dark:border-zinc-800 p-2 z-50"
                     >
                       <Link
                         to="/login"
@@ -298,7 +298,7 @@ export const Navbar: React.FC = () => {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-b border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-950 px-4 pt-2 pb-6 space-y-3"
+            className="md:hidden border-b border-slate-200 dark:border-zinc-800 bg-white dark:bg-black px-4 pt-2 pb-6 space-y-3"
           >
             <div className="flex flex-col space-y-2">
               <NavLink to="/" end className={navLinkClass}>

@@ -96,10 +96,10 @@ export const LandingPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100 selection:bg-blue-100 selection:text-blue-700 transition-colors">
+    <div className="min-h-screen bg-white dark:bg-black text-slate-900 dark:text-white selection:bg-blue-100 selection:text-blue-700 transition-colors">
       {/* HERO SECTION */}
-      <section className="relative pt-10 pb-16 lg:pt-16 lg:pb-24 overflow-hidden bg-gradient-to-b from-blue-50/50 via-white to-slate-50/50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-        <div className="absolute top-0 inset-x-0 h-96 bg-gradient-to-b from-blue-100/40 via-blue-50/20 to-transparent dark:from-blue-950/30 dark:via-slate-900/10 pointer-events-none" />
+      <section className="relative pt-10 pb-16 lg:pt-16 lg:pb-24 overflow-hidden bg-white dark:bg-black">
+        <div className="absolute top-0 inset-x-0 h-80 bg-gradient-to-b from-blue-50/40 via-white/0 to-transparent dark:from-blue-950/15 dark:via-black/0 pointer-events-none" />
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-4 items-center">
@@ -136,7 +136,7 @@ export const LandingPage: React.FC = () => {
                 </Link>
                 <Link
                   to="/solutions"
-                  className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold text-slate-700 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 bg-white dark:bg-slate-900 hover:bg-slate-50 dark:hover:bg-slate-800 border border-slate-300 dark:border-slate-700 px-7 py-3.5 rounded-full transition-all shadow-2xs"
+                  className="w-full sm:w-auto inline-flex items-center justify-center space-x-2 text-sm font-bold text-slate-700 dark:text-zinc-200 hover:text-blue-600 dark:hover:text-blue-400 bg-white dark:bg-black hover:bg-slate-50 dark:hover:bg-zinc-900 border border-slate-300 dark:border-zinc-700 px-7 py-3.5 rounded-full transition-all shadow-2xs"
                 >
                   <span>Explore Solutions</span>
                 </Link>
@@ -168,7 +168,7 @@ export const LandingPage: React.FC = () => {
                   <Link
                     key={card.title}
                     to={card.to}
-                    className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all group flex flex-col items-center text-center sm:items-start sm:text-left"
+                    className="p-5 rounded-2xl bg-white dark:bg-zinc-950 border border-slate-200/80 dark:border-zinc-800 shadow-sm hover:shadow-md hover:border-blue-300 dark:hover:border-blue-700 transition-all group flex flex-col items-center text-center sm:items-start sm:text-left"
                   >
                     <div className="w-10 h-10 rounded-xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center mb-3 group-hover:bg-blue-600 group-hover:text-white transition-colors">
                       <Icon className="w-5 h-5" />
@@ -186,7 +186,7 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* INDUSTRIES SECTION */}
-      <section className="py-16 bg-slate-50/80 dark:bg-slate-900/50 border-y border-slate-200/60 dark:border-slate-800">
+      <section className="py-16 bg-slate-50/70 dark:bg-zinc-950 border-y border-slate-200/60 dark:border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">
@@ -200,13 +200,13 @@ export const LandingPage: React.FC = () => {
               return (
                 <div
                   key={item.title}
-                  className="bg-white dark:bg-slate-900 p-5 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all text-center flex flex-col items-center justify-center group"
+                  className="bg-white dark:bg-black p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 shadow-2xs hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all text-center flex flex-col items-center justify-center group"
                 >
-                  <div className="w-11 h-11 rounded-2xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 flex items-center justify-center mb-3 group-hover:bg-blue-50 dark:group-hover:bg-blue-950 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
+                  <div className="w-11 h-11 rounded-2xl bg-slate-100 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 flex items-center justify-center mb-3 group-hover:bg-blue-50 dark:group-hover:bg-blue-950 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     <Icon className="w-5 h-5" />
                   </div>
                   <h3 className="text-xs font-bold text-slate-900 dark:text-white mb-1">{item.title}</h3>
-                  <p className="text-[11px] text-slate-500 dark:text-slate-400 leading-tight">{item.desc}</p>
+                  <p className="text-[11px] text-slate-500 dark:text-zinc-400 leading-tight">{item.desc}</p>
                 </div>
               );
             })}
@@ -215,13 +215,13 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* SOLUTIONS GRID */}
-      <section id="solutions" className="py-16 lg:py-20 bg-white dark:bg-slate-950">
+      <section id="solutions" className="py-16 lg:py-20 bg-white dark:bg-black">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-12">
             <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white tracking-tight">
               Solutions
             </h2>
-            <p className="text-sm text-slate-600 dark:text-slate-400 mt-2">
+            <p className="text-sm text-slate-600 dark:text-zinc-400 mt-2">
               Manage payments, refunds, and transactions in one place.
             </p>
           </div>
@@ -238,26 +238,26 @@ export const LandingPage: React.FC = () => {
               return (
                 <div
                   key={sol.title}
-                  className="bg-white dark:bg-slate-900 rounded-2xl p-6 border border-slate-200/80 dark:border-slate-800 shadow-xs hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-200 flex flex-col justify-between group"
+                  className="bg-white dark:bg-zinc-950 rounded-2xl p-6 border border-slate-200/80 dark:border-zinc-800 shadow-xs hover:shadow-lg hover:border-blue-300 dark:hover:border-blue-700 transition-all duration-200 flex flex-col justify-between group"
                 >
                   <div>
                     <div className="flex items-center justify-between mb-4">
                       <div className={`w-11 h-11 rounded-2xl bg-gradient-to-tr ${sol.visualGradient} text-white flex items-center justify-center shadow-sm`}>
                         <Icon className="w-5 h-5" />
                       </div>
-                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300">
+                      <span className="px-2.5 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-zinc-900 text-slate-600 dark:text-zinc-300">
                         {sol.highlight}
                       </span>
                     </div>
                     <h3 className="text-base font-bold text-slate-900 dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors mb-1.5">
                       {sol.title}
                     </h3>
-                    <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
+                    <p className="text-xs text-slate-600 dark:text-zinc-400 leading-relaxed">
                       {sol.desc}
                     </p>
                   </div>
 
-                  <div className="mt-5 pt-4 border-t border-slate-100 dark:border-slate-800">
+                  <div className="mt-5 pt-4 border-t border-slate-100 dark:border-zinc-800">
                     <Link
                       to={sol.to}
                       className="inline-flex items-center space-x-1.5 text-xs font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700"

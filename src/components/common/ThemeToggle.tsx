@@ -17,11 +17,24 @@ export const ThemeToggle: React.FC<ThemeToggleProps> = ({ className }) => {
       aria-label={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
       className={cn(
-        'inline-flex items-center justify-center w-9 h-9 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:text-blue-600 dark:hover:text-blue-400 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500',
+        'inline-flex items-center gap-1.5 h-9 px-3 rounded-xl border text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500',
+        isDark
+          ? 'bg-black text-white border-zinc-700 hover:bg-zinc-900'
+          : 'bg-white text-slate-900 border-slate-300 hover:bg-slate-50',
         className
       )}
     >
-      {isDark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+      {isDark ? (
+        <>
+          <Sun className="w-3.5 h-3.5 text-amber-400" />
+          <span>Light</span>
+        </>
+      ) : (
+        <>
+          <Moon className="w-3.5 h-3.5 text-slate-700" />
+          <span>Dark</span>
+        </>
+      )}
     </button>
   );
 };

@@ -98,13 +98,9 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative overflow-hidden">
-      {/* Background soft ambient glowing curves */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-blue-100/50 dark:bg-blue-900/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-10 w-96 h-96 bg-blue-200/30 dark:bg-indigo-900/20 rounded-full blur-3xl pointer-events-none" />
-
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-white dark:bg-black relative overflow-hidden">
       {/* Centered Auth Card */}
-      <div className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl shadow-xl p-8 sm:p-10 z-10">
+      <div className="relative w-full max-w-md bg-white dark:bg-zinc-950 border border-slate-200/80 dark:border-zinc-800 rounded-3xl shadow-xl p-8 sm:p-10 z-10">
         {/* Brand Header */}
         <div className="flex flex-col items-center text-center mb-8">
           <Link to="/" className="flex items-center space-x-2.5 mb-5 group">
