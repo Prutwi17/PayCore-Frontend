@@ -41,7 +41,7 @@ const MODULES: ModuleCard[] = [
       'Dispatches verification emails through Gmail API and OAuth 2.0 offline refresh tokens',
       'Stores SHA-256 token hashes at rest with 24h verification and 1h reset expiration',
       'Rotates refresh tokens and invalidates entire token family upon replay detection',
-      'Enforces zero default passwords in production; restricts onboarding for omp27614@gmail.com'
+      'Enforces zero default passwords in production and separates admin onboarding'
     ]
   },
   {

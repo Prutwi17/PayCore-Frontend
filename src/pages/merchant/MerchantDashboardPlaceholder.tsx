@@ -13,7 +13,6 @@ import {
   TrendingUp,
   RotateCcw,
   ArrowRight,
-  Sparkles,
 } from 'lucide-react';
 
 export const MerchantDashboardPlaceholder: React.FC = () => {
@@ -22,13 +21,12 @@ export const MerchantDashboardPlaceholder: React.FC = () => {
   return (
     <PageContainer
       title={`Welcome, ${user?.fullName || 'Merchant'}`}
-      description="Production payment processing engine active. Manage merchant credentials, initiate charges, and review transaction telemetry."
+      description="Manage payments, refunds, and account settings."
     >
-      {/* Stage 3 Active Features Banner */}
       <div className="mb-6 p-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-xl shadow-md flex flex-col md:flex-row items-start md:items-center justify-between gap-4">
         <div className="flex items-center space-x-3.5">
           <div className="w-10 h-10 bg-white/10 rounded-xl flex items-center justify-center backdrop-blur-sm">
-            <Sparkles className="w-5 h-5 text-blue-200" />
+            <CreditCard className="w-5 h-5 text-blue-200" />
           </div>
           <div>
             <div className="flex items-center space-x-2">

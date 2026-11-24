@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { CheckCircle2, ShieldCheck, ArrowUpRight, Zap } from 'lucide-react';
+import { CheckCircle2, ShieldCheck, ArrowUpRight } from 'lucide-react';
 
 export const BitcoinHeroCard: React.FC = () => {
   return (
@@ -61,7 +61,7 @@ export const BitcoinHeroCard: React.FC = () => {
         className="absolute -bottom-6 -right-2 sm:-right-6 bg-slate-900/95 text-white backdrop-blur-md rounded-2xl p-3 shadow-2xl border border-slate-800 z-30 flex items-center space-x-2.5"
       >
         <div className="w-8 h-8 rounded-xl bg-blue-500/20 flex items-center justify-center text-blue-400">
-          <Zap className="w-4 h-4 text-blue-400" />
+          <ShieldCheck className="w-4 h-4 text-blue-400" />
         </div>
         <div>
           <div className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">Settlement Engine</div>

@@ -10,7 +10,7 @@ import {
   ScrollText,
   BarChart3,
   CheckCircle2,
-  Zap,
+  Layers,
 } from 'lucide-react';
 
 export const FeaturesPage: React.FC = () => {
@@ -143,14 +143,14 @@ export const FeaturesPage: React.FC = () => {
       <section className="pt-16 pb-20 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 border-b border-slate-200/60 text-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-4">
-            <Zap className="w-3.5 h-3.5" />
-            <span>Product Capabilities</span>
+            <Layers className="w-3.5 h-3.5" />
+            <span>Features</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
-            Platform Features & Capabilities
+            Platform Features
           </h1>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Explore the eight core modules that make PayCore the preferred payment engine for high-reliability business operations.
+            Core tools for managing payments, refunds, transactions, and reconciliation.
           </p>
         </div>
       </section>

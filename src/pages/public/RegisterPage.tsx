@@ -302,9 +302,9 @@ export const RegisterPage: React.FC = () => {
             </Link>
           </div>
           <div>
-            Platform Administrator?{' '}
+            Admin account?{' '}
             <Link to="/admin/login" className="font-bold text-slate-800 hover:text-blue-600 hover:underline">
-              Admin Portal →
+              Admin Login →
             </Link>
           </div>
         </div>

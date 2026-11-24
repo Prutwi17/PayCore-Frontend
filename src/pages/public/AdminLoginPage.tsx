@@ -3,7 +3,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
 import { Button } from '@/components/common/Button';
 import logoSvg from '@/assets/logo.svg';
-import { ShieldAlert, Mail, Lock, Eye, EyeOff, AlertCircle, ArrowLeft, Building2 } from 'lucide-react';
+import { Shield, Mail, Lock, Eye, EyeOff, AlertCircle, ArrowLeft, Building2 } from 'lucide-react';
 import { ApiError } from '@/types/api';
 
 export const AdminLoginPage: React.FC = () => {
@@ -25,7 +25,7 @@ export const AdminLoginPage: React.FC = () => {
     setErrorMessage(null);
 
     if (!email.trim() || !password) {
-      setErrorMessage('Please enter both administrator email and password.');
+      setErrorMessage('Please enter both email and password.');
       return;
     }
 
@@ -35,11 +35,8 @@ export const AdminLoginPage: React.FC = () => {
 
       const roles = authData.user?.roles || [];
       if (!roles.includes('ROLE_ADMIN')) {
-        // Reject non-admin user trying to use the administrative portal
         await logout();
-        setErrorMessage(
-          'Access Denied: This portal is strictly restricted to platform administrators. Merchants must sign in via the Merchant Portal.'
-        );
+        setErrorMessage('Access denied. Please use the Merchant Login page.');
         return;
       }
 
@@ -51,7 +48,7 @@ export const AdminLoginPage: React.FC = () => {
       navigate('/admin/dashboard', { replace: true });
     } catch (err: unknown) {
       const apiErr = err as ApiError;
-      setErrorMessage(apiErr.message || 'Invalid administrator credentials. Please check your email and password.');
+      setErrorMessage(apiErr.message || 'Invalid email or password.');
     } finally {
       setIsLoading(false);
     }
@@ -59,12 +56,7 @@ export const AdminLoginPage: React.FC = () => {
 
   return (
     <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-950 relative overflow-hidden text-slate-100">
-      {/* Ambient background glows */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-10 w-96 h-96 bg-indigo-600/10 rounded-full blur-3xl pointer-events-none" />
-
-      {/* Admin Auth Card */}
-      <div className="relative w-full max-w-md bg-slate-900/90 border border-slate-700/80 rounded-3xl shadow-2xl p-8 sm:p-10 z-10 backdrop-blur-xl">
+      <div className="relative w-full max-w-md bg-slate-900/95 border border-slate-700/80 rounded-3xl shadow-2xl p-8 sm:p-10 z-10">
         {/* Portal Switcher Tabs */}
         <div className="flex items-center justify-between p-1 bg-slate-800/80 rounded-2xl border border-slate-700/60 mb-8">
           <Link
@@ -75,8 +67,8 @@ export const AdminLoginPage: React.FC = () => {
             <span>Merchant Login</span>
           </Link>
           <div className="flex-1 py-2 px-3 text-center text-xs font-bold text-white bg-blue-600 rounded-xl shadow-sm flex items-center justify-center gap-1.5">
-            <ShieldAlert className="w-3.5 h-3.5 text-blue-200" />
-            <span>Admin Portal</span>
+            <Shield className="w-3.5 h-3.5 text-blue-200" />
+            <span>Admin</span>
           </div>
         </div>
 
@@ -89,15 +81,8 @@ export const AdminLoginPage: React.FC = () => {
             </span>
           </Link>
 
-          <div className="inline-flex items-center space-x-1.5 px-3 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-[11px] font-semibold mb-2">
-            <ShieldAlert className="w-3 h-3 text-blue-400" />
-            <span>System Administrator Control Center</span>
-          </div>
-
-          <h1 className="text-xl font-bold text-white tracking-tight">Admin Portal Sign In</h1>
-          <p className="text-xs text-slate-400 mt-1">
-            Restricted to authorized PayCore platform administrators.
-          </p>
+          <h1 className="text-xl font-bold text-white tracking-tight">Admin Login</h1>
+          <p className="text-xs text-slate-400 mt-1">Sign in to the admin dashboard.</p>
         </div>
 
         {/* Error Alert */}
@@ -112,7 +97,7 @@ export const AdminLoginPage: React.FC = () => {
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-xs font-bold text-slate-300 mb-1.5">
-              Administrator Email
+              Email
             </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
@@ -124,18 +109,16 @@ export const AdminLoginPage: React.FC = () => {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
-                placeholder="omp27614@gmail.com"
+                placeholder="Enter admin email"
                 className="w-full pl-10 pr-3.5 py-2.5 bg-slate-800/80 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
               />
             </div>
           </div>
 
           <div>
-            <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold text-slate-300">
-                Password
-              </label>
-            </div>
+            <label className="block text-xs font-bold text-slate-300 mb-1.5">
+              Password
+            </label>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                 <Lock className="h-4 w-4" />
@@ -146,7 +129,7 @@ export const AdminLoginPage: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
-                placeholder="Enter administrator password"
+                placeholder="Enter password"
                 className="w-full pl-10 pr-10 py-2.5 bg-slate-800/80 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
               />
               <button
@@ -159,7 +142,6 @@ export const AdminLoginPage: React.FC = () => {
             </div>
           </div>
 
-          {/* Remember me */}
           <div className="flex items-center justify-between">
             <label className="flex items-center cursor-pointer">
               <input
@@ -168,7 +150,7 @@ export const AdminLoginPage: React.FC = () => {
                 onChange={(e) => setRememberMe(e.target.checked)}
                 className="h-4 w-4 rounded border-slate-700 bg-slate-800 text-blue-600 focus:ring-blue-500"
               />
-              <span className="ml-2 text-xs text-slate-400">Keep session active</span>
+              <span className="ml-2 text-xs text-slate-400">Remember me</span>
             </label>
           </div>
 
@@ -178,22 +160,17 @@ export const AdminLoginPage: React.FC = () => {
             className="w-full py-2.5 text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white rounded-xl shadow-lg shadow-blue-600/30 transition-all"
             isLoading={isLoading}
           >
-            {isLoading ? 'Verifying Administrator...' : 'Sign In as Administrator'}
+            {isLoading ? 'Signing in...' : 'Sign In'}
           </Button>
         </form>
 
-        {/* Security Notice */}
-        <div className="mt-6 pt-5 border-t border-slate-800/80 text-center space-y-3">
-          <p className="text-[11px] text-slate-400 leading-relaxed">
-            All administrative sign-ins are strictly monitored, verified, and logged in immutable security records.
-          </p>
-
+        <div className="mt-6 pt-5 border-t border-slate-800/80 text-center">
           <Link
             to="/login"
             className="inline-flex items-center text-xs font-semibold text-blue-400 hover:text-blue-300 transition-colors gap-1.5"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
-            <span>Looking for Merchant Sign In? Return to Merchant Portal</span>
+            <span>Back to Merchant Login</span>
           </Link>
         </div>
       </div>

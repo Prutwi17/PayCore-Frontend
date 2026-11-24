@@ -5,7 +5,7 @@ import { authService } from '@/services/api/authService';
 import { Button } from '@/components/common/Button';
 import { GoogleSignInButton } from '@/components/common/GoogleSignInButton';
 import logoSvg from '@/assets/logo.svg';
-import { Mail, Lock, Eye, EyeOff, AlertCircle, RefreshCw, CheckCircle2, Building2, ShieldAlert } from 'lucide-react';
+import { Mail, Lock, Eye, EyeOff, AlertCircle, RefreshCw, CheckCircle2, Building2, Shield } from 'lucide-react';
 import { ApiError } from '@/types/api';
 
 export const LoginPage: React.FC = () => {
@@ -103,8 +103,8 @@ export const LoginPage: React.FC = () => {
             to="/admin/login"
             className="flex-1 py-2 px-3 text-center text-xs font-semibold text-slate-600 hover:text-slate-900 rounded-xl transition-all flex items-center justify-center gap-1.5"
           >
-            <ShieldAlert className="w-3.5 h-3.5 text-slate-500" />
-            <span>Admin Portal</span>
+            <Shield className="w-3.5 h-3.5 text-slate-500" />
+            <span>Admin</span>
           </Link>
         </div>
 
@@ -261,9 +261,9 @@ export const LoginPage: React.FC = () => {
             </Link>
           </div>
           <div>
-            Platform Administrator?{' '}
+            Admin account?{' '}
             <Link to="/admin/login" className="font-bold text-slate-800 hover:text-blue-600 hover:underline">
-              Go to Admin Portal →
+              Admin Login →
             </Link>
           </div>
         </div>

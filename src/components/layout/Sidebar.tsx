@@ -88,11 +88,15 @@ export const Sidebar: React.FC<SidebarProps> = ({ portalType }) => {
       <div className="p-4 border-t border-slate-800">
         <div className="flex items-center space-x-3 mb-3">
           <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center font-bold text-xs text-blue-400 border border-slate-700">
-            {user?.fullName?.charAt(0) || 'U'}
+            {portalType === 'admin' ? 'A' : user?.fullName?.charAt(0) || 'M'}
           </div>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-semibold text-white truncate">{user?.fullName || 'Active User'}</p>
-            <p className="text-[11px] text-slate-400 truncate">{user?.email}</p>
+            <p className="text-xs font-semibold text-white truncate">
+              {portalType === 'admin' ? 'Admin' : user?.fullName || 'Merchant'}
+            </p>
+            <p className="text-[11px] text-slate-400 truncate">
+              {portalType === 'admin' ? 'Administrator' : 'Merchant Account'}
+            </p>
           </div>
         </div>
 

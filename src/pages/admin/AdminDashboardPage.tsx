@@ -180,10 +180,10 @@ export const AdminDashboardPage: React.FC = () => {
         <div>
           <div className="flex items-center space-x-2">
             <LayoutDashboard className="w-7 h-7 text-blue-600" />
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">System Admin Dashboard</h1>
+            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Admin Dashboard</h1>
           </div>
           <p className="text-sm text-slate-500 mt-1">
-            Real-time multi-merchant payment analytics, reconciliation health, and audit trail
+            Overview of payments, refunds, reconciliation, and recent activity
           </p>
         </div>
 
@@ -583,11 +583,10 @@ export const AdminDashboardPage: React.FC = () => {
               <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 space-y-1">
                 <div className="font-semibold flex items-center">
                   <AlertTriangle className="w-3.5 h-3.5 mr-1" />
-                  Independent Provider Comparison
+                  Ledger Check
                 </div>
                 <p>
-                  Compares internal database transactions against the simulated provider settlement ledger.
-                  Existing payments and refunds are never silently altered.
+                  Compares internal transactions with settlement records for the selected date range.
                 </p>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { CheckCircle2, ShieldCheck, Zap, ArrowUpRight } from 'lucide-react';
+import { CheckCircle2, ShieldCheck, ArrowUpRight } from 'lucide-react';
 
 export const GoldenCoin3D: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
@@ -42,7 +42,7 @@ export const GoldenCoin3D: React.FC = () => {
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96 bg-gradient-to-tr from-blue-600/20 via-amber-500/25 to-yellow-400/20 rounded-full blur-3xl pointer-events-none" />
       <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-amber-400/20 rounded-full blur-2xl pointer-events-none" />
 
-      {/* 2. Floating Golden Sparks & Particles */}
+      {/* 2. Floating Golden Particles */}
       {!shouldReduceMotion &&
         particles.map((p, idx) => (
           <motion.div
@@ -108,7 +108,7 @@ export const GoldenCoin3D: React.FC = () => {
         className="absolute -bottom-5 -right-2 sm:-right-4 bg-slate-900/95 text-white backdrop-blur-md rounded-2xl p-3 sm:p-3.5 shadow-2xl border border-slate-800 z-30 flex items-center space-x-3"
       >
         <div className="w-9 h-9 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400">
-          <Zap className="w-4 h-4 text-amber-400" />
+          <ShieldCheck className="w-4 h-4 text-amber-400" />
         </div>
         <div>
           <div className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">Settlement Engine</div>

@@ -16,21 +16,16 @@ export const DashboardLayout: React.FC = () => {
         <header className="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 z-10">
           <div className="flex items-center space-x-2 text-sm text-slate-500">
             <span className="font-semibold text-slate-900">
-              {isAdmin ? 'System Administration' : 'Merchant Workspace'}
+              {isAdmin ? 'Admin' : 'Merchant'}
             </span>
             <span>/</span>
             <span className="capitalize">{location.pathname.split('/').pop() || 'Overview'}</span>
           </div>
 
           <div className="flex items-center space-x-4">
-            <span className="inline-flex items-center px-2 py-0.5 rounded text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
-              {user?.roles?.map((r) => r.replace('ROLE_', '')).join(', ') || 'AUTHENTICATED'}
+            <span className="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-semibold bg-blue-50 text-blue-700 border border-blue-200">
+              {isAdmin ? 'Admin' : user?.fullName || 'Merchant'}
             </span>
-
-            <div className="hidden sm:flex items-center space-x-2 text-xs text-slate-600 pl-2 border-l border-slate-200">
-              <span className="font-medium text-slate-900">{user?.fullName}</span>
-              <span className="text-slate-400">({user?.email})</span>
-            </div>
 
             <button
               type="button"

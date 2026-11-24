@@ -9,7 +9,7 @@ import {
   Scale,
   CheckCircle2,
   ArrowRight,
-  Zap,
+  Briefcase,
 } from 'lucide-react';
 
 export const SolutionsPage: React.FC = () => {
@@ -112,14 +112,14 @@ export const SolutionsPage: React.FC = () => {
       <section className="pt-16 pb-20 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 border-b border-slate-200/60">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-4">
-            <Zap className="w-3.5 h-3.5" />
-            <span>Fintech Solutions</span>
+            <Briefcase className="w-3.5 h-3.5" />
+            <span>Solutions</span>
           </div>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
-            Built to Power Modern Commerce
+            Payment Solutions for Business
           </h1>
           <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Discover the six pillars of PayCore designed to streamline payment operations, eliminate manual reconciliation, and safeguard merchant revenue.
+            Simple tools to accept payments, manage refunds, and keep clear transaction records.
           </p>
         </div>
       </section>

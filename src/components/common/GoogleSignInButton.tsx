@@ -153,12 +153,11 @@ export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
         onError?.(msg);
       }
     } else {
-      setInitError(
-        'Google Sign-In requires an active Google Cloud OAuth 2.0 Web Client ID. Please sign in using your email and password below, or configure VITE_GOOGLE_CLIENT_ID.'
-      );
-      onError?.(
-        'Google Sign-In is not configured with a live Google Cloud Client ID. Please use your email and password to sign in.'
-      );
+      if (onError) {
+        onError('Google Sign-In is not available right now. Please sign in with your email and password.');
+      } else {
+        setInitError('Google Sign-In is not available right now. Please sign in with your email and password.');
+      }
     }
   };
 

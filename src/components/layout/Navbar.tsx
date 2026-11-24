@@ -254,8 +254,8 @@ export const Navbar: React.FC = () => {
                           <Shield className="w-3.5 h-3.5" />
                         </div>
                         <div>
-                          <div className="text-xs font-bold text-slate-900 group-hover:text-blue-600">Admin Portal</div>
-                          <div className="text-[10px] text-slate-500">Platform administrator access</div>
+                          <div className="text-xs font-bold text-slate-900 group-hover:text-blue-600">Admin Login</div>
+                          <div className="text-[10px] text-slate-500">Admin dashboard access</div>
                         </div>
                       </Link>
                     </motion.div>

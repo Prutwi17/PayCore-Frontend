@@ -42,14 +42,14 @@ export const LandingPage: React.FC = () => {
     },
   };
 
-  // Industries list for brand trust showcase
+  // Industries list
   const industries = [
-    { title: 'E-commerce', desc: 'Frictionless checkouts & instant authorizations', icon: ShoppingBag },
-    { title: 'Retail', desc: 'Unified digital point of sale & in-store payments', icon: Store },
-    { title: 'Travel & Hospitality', desc: 'Multi-currency booking & dynamic card settlement', icon: Plane },
-    { title: 'Education', desc: 'Structured installment plans & automated receipts', icon: GraduationCap },
-    { title: 'Digital Services', desc: 'Flexible recurring usage & instant digital delivery', icon: Cloud },
-    { title: 'Subscription Business', desc: 'Automated billing cycles & dunning management', icon: Repeat },
+    { title: 'E-commerce', desc: 'Online checkouts & card payments', icon: ShoppingBag },
+    { title: 'Retail', desc: 'In-store & digital payments', icon: Store },
+    { title: 'Travel', desc: 'Multi-currency bookings', icon: Plane },
+    { title: 'Education', desc: 'Tuition & installment payments', icon: GraduationCap },
+    { title: 'Digital Services', desc: 'Usage billing & digital sales', icon: Cloud },
+    { title: 'Subscriptions', desc: 'Recurring billing cycles', icon: Repeat },
   ];
 
   // Solutions list
@@ -324,15 +324,15 @@ export const LandingPage: React.FC = () => {
                 PayCore brings payment processing, transaction tracking, refund management, and payment monitoring together in one platform.
               </p>
               <p className="text-sm text-slate-500 leading-relaxed mb-8">
-                Rather than coordinating disconnected payment providers, reconciliations, and reporting spreadsheets, PayCore unifies your complete payment lifecycle into a single command center with role-based visibility.
+                Manage payments, refunds, and daily reports from one dashboard with clear access controls.
               </p>
 
               <div className="space-y-4">
                 {[
-                  'Unified multi-currency transaction processing',
-                  'Frictionless full and partial refund balance handling',
-                  'Real-time discrepancy detection and ledger verification',
-                  'Dedicated workspace control for merchants and administrators',
+                  'Multi-currency transaction processing',
+                  'Full and partial refund handling',
+                  'Clear reconciliation and ledger checks',
+                  'Separate dashboards for merchants and admins',
                 ].map((item, idx) => (
                   <div key={idx} className="flex items-start space-x-3">
                     <div className="w-5 h-5 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 mt-0.5">
@@ -361,8 +361,8 @@ export const LandingPage: React.FC = () => {
 
                 <div className="flex items-center justify-between pb-6 border-b border-slate-700/80 mb-6">
                   <div>
-                    <span className="text-[11px] font-bold uppercase tracking-wider text-blue-400">Operations Console</span>
-                    <h4 className="text-base font-bold text-white">Live Payment Telemetry</h4>
+                    <span className="text-[11px] font-bold uppercase tracking-wider text-blue-400">Operations</span>
+                    <h4 className="text-base font-bold text-white">Payment Overview</h4>
                   </div>
                   <span className="px-2.5 py-1 rounded-full text-[10px] font-extrabold uppercase tracking-wide bg-emerald-500/20 text-emerald-400 border border-emerald-500/30">
                     System Healthy

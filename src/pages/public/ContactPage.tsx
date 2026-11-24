@@ -180,8 +180,8 @@ export const ContactPage: React.FC = () => {
                     <Mail className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="font-bold text-slate-800">Support & Administration</div>
-                    <div className="text-slate-500">omp27614@gmail.com</div>
+                    <div className="font-bold text-slate-800">Support</div>
+                    <div className="text-slate-500">support@paycore.com</div>
                   </div>
                 </div>
 
