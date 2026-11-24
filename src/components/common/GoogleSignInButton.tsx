@@ -24,13 +24,13 @@ export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
   const [gsiRendered, setGsiRendered] = useState(false);
   const [initError, setInitError] = useState<string | null>(null);
 
-  // Read Google Web Client ID from environment or fallback to registered development client
-  const clientId =
-    import.meta.env.VITE_GOOGLE_CLIENT_ID ||
-    '1081977717462-paycore-google-oauth.apps.googleusercontent.com';
+  // Read Google Web Client ID from environment
+  const clientId = (import.meta.env.VITE_GOOGLE_CLIENT_ID || '').trim();
 
   const isConfiguredClient =
-    Boolean(clientId) && !clientId.includes('paycore-google-oauth');
+    Boolean(clientId) &&
+    clientId.endsWith('.apps.googleusercontent.com') &&
+    !clientId.includes('paycore-google-oauth');
 
   const handleCredentialResponse = useCallback(
     async (response: GoogleCredentialResponse) => {
@@ -67,6 +67,11 @@ export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
   );
 
   useEffect(() => {
+    if (!isConfiguredClient) {
+      setGsiRendered(false);
+      return;
+    }
+
     let isMounted = true;
 
     const setupGoogleGsi = () => {
@@ -128,7 +133,7 @@ export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
     return () => {
       isMounted = false;
     };
-  }, [clientId, handleCredentialResponse]);
+  }, [clientId, isConfiguredClient, handleCredentialResponse]);
 
   const handleManualFallbackClick = async () => {
     if (disabled || isAuthenticating) return;

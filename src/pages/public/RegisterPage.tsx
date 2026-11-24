@@ -5,7 +5,7 @@ import { authService } from '@/services/api/authService';
 import { Button } from '@/components/common/Button';
 import { GoogleSignInButton } from '@/components/common/GoogleSignInButton';
 import logoSvg from '@/assets/logo.svg';
-import { User, Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle2 } from 'lucide-react';
+import { User, Mail, Lock, Eye, EyeOff, AlertCircle, CheckCircle2, Building2 } from 'lucide-react';
 import { ApiError } from '@/types/api';
 
 export const RegisterPage: React.FC = () => {
@@ -13,6 +13,7 @@ export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
 
   const [fullName, setFullName] = useState('');
+  const [businessName, setBusinessName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -44,6 +45,14 @@ export const RegisterPage: React.FC = () => {
       return;
     }
 
+    const complexityRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!._-]).*$/;
+    if (!complexityRegex.test(password)) {
+      setErrorMessage(
+        'Password must include at least one uppercase letter, one lowercase letter, one number, and one special character (@#$%^&+=!._-).'
+      );
+      return;
+    }
+
     if (!agreeTerms) {
       setErrorMessage('Please accept the Terms and Conditions to proceed.');
       return;
@@ -55,6 +64,8 @@ export const RegisterPage: React.FC = () => {
         fullName: fullName.trim(),
         email: email.trim(),
         password,
+        confirmPassword,
+        businessName: businessName.trim() || undefined,
       });
 
       if (res?.id) {
@@ -76,7 +87,11 @@ export const RegisterPage: React.FC = () => {
       }
     } catch (err: unknown) {
       const apiErr = err as ApiError;
-      setErrorMessage(apiErr.message || 'Registration failed. An account with this email may already exist.');
+      if (apiErr.details && Array.isArray(apiErr.details) && apiErr.details.length > 0) {
+        setErrorMessage(apiErr.details.map((d) => d.issue || `${d.field}: invalid`).join(' '));
+      } else {
+        setErrorMessage(apiErr.message || 'Registration failed. An account with this email may already exist.');
+      }
     } finally {
       setIsLoading(false);
     }
@@ -156,6 +171,24 @@ export const RegisterPage: React.FC = () => {
 
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-1.5">
+              Business name <span className="font-normal text-slate-400">(optional)</span>
+            </label>
+            <div className="relative">
+              <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
+                <Building2 className="h-4 w-4" />
+              </div>
+              <input
+                type="text"
+                value={businessName}
+                onChange={(e) => setBusinessName(e.target.value)}
+                placeholder="Your company or store name"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
+              />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-xs font-bold text-slate-700 mb-1.5">
               Email address
             </label>
             <div className="relative">
@@ -198,6 +231,9 @@ export const RegisterPage: React.FC = () => {
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
             </div>
+            <p className="mt-1 text-[11px] text-slate-400">
+              Minimum 8 characters with uppercase, lowercase, number, and symbol (@#$%!._-)
+            </p>
           </div>
 
           <div>

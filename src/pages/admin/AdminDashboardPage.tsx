@@ -11,6 +11,7 @@ import {
 } from '@/types/dashboard';
 import { AuditLog } from '@/types/audit';
 import { ReconciliationRecord, RunType } from '@/types/reconciliation';
+import { ApiError } from '@/types/api';
 import { Card } from '@/components/common/Card';
 import { Button } from '@/components/common/Button';
 import { Badge } from '@/components/common/Badge';
@@ -94,7 +95,8 @@ export const AdminDashboardPage: React.FC = () => {
       setRecentAudits(auditsRes);
       setRecentDiscrepancies(discrepanciesRes.content);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Failed to load dashboard metrics';
+      const apiErr = err as ApiError;
+      const msg = apiErr?.message || (err instanceof Error ? err.message : 'Failed to load dashboard metrics');
       setError(msg);
     } finally {
       setIsLoading(false);
@@ -124,7 +126,8 @@ export const AdminDashboardPage: React.FC = () => {
       setIsRunModalOpen(false);
       navigate(`/admin/reconciliation/${run.runReference}`);
     } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Failed to initiate reconciliation run';
+      const apiErr = err as ApiError;
+      const msg = apiErr?.message || (err instanceof Error ? err.message : 'Failed to initiate reconciliation run');
       setRunModalError(msg);
     } finally {
       setIsTriggeringRun(false);

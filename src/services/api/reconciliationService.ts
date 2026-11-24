@@ -93,7 +93,7 @@ export const reconciliationService = {
     payload: DiscrepancyResolutionRequest
   ): Promise<ReconciliationRecord> {
     const response = await apiClient.post<ApiResponse<ReconciliationRecord>>(
-      `/admin/reconciliation/records/${recordId}/resolve`,
+      `/admin/reconciliation/discrepancies/${recordId}/resolve`,
       payload
     );
     return response.data.data;
