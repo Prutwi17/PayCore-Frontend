@@ -98,8 +98,8 @@ export const RegisterPage: React.FC = () => {
               Pay<span className="text-blue-600">Core</span>
             </span>
           </Link>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Create Account</h1>
-          <p className="text-xs text-slate-500 mt-1">Get started with PayCore</p>
+          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Create Merchant Account</h1>
+          <p className="text-xs text-slate-500 mt-1">Set up business payment processing with PayCore</p>
         </div>
 
         {/* Error Alert */}
@@ -253,16 +253,24 @@ export const RegisterPage: React.FC = () => {
             className="w-full py-2.5 text-xs font-bold bg-blue-600 hover:bg-blue-700 text-white rounded-xl shadow-md shadow-blue-500/20"
             isLoading={isLoading}
           >
-            {isLoading ? 'Creating account...' : 'Register'}
+            {isLoading ? 'Creating account...' : 'Create Merchant Account'}
           </Button>
         </form>
 
-        {/* Footer Link */}
-        <div className="mt-6 pt-5 border-t border-slate-100 text-center text-xs text-slate-600">
-          Already have an account?{' '}
-          <Link to="/login" className="font-bold text-blue-600 hover:text-blue-700 hover:underline">
-            Login
-          </Link>
+        {/* Footer Links */}
+        <div className="mt-6 pt-5 border-t border-slate-100 text-center space-y-2 text-xs text-slate-600">
+          <div>
+            Already have a merchant account?{' '}
+            <Link to="/login" className="font-bold text-blue-600 hover:text-blue-700 hover:underline">
+              Merchant Sign In
+            </Link>
+          </div>
+          <div>
+            Platform Administrator?{' '}
+            <Link to="/admin/login" className="font-bold text-slate-800 hover:text-blue-600 hover:underline">
+              Admin Portal →
+            </Link>
+          </div>
         </div>
       </div>
     </div>

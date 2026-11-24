@@ -22,8 +22,10 @@ import { motion, AnimatePresence } from 'framer-motion';
 export const Navbar: React.FC = () => {
   const { user, isAuthenticated, isAdmin, isMerchant, logout } = useAuth();
   const [solutionsOpen, setSolutionsOpen] = useState(false);
+  const [authDropdownOpen, setAuthDropdownOpen] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const authDropdownRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
   const dashboardPath = isAdmin ? '/admin/dashboard' : isMerchant ? '/merchant/dashboard' : '/';
@@ -34,6 +36,9 @@ export const Navbar: React.FC = () => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setSolutionsOpen(false);
       }
+      if (authDropdownRef.current && !authDropdownRef.current.contains(e.target as Node)) {
+        setAuthDropdownOpen(false);
+      }
     };
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -41,6 +46,7 @@ export const Navbar: React.FC = () => {
 
   useEffect(() => {
     setSolutionsOpen(false);
+    setAuthDropdownOpen(false);
     setMobileMenuOpen(false);
   }, [location.pathname]);
 
@@ -202,13 +208,61 @@ export const Navbar: React.FC = () => {
               </button>
             </div>
           ) : (
-            <div className="flex items-center space-x-3">
-              <Link
-                to="/login"
-                className="text-xs font-semibold text-slate-700 hover:text-blue-600 px-3.5 py-2 rounded-xl transition-colors"
-              >
-                Login
-              </Link>
+            <div className="flex items-center space-x-2">
+              {/* Separate Sign In Portals Dropdown */}
+              <div className="relative" ref={authDropdownRef}>
+                <button
+                  type="button"
+                  onClick={() => setAuthDropdownOpen(!authDropdownOpen)}
+                  onMouseEnter={() => setAuthDropdownOpen(true)}
+                  className="inline-flex items-center space-x-1 text-xs font-semibold text-slate-700 hover:text-blue-600 px-3.5 py-2 rounded-xl border border-transparent hover:border-slate-200 hover:bg-slate-50 transition-colors focus:outline-none"
+                >
+                  <span>Sign In</span>
+                  <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${authDropdownOpen ? 'rotate-180 text-blue-600' : ''}`} />
+                </button>
+
+                <AnimatePresence>
+                  {authDropdownOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 8, scale: 0.98 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: 6, scale: 0.98 }}
+                      transition={{ duration: 0.15 }}
+                      onMouseLeave={() => setAuthDropdownOpen(false)}
+                      className="absolute right-0 mt-1 w-60 rounded-2xl bg-white shadow-xl border border-slate-100 p-2 z-50"
+                    >
+                      <Link
+                        to="/login"
+                        onClick={() => setAuthDropdownOpen(false)}
+                        className="flex items-start space-x-2.5 p-2.5 rounded-xl hover:bg-blue-50/70 transition-colors group"
+                      >
+                        <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                          <Building className="w-3.5 h-3.5" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-slate-900 group-hover:text-blue-600">Merchant Sign In</div>
+                          <div className="text-[10px] text-slate-500">Business & merchant account</div>
+                        </div>
+                      </Link>
+
+                      <Link
+                        to="/admin/login"
+                        onClick={() => setAuthDropdownOpen(false)}
+                        className="flex items-start space-x-2.5 p-2.5 rounded-xl hover:bg-slate-100/80 transition-colors group"
+                      >
+                        <div className="w-7 h-7 rounded-lg bg-slate-900 text-slate-100 flex items-center justify-center flex-shrink-0 group-hover:bg-blue-600 group-hover:text-white transition-colors">
+                          <Shield className="w-3.5 h-3.5" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-slate-900 group-hover:text-blue-600">Admin Portal</div>
+                          <div className="text-[10px] text-slate-500">Platform administrator access</div>
+                        </div>
+                      </Link>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+
               <Link
                 to="/register"
                 className="inline-flex items-center justify-center text-xs font-semibold text-white bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-full shadow-md shadow-blue-500/20 hover:shadow-lg hover:shadow-blue-500/30 transition-all"
@@ -279,9 +333,16 @@ export const Navbar: React.FC = () => {
                 <>
                   <Link
                     to="/login"
-                    className="w-full text-center py-2 text-sm font-semibold text-slate-700 border border-slate-200 rounded-xl"
+                    className="w-full text-center py-2 text-sm font-semibold text-slate-700 border border-slate-200 rounded-xl hover:bg-slate-50"
                   >
-                    Login
+                    Merchant Sign In
+                  </Link>
+                  <Link
+                    to="/admin/login"
+                    className="w-full text-center py-2 text-sm font-semibold text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-xl flex items-center justify-center gap-1.5"
+                  >
+                    <Shield className="w-3.5 h-3.5 text-blue-600" />
+                    <span>Admin Portal</span>
                   </Link>
                   <Link
                     to="/register"

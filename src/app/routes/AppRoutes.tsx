@@ -11,6 +11,7 @@ import { ContactPage } from '@/pages/public/ContactPage';
 import { TermsPage } from '@/pages/public/TermsPage';
 import { PrivacyPage } from '@/pages/public/PrivacyPage';
 import { LoginPage } from '@/pages/public/LoginPage';
+import { AdminLoginPage } from '@/pages/public/AdminLoginPage';
 import { RegisterPage } from '@/pages/public/RegisterPage';
 import { VerifyEmailPage } from '@/pages/public/VerifyEmailPage';
 import { ForgotPasswordPage } from '@/pages/public/ForgotPasswordPage';
@@ -58,6 +59,7 @@ export const AppRoutes: React.FC = () => {
           {/* Guest-only routes (redirect authenticated users) */}
           <Route element={<PublicOnlyRoute />}>
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />

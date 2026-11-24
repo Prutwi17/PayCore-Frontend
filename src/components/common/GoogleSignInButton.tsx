@@ -139,7 +139,7 @@ export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
           const notif = notification as { isNotDisplayed?: () => boolean; isSkippedMoment?: () => boolean } | null | undefined;
           if (notif?.isNotDisplayed?.() || notif?.isSkippedMoment?.()) {
             setInitError(
-              'Google account selector was not shown by the browser. If using Chrome on localhost, verify third-party cookies or popups are not blocked.'
+              'Google account selector was not shown by the browser. Verify popups and third-party cookies are allowed for localhost.'
             );
           }
         });
@@ -148,8 +148,12 @@ export const GoogleSignInButton: React.FC<GoogleSignInButtonProps> = ({
         onError?.(msg);
       }
     } else {
-      // In development mode without a Google Cloud Console Client ID, authenticate as omp27614@gmail.com
-      await handleCredentialResponse({ credential: 'dev_google_token_omp27614@gmail.com' });
+      setInitError(
+        'Google Sign-In requires an active Google Cloud OAuth 2.0 Web Client ID. Please sign in using your email and password below, or configure VITE_GOOGLE_CLIENT_ID.'
+      );
+      onError?.(
+        'Google Sign-In is not configured with a live Google Cloud Client ID. Please use your email and password to sign in.'
+      );
     }
   };
 
