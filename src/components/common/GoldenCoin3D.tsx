@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
-import { CheckCircle2, ShieldCheck, ArrowUpRight } from 'lucide-react';
+import { ShieldCheck } from 'lucide-react';
 
 export const GoldenCoin3D: React.FC = () => {
   const shouldReduceMotion = useReducedMotion();
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
 
-  // Handle gentle mouse parallax tilt
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (shouldReduceMotion) return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -19,119 +18,104 @@ export const GoldenCoin3D: React.FC = () => {
     setMousePos({ x: 0, y: 0 });
   };
 
-  // 16 floating micro particles
-  const particles = [
-    { top: '10%', left: '15%', size: 'w-2 h-2', delay: 0, dur: 4.2 },
-    { top: '22%', left: '85%', size: 'w-2.5 h-2.5', delay: 0.8, dur: 5.1 },
-    { top: '75%', left: '12%', size: 'w-1.5 h-1.5', delay: 1.5, dur: 3.8 },
-    { top: '82%', left: '80%', size: 'w-2 h-2', delay: 0.4, dur: 4.6 },
-    { top: '15%', left: '70%', size: 'w-1.5 h-1.5', delay: 1.2, dur: 4.0 },
-    { top: '65%', left: '90%', size: 'w-2 h-2', delay: 2.1, dur: 4.8 },
-    { top: '40%', left: '8%', size: 'w-2.5 h-2.5', delay: 0.6, dur: 5.4 },
-    { top: '55%', left: '88%', size: 'w-1.5 h-1.5', delay: 1.8, dur: 3.5 },
-  ];
-
   return (
     <div
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="relative w-full max-w-lg mx-auto flex items-center justify-center p-4 sm:p-8 select-none"
-      style={{ perspective: '1100px' }}
+      className="relative w-full max-w-md mx-auto flex items-center justify-center p-6 sm:p-10 select-none"
+      style={{ perspective: '1200px' }}
     >
-      {/* 1. Ambient Background Glow (Soft Blue + Warm Golden Radiance) */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96 bg-gradient-to-tr from-blue-600/20 via-amber-500/25 to-yellow-400/20 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-amber-400/20 rounded-full blur-2xl pointer-events-none" />
+      {/* Ambient Background Glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-80 h-80 sm:w-96 sm:h-96 bg-gradient-to-tr from-blue-600/20 via-amber-500/20 to-yellow-400/15 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-64 h-64 bg-amber-400/20 dark:bg-amber-500/15 rounded-full blur-2xl pointer-events-none" />
 
-      {/* 2. Floating Golden Particles */}
-      {!shouldReduceMotion &&
-        particles.map((p, idx) => (
-          <motion.div
-            key={idx}
-            animate={{
-              y: [0, -25, 0],
-              opacity: [0.3, 0.9, 0.3],
-              scale: [0.8, 1.2, 0.8],
-            }}
-            transition={{
-              duration: p.dur,
-              repeat: Infinity,
-              ease: 'easeInOut',
-              delay: p.delay,
-            }}
-            style={{ top: p.top, left: p.left }}
-            className={`absolute ${p.size} rounded-full bg-gradient-to-tr from-amber-300 via-yellow-200 to-white shadow-sm pointer-events-none z-10`}
-          />
-        ))}
-
-      {/* 3. Floating Payment Status Pill (Top Left) */}
+      {/* Outer Tilted Blue Orbital Ring + 2 Orbiting Design Spheres */}
       <motion.div
-        initial={{ opacity: 0, x: -30, y: 20 }}
-        animate={{
-          opacity: 1,
-          x: 0,
-          y: shouldReduceMotion ? 0 : [0, -8, 0],
+        animate={
+          shouldReduceMotion
+            ? { rotateZ: 0 }
+            : { rotateZ: [0, 360] }
+        }
+        transition={
+          shouldReduceMotion
+            ? { duration: 0 }
+            : { duration: 16, repeat: Infinity, ease: 'linear' }
+        }
+        className="absolute w-76 h-76 sm:w-[360px] sm:h-[360px] rounded-full border-2 border-dashed border-blue-400/45 dark:border-blue-400/35 pointer-events-none z-10"
+        style={{
+          transformStyle: 'preserve-3d',
+          boxShadow: '0 0 24px rgba(59, 130, 246, 0.15)',
         }}
-        transition={{
-          opacity: { duration: 0.6, delay: 0.3 },
-          x: { duration: 0.6, delay: 0.3 },
-          y: { duration: 4.5, repeat: Infinity, ease: 'easeInOut', delay: 0.5 },
-        }}
-        className="absolute -top-3 -left-2 sm:-left-6 bg-white/95 backdrop-blur-md rounded-2xl p-3 sm:p-3.5 shadow-xl border border-amber-100/80 z-30 flex items-center space-x-3"
       >
-        <div className="w-9 h-9 rounded-xl bg-emerald-500/10 flex items-center justify-center text-emerald-600">
-          <CheckCircle2 className="w-5 h-5 text-emerald-600" />
-        </div>
-        <div>
-          <div className="flex items-center space-x-1.5">
-            <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-600">Payment Verified</span>
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-          </div>
-          <div className="text-sm font-extrabold text-slate-900">
-            $2,450.00 <span className="text-xs font-normal text-slate-500">USD</span>
-          </div>
-        </div>
+        {/* Top Orbiting Blue Metallic Ball */}
+        <div
+          className="absolute -top-2.5 left-1/2 -translate-x-1/2 w-5 h-5 rounded-full shadow-lg"
+          style={{
+            background: 'radial-gradient(circle at 30% 30%, #EFF6FF 0%, #60A5FA 45%, #1D4ED8 100%)',
+            boxShadow: '0 0 12px rgba(59, 130, 246, 0.6)',
+          }}
+        />
+        {/* Bottom Orbiting Blue Metallic Ball */}
+        <div
+          className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-4 h-4 rounded-full shadow-md"
+          style={{
+            background: 'radial-gradient(circle at 30% 30%, #DBEAFE 0%, #3B82F6 55%, #1E40AF 100%)',
+            boxShadow: '0 0 10px rgba(37, 99, 235, 0.5)',
+          }}
+        />
       </motion.div>
 
-      {/* 4. Floating Settlement Badge (Bottom Right) */}
+      {/* Inner Counter-Rotating Golden Orbital Ring + 2 Orbiting Gold Spheres */}
       <motion.div
-        initial={{ opacity: 0, x: 30, y: -20 }}
-        animate={{
-          opacity: 1,
-          x: 0,
-          y: shouldReduceMotion ? 0 : [0, 8, 0],
+        animate={
+          shouldReduceMotion
+            ? { rotateZ: 0 }
+            : { rotateZ: [360, 0] }
+        }
+        transition={
+          shouldReduceMotion
+            ? { duration: 0 }
+            : { duration: 12, repeat: Infinity, ease: 'linear' }
+        }
+        className="absolute w-68 h-68 sm:w-[308px] sm:h-[308px] rounded-full border border-amber-400/60 dark:border-amber-400/45 pointer-events-none z-20"
+        style={{
+          boxShadow: 'inset 0 0 16px rgba(245, 158, 11, 0.15), 0 0 20px rgba(245, 158, 11, 0.18)',
         }}
-        transition={{
-          opacity: { duration: 0.6, delay: 0.5 },
-          x: { duration: 0.6, delay: 0.5 },
-          y: { duration: 5, repeat: Infinity, ease: 'easeInOut', delay: 1.0 },
-        }}
-        className="absolute -bottom-5 -right-2 sm:-right-4 bg-slate-900/95 text-white backdrop-blur-md rounded-2xl p-3 sm:p-3.5 shadow-2xl border border-slate-800 z-30 flex items-center space-x-3"
       >
-        <div className="w-9 h-9 rounded-xl bg-amber-500/20 flex items-center justify-center text-amber-400">
-          <ShieldCheck className="w-4 h-4 text-amber-400" />
-        </div>
-        <div>
-          <div className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">Settlement Engine</div>
-          <div className="text-xs font-bold text-white flex items-center gap-1">
-            <span>Instant & Multi-Currency</span>
-            <ArrowUpRight className="w-3 h-3 text-emerald-400" />
-          </div>
-        </div>
+        {/* Left Orbiting Golden Ball */}
+        <div
+          className="absolute top-1/2 -left-2.5 -translate-y-1/2 w-5 h-5 rounded-full shadow-lg"
+          style={{
+            background: 'radial-gradient(circle at 30% 30%, #FEF9C3 0%, #FBBF24 45%, #B45309 100%)',
+            boxShadow: '0 0 14px rgba(245, 158, 11, 0.7)',
+          }}
+        />
+        {/* Right Orbiting Golden Ball */}
+        <div
+          className="absolute top-1/2 -right-2 -translate-y-1/2 w-4 h-4 rounded-full shadow-md"
+          style={{
+            background: 'radial-gradient(circle at 30% 30%, #FEF08A 0%, #F59E0B 55%, #92400E 100%)',
+            boxShadow: '0 0 12px rgba(217, 119, 6, 0.6)',
+          }}
+        />
       </motion.div>
 
-      {/* 5. 3D Stage with Mouse Parallax Tilting */}
+      {/* Static Subtle Accent Ring */}
+      <div className="absolute w-80 h-80 sm:w-[392px] sm:h-[392px] rounded-full border border-slate-200/70 dark:border-slate-700/50 pointer-events-none" />
+
+      {/* 3D Stage with Mouse Parallax Tilting */}
       <motion.div
         animate={{
           rotateX: shouldReduceMotion ? 0 : mousePos.y * -14,
           rotateZ: shouldReduceMotion ? 0 : mousePos.x * 8,
-          y: shouldReduceMotion ? 0 : [-8, 8, -8],
+          y: shouldReduceMotion ? 0 : [-6, 6, -6],
         }}
         transition={{
           rotateX: { type: 'spring', stiffness: 200, damping: 25 },
           rotateZ: { type: 'spring', stiffness: 200, damping: 25 },
           y: { duration: 4.5, repeat: Infinity, ease: 'easeInOut' },
         }}
-        className="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center"
+        className="relative w-56 h-56 sm:w-64 sm:h-64 flex items-center justify-center z-30"
         style={{ transformStyle: 'preserve-3d' }}
       >
         {/* Continuous 3D Vertical Axis Rotating Coin Container */}
@@ -146,15 +130,12 @@ export const GoldenCoin3D: React.FC = () => {
               ? { duration: 0 }
               : { duration: 11, repeat: Infinity, ease: 'linear' }
           }
-          className="relative w-56 h-56 sm:w-64 sm:h-64 rounded-full"
+          className="relative w-52 h-52 sm:w-60 sm:h-60 rounded-full"
           style={{
             transformStyle: 'preserve-3d',
           }}
         >
-          {/* =========================================================
-              3D CYLINDRICAL EDGE / FLUTED THICKNESS LAYERS
-              Extrudes the coin in 3D space with gold fluting
-              ========================================================= */}
+          {/* 3D Cylindrical Edge Layers */}
           {[-8, -6, -4, -2, 0, 2, 4, 6, 8].map((offsetZ, i) => (
             <div
               key={i}
@@ -168,10 +149,7 @@ export const GoldenCoin3D: React.FC = () => {
             />
           ))}
 
-          {/* =========================================================
-              FRONT FACE (Golden Metallic Coin with Embossed ₿)
-              Positioned at translateZ(10px)
-              ========================================================= */}
+          {/* FRONT FACE */}
           <div
             className="absolute inset-0 rounded-full overflow-hidden flex flex-col items-center justify-center shadow-2xl"
             style={{
@@ -183,7 +161,6 @@ export const GoldenCoin3D: React.FC = () => {
                 'inset 0 0 0 5px #FDE68A, inset 0 0 0 8px #92400E, inset 0 0 0 12px #FBBF24, 0 20px 45px -10px rgba(180, 83, 9, 0.65)',
             }}
           >
-            {/* Outer Serrated / Reeded Rim Notches */}
             <div
               className="absolute inset-0 rounded-full opacity-60 pointer-events-none"
               style={{
@@ -196,7 +173,6 @@ export const GoldenCoin3D: React.FC = () => {
               }}
             />
 
-            {/* Concentric Inner Golden Beaded Ring */}
             <div
               className="absolute inset-4 rounded-full border border-amber-300/80 pointer-events-none"
               style={{
@@ -208,7 +184,6 @@ export const GoldenCoin3D: React.FC = () => {
               className="absolute inset-7 rounded-full border border-dashed border-amber-700/50 pointer-events-none"
             />
 
-            {/* Metallic Specular Sweep Highlight */}
             <div
               className="absolute inset-0 pointer-events-none opacity-45 mix-blend-overlay"
               style={{
@@ -217,7 +192,6 @@ export const GoldenCoin3D: React.FC = () => {
               }}
             />
 
-            {/* Embossed Bitcoin-Inspired Symbol (₿) */}
             <div className="relative flex items-center justify-center select-none">
               <span
                 className="text-7xl sm:text-8xl font-black text-transparent bg-clip-text leading-none"
@@ -234,18 +208,14 @@ export const GoldenCoin3D: React.FC = () => {
               </span>
             </div>
 
-            {/* Micro Inscriptions on Coin Face */}
             <div className="absolute bottom-6 flex items-center space-x-1.5 opacity-80">
               <span className="text-[8px] font-black uppercase tracking-widest text-amber-950">
-                PAYCORE • DIGITAL
+                PAYCORE
               </span>
             </div>
           </div>
 
-          {/* =========================================================
-              BACK FACE (Golden Reverse with Digital Currency Emblem)
-              Positioned at translateZ(-10px) rotateY(180deg)
-              ========================================================= */}
+          {/* BACK FACE */}
           <div
             className="absolute inset-0 rounded-full overflow-hidden flex flex-col items-center justify-center shadow-2xl"
             style={{
@@ -257,7 +227,6 @@ export const GoldenCoin3D: React.FC = () => {
                 'inset 0 0 0 5px #FDE68A, inset 0 0 0 8px #92400E, inset 0 0 0 12px #FBBF24, 0 20px 45px -10px rgba(180, 83, 9, 0.65)',
             }}
           >
-            {/* Outer Reeded Ring */}
             <div
               className="absolute inset-0 rounded-full opacity-60 pointer-events-none"
               style={{
@@ -270,7 +239,6 @@ export const GoldenCoin3D: React.FC = () => {
               }}
             />
 
-            {/* Inner Concentric Ring */}
             <div
               className="absolute inset-4 rounded-full border border-amber-300/80 pointer-events-none"
               style={{
@@ -279,7 +247,6 @@ export const GoldenCoin3D: React.FC = () => {
               }}
             />
 
-            {/* Center Emblem: PayCore Shield & Lightning */}
             <div className="relative flex flex-col items-center justify-center">
               <div
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl flex items-center justify-center text-amber-950"
@@ -291,12 +258,12 @@ export const GoldenCoin3D: React.FC = () => {
                 <ShieldCheck className="w-12 h-12 sm:w-16 sm:h-16 text-amber-950" strokeWidth={2.5} />
               </div>
               <span className="text-[10px] font-black uppercase tracking-widest text-amber-950 mt-1">
-                INFRASTRUCTURE
+                PAYCORE
               </span>
             </div>
 
             <div className="absolute bottom-6 text-[8px] font-black uppercase tracking-widest text-amber-950 opacity-80">
-              GLOBAL SETTLEMENT
+              PAYMENTS
             </div>
           </div>
         </motion.div>

@@ -45,19 +45,19 @@ export const ContactPage: React.FC = () => {
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100">
       {/* Header */}
-      <section className="pt-16 pb-20 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 border-b border-slate-200/60 text-center">
+      <section className="pt-16 pb-20 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-b border-slate-200/60 dark:border-slate-800 text-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-4">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-xs font-semibold mb-4">
             <Mail className="w-3.5 h-3.5" />
             <span>Get in Touch</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
-            We are here to help your business grow
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight mb-4">
+            Contact PayCore
           </h1>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
-            Have questions about integrating PayCore or scaling your payment processing? Our advisory team is ready to assist.
+          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
+            Have questions about PayCore? Send us a message below.
           </p>
         </div>
       </section>
@@ -67,10 +67,10 @@ export const ContactPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12">
             {/* Left Contact Form */}
-            <div className="lg:col-span-7 bg-slate-50/80 p-8 sm:p-10 rounded-3xl border border-slate-200/80 shadow-xs">
-              <h2 className="text-2xl font-extrabold text-slate-900 mb-2">Send us a message</h2>
-              <p className="text-sm text-slate-600 mb-8">
-                Fill out the form below and an operations specialist will respond within 24 hours.
+            <div className="lg:col-span-7 bg-slate-50/80 dark:bg-slate-900 p-8 sm:p-10 rounded-3xl border border-slate-200/80 dark:border-slate-800 shadow-xs">
+              <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white mb-2">Send us a message</h2>
+              <p className="text-sm text-slate-600 dark:text-slate-400 mb-8">
+                Fill out the form below and our team will get back to you.
               </p>
 
               {submitted ? (
@@ -172,43 +172,43 @@ export const ContactPage: React.FC = () => {
 
             {/* Right Information Cards */}
             <div className="lg:col-span-5 space-y-6">
-              <div className="p-6 rounded-3xl bg-white border border-slate-200/80 shadow-xs space-y-4">
-                <h3 className="text-base font-bold text-slate-900">Direct Inquiries</h3>
+              <div className="p-6 rounded-3xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-4">
+                <h3 className="text-base font-bold text-slate-900 dark:text-white">Direct Inquiries</h3>
 
                 <div className="flex items-start space-x-3 text-xs">
-                  <div className="w-8 h-8 rounded-lg bg-blue-50 text-blue-600 flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center flex-shrink-0">
                     <Mail className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="font-bold text-slate-800">Support</div>
-                    <div className="text-slate-500">support@paycore.com</div>
+                    <div className="font-bold text-slate-800 dark:text-slate-200">Support</div>
+                    <div className="text-slate-500 dark:text-slate-400">support@paycore.com</div>
                   </div>
                 </div>
 
                 <div className="flex items-start space-x-3 text-xs">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-50 text-emerald-600 flex items-center justify-center flex-shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 flex items-center justify-center flex-shrink-0">
                     <Building className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="font-bold text-slate-800">Global Operations Center</div>
-                    <div className="text-slate-500">Financial Technology District, Suite 400</div>
+                    <div className="font-bold text-slate-800 dark:text-slate-200">Operations Office</div>
+                    <div className="text-slate-500 dark:text-slate-400">Financial Technology District, Suite 400</div>
                   </div>
                 </div>
               </div>
 
               {/* FAQ Accordion */}
-              <div className="p-6 rounded-3xl bg-slate-50 border border-slate-200/80 shadow-xs space-y-3">
-                <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
-                  <HelpCircle className="w-4 h-4 text-blue-600" />
-                  <span>Frequently Asked Questions</span>
+              <div className="p-6 rounded-3xl bg-slate-50 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs space-y-3">
+                <div className="flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 mb-2">
+                  <HelpCircle className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                  <span>FAQ</span>
                 </div>
 
                 {faqs.map((faq, idx) => (
-                  <div key={idx} className="border-b border-slate-200/60 pb-3 last:border-b-0">
+                  <div key={idx} className="border-b border-slate-200/60 dark:border-slate-800 pb-3 last:border-b-0">
                     <button
                       type="button"
                       onClick={() => setOpenFaq(openFaq === idx ? null : idx)}
-                      className="w-full flex items-center justify-between text-left text-xs font-bold text-slate-800 hover:text-blue-600 py-1"
+                      className="w-full flex items-center justify-between text-left text-xs font-bold text-slate-800 dark:text-slate-200 hover:text-blue-600 dark:hover:text-blue-400 py-1"
                     >
                       <span>{faq.q}</span>
                       <ChevronDown
@@ -216,7 +216,7 @@ export const ContactPage: React.FC = () => {
                       />
                     </button>
                     {openFaq === idx && (
-                      <p className="text-xs text-slate-600 mt-2 leading-relaxed">{faq.a}</p>
+                      <p className="text-xs text-slate-600 dark:text-slate-400 mt-2 leading-relaxed">{faq.a}</p>
                     )}
                   </div>
                 ))}

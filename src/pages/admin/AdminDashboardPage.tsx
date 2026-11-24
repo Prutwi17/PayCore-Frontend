@@ -25,7 +25,7 @@ import {
   AlertTriangle,
   RefreshCw,
   ArrowRight,
-  ShieldAlert,
+  Shield,
   Play,
   X,
 } from 'lucide-react';
@@ -38,7 +38,6 @@ export const AdminDashboardPage: React.FC = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Metrics Data
   const [summary, setSummary] = useState<AdminDashboardSummary | null>(null);
   const [paymentTrends, setPaymentTrends] = useState<PaymentTrendPoint[]>([]);
   const [statusDistributions, setStatusDistributions] = useState<StatusDistribution[]>([]);
@@ -46,7 +45,6 @@ export const AdminDashboardPage: React.FC = () => {
   const [recentAudits, setRecentAudits] = useState<AuditLog[]>([]);
   const [recentDiscrepancies, setRecentDiscrepancies] = useState<ReconciliationRecord[]>([]);
 
-  // Trigger Run Modal State
   const [isRunModalOpen, setIsRunModalOpen] = useState(false);
   const [runType, setRunType] = useState<RunType>('FULL');
   const [isTriggeringRun, setIsTriggeringRun] = useState(false);
@@ -127,7 +125,7 @@ export const AdminDashboardPage: React.FC = () => {
       navigate(`/admin/reconciliation/${run.runReference}`);
     } catch (err: unknown) {
       const apiErr = err as ApiError;
-      const msg = apiErr?.message || (err instanceof Error ? err.message : 'Failed to initiate reconciliation run');
+      const msg = apiErr?.message || (err instanceof Error ? err.message : 'Failed to start reconciliation');
       setRunModalError(msg);
     } finally {
       setIsTriggeringRun(false);
@@ -167,40 +165,42 @@ export const AdminDashboardPage: React.FC = () => {
   };
 
   if (isLoading) {
-    return <PageLoading message="Aggregating platform metrics..." />;
+    return <PageLoading message="Loading dashboard..." />;
   }
 
-  // Max volume for trend bars
-  const maxVolume = Math.max(...paymentTrends.map((t) => t.amount), 100);
+  const maxVolume = Math.max(...paymentTrends.map((t) => t.amount || 0), 100);
 
   return (
-    <div className="space-y-6">
+    <div className="p-6 max-w-7xl mx-auto space-y-6">
       {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pb-1">
         <div>
-          <div className="flex items-center space-x-2">
-            <LayoutDashboard className="w-7 h-7 text-blue-600" />
-            <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Admin Dashboard</h1>
+          <div className="flex items-center space-x-2.5">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 flex items-center justify-center border border-blue-200/60 dark:border-blue-800/60">
+              <LayoutDashboard className="w-5 h-5" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">Admin Dashboard</h1>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Payments, refunds, reconciliation, and recent activity
+              </p>
+            </div>
           </div>
-          <p className="text-sm text-slate-500 mt-1">
-            Overview of payments, refunds, reconciliation, and recent activity
-          </p>
         </div>
 
-        <div className="flex items-center space-x-3">
-          {/* Date Range Selector */}
-          <div className="inline-flex rounded-lg border border-slate-200 bg-white p-1 text-xs font-medium shadow-sm">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <div className="inline-flex rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 p-1 text-xs font-medium shadow-2xs">
             {(['24h', '7d', '30d', 'all'] as const).map((range) => (
               <button
                 key={range}
                 onClick={() => setDateRange(range)}
-                className={`px-3 py-1.5 rounded-md transition-colors ${
+                className={`px-3 py-1.5 rounded-lg transition-colors ${
                   dateRange === range
                     ? 'bg-blue-600 text-white font-semibold'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-800'
                 }`}
               >
-                {range === '24h' ? '24 Hours' : range === '7d' ? '7 Days' : range === '30d' ? '30 Days' : 'All Time'}
+                {range === '24h' ? '24h' : range === '7d' ? '7d' : range === '30d' ? '30d' : 'All'}
               </button>
             ))}
           </div>
@@ -211,7 +211,7 @@ export const AdminDashboardPage: React.FC = () => {
             onClick={handleRefresh}
             isLoading={isRefreshing}
           >
-            <RefreshCw className="w-4 h-4 mr-1.5" />
+            <RefreshCw className="w-3.5 h-3.5 mr-1.5" />
             Refresh
           </Button>
 
@@ -220,14 +220,14 @@ export const AdminDashboardPage: React.FC = () => {
             size="sm"
             onClick={() => setIsRunModalOpen(true)}
           >
-            <Play className="w-4 h-4 mr-1.5" />
+            <Play className="w-3.5 h-3.5 mr-1.5" />
             Run Reconciliation
           </Button>
         </div>
       </div>
 
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-xl text-sm text-red-700 flex items-center justify-between">
+        <div className="p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 rounded-2xl text-sm text-red-700 dark:text-red-300 flex items-center justify-between">
           <span>{error}</span>
           <Button variant="ghost" size="sm" onClick={fetchDashboardData}>
             Retry
@@ -235,98 +235,93 @@ export const AdminDashboardPage: React.FC = () => {
         </div>
       )}
 
-      {/* Primary KPI Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        {/* Payments KPI */}
-        <Card className="border-l-4 border-l-blue-600">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-              Payment Processing
+      {/* Row 1: 4 Uniform KPI Boxes */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <Card className="p-5 flex flex-col justify-between border-t-4 border-t-blue-600">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              Payment Volume
             </span>
-            <div className="p-2 bg-blue-50 text-blue-600 rounded-lg">
-              <CreditCard className="w-5 h-5" />
+            <div className="w-9 h-9 bg-blue-50 dark:bg-blue-950 text-blue-600 dark:text-blue-400 rounded-xl flex items-center justify-center">
+              <CreditCard className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3">
-            <span className="text-2xl font-bold text-slate-900">
+          <div>
+            <div className="text-2xl font-extrabold text-slate-900 dark:text-white">
               {formatCurrency(summary?.totalPaymentVolume)}
-            </span>
-            <div className="flex items-center justify-between text-xs text-slate-500 mt-2">
-              <span>{summary?.totalPayments || 0} Total Transactions</span>
-              <span className="font-semibold text-emerald-600">
+            </div>
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+              <span>{summary?.totalPayments || 0} Payments</span>
+              <span className="font-semibold text-emerald-600 dark:text-emerald-400">
                 {summary?.paymentSuccessRate || 0}% Success
               </span>
             </div>
           </div>
         </Card>
 
-        {/* Refunds KPI */}
-        <Card className="border-l-4 border-l-purple-600">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-              Refunds & Disputes
+        <Card className="p-5 flex flex-col justify-between border-t-4 border-t-purple-600">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              Refunds
             </span>
-            <div className="p-2 bg-purple-50 text-purple-600 rounded-lg">
-              <RotateCcw className="w-5 h-5" />
+            <div className="w-9 h-9 bg-purple-50 dark:bg-purple-950 text-purple-600 dark:text-purple-400 rounded-xl flex items-center justify-center">
+              <RotateCcw className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3">
-            <span className="text-2xl font-bold text-slate-900">
+          <div>
+            <div className="text-2xl font-extrabold text-slate-900 dark:text-white">
               {formatCurrency(summary?.successfulRefundVolume)}
-            </span>
-            <div className="flex items-center justify-between text-xs text-slate-500 mt-2">
-              <span>{summary?.successfulRefunds || 0} Settled Refunds</span>
-              <span className="font-semibold text-amber-600">
+            </div>
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+              <span>{summary?.successfulRefunds || 0} Completed</span>
+              <span className="font-semibold text-amber-600 dark:text-amber-400">
                 {summary?.pendingRefunds || 0} Pending
               </span>
             </div>
           </div>
         </Card>
 
-        {/* Reconciliation Health KPI */}
-        <Card className="border-l-4 border-l-emerald-600">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-              Reconciliation Health
+        <Card className="p-5 flex flex-col justify-between border-t-4 border-t-emerald-600">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              Reconciliation
             </span>
-            <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg">
-              <Scale className="w-5 h-5" />
+            <div className="w-9 h-9 bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 rounded-xl flex items-center justify-center">
+              <Scale className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3">
+          <div>
             <div className="flex items-center space-x-2">
               <Badge variant={getStatusBadgeVariant(summary?.latestReconciliationStatus || 'NEVER_RUN')}>
                 {summary?.latestReconciliationStatus || 'NEVER_RUN'}
               </Badge>
-              <span className="text-xs text-slate-400">Latest</span>
             </div>
-            <div className="flex items-center justify-between text-xs text-slate-500 mt-3">
-              <span>{recSummary?.totalRuns || 0} Runs Completed</span>
-              <span className={`font-bold ${summary?.unresolvedDiscrepanciesCount ? 'text-amber-600' : 'text-emerald-600'}`}>
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mt-3 pt-2 border-t border-slate-100 dark:border-slate-800">
+              <span>{recSummary?.totalRuns || 0} Runs</span>
+              <span className={`font-bold ${summary?.unresolvedDiscrepanciesCount ? 'text-amber-600 dark:text-amber-400' : 'text-emerald-600 dark:text-emerald-400'}`}>
                 {summary?.unresolvedDiscrepanciesCount || 0} Unresolved
               </span>
             </div>
           </div>
         </Card>
 
-        {/* Webhooks / Operations KPI */}
-        <Card className="border-l-4 border-l-amber-500">
-          <div className="flex items-center justify-between">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-500">
-              Async Reliability
+        <Card className="p-5 flex flex-col justify-between border-t-4 border-t-amber-500">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">
+              Webhooks
             </span>
-            <div className="p-2 bg-amber-50 text-amber-600 rounded-lg">
-              <ShieldAlert className="w-5 h-5" />
+            <div className="w-9 h-9 bg-amber-50 dark:bg-amber-950 text-amber-600 dark:text-amber-400 rounded-xl flex items-center justify-center">
+              <Shield className="w-4 h-4" />
             </div>
           </div>
-          <div className="mt-3">
-            <span className="text-2xl font-bold text-slate-900">
+          <div>
+            <div className="text-2xl font-extrabold text-slate-900 dark:text-white">
               {summary?.webhookDeliveryFailures || 0}
-            </span>
-            <span className="text-xs text-slate-500 ml-1">Delivery Failures</span>
-            <div className="flex items-center justify-between text-xs text-slate-500 mt-2">
-              <span>Pending Retries</span>
-              <span className="font-semibold text-blue-600">
+              <span className="text-xs font-medium text-slate-500 dark:text-slate-400 ml-1.5">Failures</span>
+            </div>
+            <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400 mt-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+              <span>Retries</span>
+              <span className="font-semibold text-blue-600 dark:text-blue-400">
                 {summary?.pendingWebhookRetries || 0} Active
               </span>
             </div>
@@ -334,28 +329,27 @@ export const AdminDashboardPage: React.FC = () => {
         </Card>
       </div>
 
-      {/* Trend Charts Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Payment Volume Trend (Responsive SVG Bars) */}
-        <Card className="lg:col-span-2">
-          <div className="flex items-center justify-between mb-4">
+      {/* Row 2: 12-Column Grid (Payment Trends + Status Distribution) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <Card className="lg:col-span-8 flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
             <div>
-              <h2 className="text-base font-semibold text-slate-900">Payment Volume Trend</h2>
-              <p className="text-xs text-slate-500">Daily transaction volume and success patterns</p>
+              <h2 className="text-base font-bold text-slate-900 dark:text-white">Payment Volume Trend</h2>
+              <p className="text-xs text-slate-500 dark:text-slate-400">Daily payment totals</p>
             </div>
             <div className="flex items-center space-x-2 text-xs">
-              <span className="inline-block w-3 h-3 bg-blue-600 rounded-sm"></span>
-              <span className="text-slate-600">Settled Volume ($)</span>
+              <span className="inline-block w-2.5 h-2.5 bg-blue-600 rounded-sm"></span>
+              <span className="text-slate-600 dark:text-slate-300">Volume ($)</span>
             </div>
           </div>
 
           {paymentTrends.length === 0 ? (
-            <div className="h-48 flex items-center justify-center text-sm text-slate-400">
-              No payment transactions recorded for selected date range
+            <div className="h-52 flex items-center justify-center text-sm text-slate-400 dark:text-slate-500 bg-slate-50/70 dark:bg-slate-800/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-700">
+              No payment transactions for this date range
             </div>
           ) : (
             <div className="space-y-3">
-              <div className="h-48 flex items-end justify-between gap-2 pt-6 pb-2 border-b border-slate-100">
+              <div className="h-52 flex items-end justify-between gap-2 pt-6 pb-2 border-b border-slate-100 dark:border-slate-800">
                 {paymentTrends.map((point) => {
                   const heightPercent = Math.max(10, Math.round((point.amount / maxVolume) * 100));
                   return (
@@ -363,12 +357,10 @@ export const AdminDashboardPage: React.FC = () => {
                       key={point.date}
                       className="flex-1 flex flex-col items-center group relative h-full justify-end"
                     >
-                      {/* Tooltip */}
                       <div className="absolute -top-12 bg-slate-900 text-white text-[11px] py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 shadow-lg">
                         <div className="font-semibold">{point.date}</div>
-                        <div>{formatCurrency(point.amount)} ({point.successful}/{point.total} tx)</div>
+                        <div>{formatCurrency(point.amount)} ({point.successful}/{point.total})</div>
                       </div>
-                      {/* Bar */}
                       <div
                         style={{ height: `${heightPercent}%` }}
                         className="w-full max-w-[36px] bg-blue-600 group-hover:bg-blue-500 rounded-t transition-all"
@@ -377,13 +369,9 @@ export const AdminDashboardPage: React.FC = () => {
                   );
                 })}
               </div>
-              {/* Dates X-Axis */}
-              <div className="flex justify-between text-[11px] text-slate-400">
+              <div className="flex justify-between text-[11px] text-slate-400 dark:text-slate-500">
                 {paymentTrends.map((point, idx) => (
-                  <span
-                    key={point.date}
-                    className={idx % 2 === 0 ? 'block' : 'hidden sm:block'}
-                  >
+                  <span key={point.date} className={idx % 2 === 0 ? 'block' : 'hidden sm:block'}>
                     {point.date.slice(5)}
                   </span>
                 ))}
@@ -392,28 +380,27 @@ export const AdminDashboardPage: React.FC = () => {
           )}
         </Card>
 
-        {/* Status Distribution */}
-        <Card>
-          <div className="mb-4">
-            <h2 className="text-base font-semibold text-slate-900">Payment Status Distribution</h2>
-            <p className="text-xs text-slate-500">Breakdown by lifecycle status</p>
+        <Card className="lg:col-span-4 flex flex-col">
+          <div className="mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
+            <h2 className="text-base font-bold text-slate-900 dark:text-white">Payment Status</h2>
+            <p className="text-xs text-slate-500 dark:text-slate-400">Breakdown by status</p>
           </div>
 
           {statusDistributions.length === 0 ? (
-            <div className="h-48 flex items-center justify-center text-sm text-slate-400">
+            <div className="flex-1 min-h-[208px] flex items-center justify-center text-sm text-slate-400 dark:text-slate-500 bg-slate-50/70 dark:bg-slate-800/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-700">
               No transactions recorded
             </div>
           ) : (
-            <div className="space-y-3.5">
+            <div className="space-y-4">
               {statusDistributions.map((dist) => (
-                <div key={dist.status} className="space-y-1">
+                <div key={dist.status} className="space-y-1.5">
                   <div className="flex items-center justify-between text-xs">
-                    <span className="font-medium text-slate-700">{dist.status}</span>
-                    <span className="text-slate-500">
+                    <span className="font-semibold text-slate-700 dark:text-slate-200">{dist.status}</span>
+                    <span className="text-slate-500 dark:text-slate-400">
                       {dist.count} ({dist.percentage}%)
                     </span>
                   </div>
-                  <div className="w-full bg-slate-100 rounded-full h-2 overflow-hidden">
+                  <div className="w-full bg-slate-100 dark:bg-slate-800 rounded-full h-2 overflow-hidden">
                     <div
                       className={`h-full rounded-full ${
                         dist.status === 'SUCCESS'
@@ -434,44 +421,43 @@ export const AdminDashboardPage: React.FC = () => {
         </Card>
       </div>
 
-      {/* Two Column Layout: Recent Discrepancies & Recent Audit Logs */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Unresolved Discrepancies Widget */}
-        <Card>
-          <div className="flex items-center justify-between mb-4">
+      {/* Row 3: 12-Column Grid (Discrepancies + Recent Activity) */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <Card className="lg:col-span-6 flex flex-col">
+          <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
             <div className="flex items-center space-x-2">
-              <AlertTriangle className="w-5 h-5 text-amber-600" />
-              <h2 className="text-base font-semibold text-slate-900">Discrepancies Requiring Review</h2>
+              <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+              <h2 className="text-base font-bold text-slate-900 dark:text-white">Discrepancies</h2>
             </div>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate('/admin/reconciliation')}
             >
-              View All <ArrowRight className="w-4 h-4 ml-1" />
+              View All <ArrowRight className="w-3.5 h-3.5 ml-1" />
             </Button>
           </div>
 
           {recentDiscrepancies.length === 0 ? (
-            <div className="p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">
-              <Scale className="w-8 h-8 text-emerald-500 mx-auto mb-2" />
-              <p className="text-sm font-medium text-slate-700">All Accounts Reconciled</p>
-              <p className="text-xs text-slate-400 mt-1">Zero unresolved discrepancy records found</p>
+            <div className="flex-1 p-8 text-center bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 flex flex-col items-center justify-center">
+              <Scale className="w-7 h-7 text-emerald-500 mb-2" />
+              <p className="text-sm font-semibold text-slate-700 dark:text-slate-200">No Open Discrepancies</p>
+              <p className="text-xs text-slate-400 dark:text-slate-500 mt-1">All checked records match</p>
             </div>
           ) : (
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-slate-100 dark:divide-slate-800">
               {recentDiscrepancies.map((record) => (
-                <div key={record.id} className="py-3 flex items-center justify-between">
-                  <div className="space-y-0.5">
+                <div key={record.id} className="py-3 flex items-center justify-between gap-3">
+                  <div className="space-y-0.5 min-w-0">
                     <div className="flex items-center space-x-2">
-                      <span className="text-xs font-mono font-bold text-slate-900">
+                      <span className="text-xs font-mono font-bold text-slate-900 dark:text-white truncate">
                         {record.internalReference || record.providerReference}
                       </span>
                       <Badge variant={getStatusBadgeVariant(record.discrepancyType)}>
                         {record.discrepancyType}
                       </Badge>
                     </div>
-                    <p className="text-xs text-slate-500">
+                    <p className="text-xs text-slate-500 dark:text-slate-400">
                       Internal: {record.internalAmount ? formatCurrency(record.internalAmount, record.currency) : 'None'} | Provider: {record.providerAmount ? formatCurrency(record.providerAmount, record.currency) : 'None'}
                     </p>
                   </div>
@@ -488,43 +474,42 @@ export const AdminDashboardPage: React.FC = () => {
           )}
         </Card>
 
-        {/* Recent Audit Logs Widget */}
-        <Card>
-          <div className="flex items-center justify-between mb-4">
+        <Card className="lg:col-span-6 flex flex-col">
+          <div className="flex items-center justify-between mb-4 pb-3 border-b border-slate-100 dark:border-slate-800">
             <div className="flex items-center space-x-2">
-              <ScrollText className="w-5 h-5 text-blue-600" />
-              <h2 className="text-base font-semibold text-slate-900">Recent Immutable Audit Trail</h2>
+              <ScrollText className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+              <h2 className="text-base font-bold text-slate-900 dark:text-white">Recent Audit Logs</h2>
             </div>
             <Button
               variant="ghost"
               size="sm"
               onClick={() => navigate('/admin/audit-logs')}
             >
-              View All <ArrowRight className="w-4 h-4 ml-1" />
+              View All <ArrowRight className="w-3.5 h-3.5 ml-1" />
             </Button>
           </div>
 
           {recentAudits.length === 0 ? (
-            <div className="p-8 text-center bg-slate-50 rounded-xl border border-dashed border-slate-200">
-              <p className="text-sm text-slate-400">No recent audit log entries</p>
+            <div className="flex-1 p-8 text-center bg-slate-50 dark:bg-slate-800/40 rounded-xl border border-dashed border-slate-200 dark:border-slate-700 flex items-center justify-center">
+              <p className="text-sm text-slate-400 dark:text-slate-500">No recent audit logs</p>
             </div>
           ) : (
-            <div className="divide-y divide-slate-100">
+            <div className="divide-y divide-slate-100 dark:divide-slate-800">
               {recentAudits.slice(0, 5).map((log) => (
-                <div key={log.id} className="py-3 flex items-start justify-between">
-                  <div className="space-y-0.5">
-                    <div className="flex items-center space-x-2">
-                      <span className="text-xs font-semibold text-slate-800">{log.action}</span>
-                      <span className="text-[10px] text-slate-400 font-mono bg-slate-100 px-1.5 py-0.5 rounded">
+                <div key={log.id} className="py-3 flex items-start justify-between gap-3">
+                  <div className="space-y-0.5 min-w-0">
+                    <div className="flex items-center space-x-2 flex-wrap">
+                      <span className="text-xs font-semibold text-slate-800 dark:text-slate-100">{log.action}</span>
+                      <span className="text-[10px] text-slate-500 dark:text-slate-400 font-mono bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded">
                         {log.resourceType}:{log.resourceId}
                       </span>
                     </div>
-                    <p className="text-xs text-slate-500 truncate max-w-xs sm:max-w-md">
-                      {log.description || 'System event recorded'}
+                    <p className="text-xs text-slate-500 dark:text-slate-400 truncate max-w-xs sm:max-w-md">
+                      {log.description || 'Event recorded'}
                     </p>
                   </div>
-                  <div className="text-right text-[11px] text-slate-400 whitespace-nowrap ml-2">
-                    <div>{log.actorId}</div>
+                  <div className="text-right text-[11px] text-slate-400 dark:text-slate-500 whitespace-nowrap">
+                    <div>{log.actorRole === 'ROLE_ADMIN' ? 'Admin' : log.actorId}</div>
                     <div className="text-[10px]">{new Date(log.createdAt).toLocaleTimeString()}</div>
                   </div>
                 </div>
@@ -536,16 +521,16 @@ export const AdminDashboardPage: React.FC = () => {
 
       {/* Trigger Reconciliation Run Modal */}
       {isRunModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4">
-          <div className="bg-white rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 overflow-hidden animate-in fade-in zoom-in-95 duration-150">
-            <div className="px-6 py-4 border-b border-slate-100 flex items-center justify-between">
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl max-w-md w-full shadow-2xl border border-slate-200 dark:border-slate-800 overflow-hidden">
+            <div className="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Scale className="w-5 h-5 text-blue-600" />
-                <h3 className="font-semibold text-slate-900">Trigger Reconciliation Run</h3>
+                <Scale className="w-5 h-5 text-blue-600 dark:text-blue-400" />
+                <h3 className="font-semibold text-slate-900 dark:text-white">Run Reconciliation</h3>
               </div>
               <button
                 onClick={() => setIsRunModalOpen(false)}
-                className="text-slate-400 hover:text-slate-600 p-1"
+                className="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 p-1"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -553,14 +538,14 @@ export const AdminDashboardPage: React.FC = () => {
 
             <div className="p-6 space-y-4">
               {runModalError && (
-                <div className="p-3 bg-red-50 border border-red-200 rounded-lg text-xs text-red-700">
+                <div className="p-3 bg-red-50 dark:bg-red-950/50 border border-red-200 dark:border-red-800 rounded-lg text-xs text-red-700 dark:text-red-300">
                   {runModalError}
                 </div>
               )}
 
               <div>
-                <label className="block text-xs font-semibold text-slate-700 uppercase tracking-wider mb-2">
-                  Reconciliation Scope
+                <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 uppercase tracking-wider mb-2">
+                  Scope
                 </label>
                 <div className="grid grid-cols-3 gap-2">
                   {(['FULL', 'PAYMENTS', 'REFUNDS'] as const).map((type) => (
@@ -570,8 +555,8 @@ export const AdminDashboardPage: React.FC = () => {
                       onClick={() => setRunType(type)}
                       className={`py-2 px-3 text-xs font-semibold rounded-lg border text-center transition-all ${
                         runType === type
-                          ? 'border-blue-600 bg-blue-50 text-blue-700 shadow-sm'
-                          : 'border-slate-200 bg-white text-slate-600 hover:border-slate-300'
+                          ? 'border-blue-600 bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 shadow-sm'
+                          : 'border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-600 dark:text-slate-300 hover:border-slate-300'
                       }`}
                     >
                       {type}
@@ -580,7 +565,7 @@ export const AdminDashboardPage: React.FC = () => {
                 </div>
               </div>
 
-              <div className="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-800 space-y-1">
+              <div className="p-3 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 rounded-xl text-xs text-amber-800 dark:text-amber-300 space-y-1">
                 <div className="font-semibold flex items-center">
                   <AlertTriangle className="w-3.5 h-3.5 mr-1" />
                   Ledger Check
@@ -591,7 +576,7 @@ export const AdminDashboardPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="px-6 py-4 bg-slate-50 border-t border-slate-100 flex justify-end space-x-3">
+            <div className="px-6 py-4 bg-slate-50 dark:bg-slate-800/50 border-t border-slate-100 dark:border-slate-800 flex justify-end space-x-3">
               <Button
                 variant="outline"
                 size="sm"
@@ -606,7 +591,7 @@ export const AdminDashboardPage: React.FC = () => {
                 onClick={handleTriggerRun}
                 isLoading={isTriggeringRun}
               >
-                Start Reconciliation
+                Start
               </Button>
             </div>
           </div>

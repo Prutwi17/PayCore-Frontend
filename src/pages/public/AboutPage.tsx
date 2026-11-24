@@ -9,18 +9,18 @@ import logoSvg from '@/assets/logo.svg';
 
 export const AboutPage: React.FC = () => {
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100">
       {/* Header */}
-      <section className="pt-16 pb-20 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 border-b border-slate-200/60 text-center">
+      <section className="pt-16 pb-20 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-b border-slate-200/60 dark:border-slate-800 text-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-4">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-xs font-semibold mb-4">
             <Award className="w-3.5 h-3.5" />
             <span>About PayCore</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight mb-4">
             Simple, Reliable Payment Operations
           </h1>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
             PayCore brings payment processing, transaction tracking, refund management, and payment monitoring together in one platform.
           </p>
         </div>
@@ -31,17 +31,17 @@ export const AboutPage: React.FC = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             <div className="lg:col-span-6 space-y-6">
-              <span className="text-xs font-bold uppercase tracking-widest text-blue-600 block">
+              <span className="text-xs font-bold uppercase tracking-widest text-blue-600 dark:text-blue-400 block">
                 Our Purpose
               </span>
-              <h2 className="text-3xl font-extrabold text-slate-900 leading-tight">
+              <h2 className="text-3xl font-extrabold text-slate-900 dark:text-white leading-tight">
                 Empowering businesses with dependable financial tools
               </h2>
-              <p className="text-base text-slate-600 leading-relaxed">
-                Modern commerce moves quickly, but fragmented payment tools and disconnected records create friction that slows businesses down.
+              <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                Modern commerce moves quickly, but disconnected payment tools and records slow businesses down.
               </p>
-              <p className="text-base text-slate-600 leading-relaxed">
-                PayCore gives you a unified command center for accepting payments, issuing refunds, and tracking transactions with clear visibility and complete audit records.
+              <p className="text-base text-slate-600 dark:text-slate-300 leading-relaxed">
+                PayCore gives you a single dashboard for accepting payments, issuing refunds, and tracking transactions.
               </p>
               <div className="pt-2">
                 <Link
@@ -87,10 +87,10 @@ export const AboutPage: React.FC = () => {
       </section>
 
       {/* Call to action */}
-      <section className="py-16 bg-slate-50 border-t border-slate-200/80 text-center">
+      <section className="py-16 bg-slate-50 dark:bg-slate-900 border-t border-slate-200/80 dark:border-slate-800 text-center">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 mb-3">Manage your payments with PayCore</h2>
-          <p className="text-sm text-slate-600 mb-6">Create your PayCore business account in minutes.</p>
+          <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white mb-3">Manage your payments with PayCore</h2>
+          <p className="text-sm text-slate-600 dark:text-slate-400 mb-6">Create your PayCore business account in minutes.</p>
           <div className="flex justify-center gap-4">
             <Link
               to="/register"
@@ -100,7 +100,7 @@ export const AboutPage: React.FC = () => {
             </Link>
             <Link
               to="/contact"
-              className="text-xs font-bold text-slate-700 hover:text-blue-600 bg-white border border-slate-200 px-6 py-3 rounded-full"
+              className="text-xs font-bold text-slate-700 dark:text-slate-200 hover:text-blue-600 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 px-6 py-3 rounded-full"
             >
               Contact Team
             </Link>

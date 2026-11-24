@@ -86,24 +86,24 @@ export const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 relative overflow-hidden">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative overflow-hidden">
       {/* Background soft ambient glowing curves */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-blue-100/50 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-10 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-blue-100/50 dark:bg-blue-900/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-10 w-96 h-96 bg-blue-200/30 dark:bg-indigo-900/20 rounded-full blur-3xl pointer-events-none" />
 
       {/* Centered Auth Card */}
-      <div className="relative w-full max-w-md bg-white border border-slate-200/80 rounded-3xl shadow-xl p-8 sm:p-10 z-10">
+      <div className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl shadow-xl p-8 sm:p-10 z-10">
         {/* Portal Switcher Tabs */}
-        <div className="flex items-center justify-between p-1 bg-slate-100 rounded-2xl border border-slate-200/60 mb-7">
+        <div className="flex items-center justify-between p-1 bg-slate-100 dark:bg-slate-800 rounded-2xl border border-slate-200/60 dark:border-slate-700 mb-7">
           <div className="flex-1 py-2 px-3 text-center text-xs font-bold text-white bg-blue-600 rounded-xl shadow-xs flex items-center justify-center gap-1.5">
             <Building2 className="w-3.5 h-3.5 text-blue-100" />
             <span>Merchant Login</span>
           </div>
           <Link
             to="/admin/login"
-            className="flex-1 py-2 px-3 text-center text-xs font-semibold text-slate-600 hover:text-slate-900 rounded-xl transition-all flex items-center justify-center gap-1.5"
+            className="flex-1 py-2 px-3 text-center text-xs font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white rounded-xl transition-all flex items-center justify-center gap-1.5"
           >
-            <Shield className="w-3.5 h-3.5 text-slate-500" />
+            <Shield className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
             <span>Admin</span>
           </Link>
         </div>
@@ -112,12 +112,12 @@ export const LoginPage: React.FC = () => {
         <div className="flex flex-col items-center text-center mb-7">
           <Link to="/" className="flex items-center space-x-2.5 mb-4 group">
             <img src={logoSvg} alt="PayCore" className="h-9 w-9 drop-shadow group-hover:scale-105 transition-transform" />
-            <span className="text-2xl font-bold tracking-tight text-slate-900 font-sans">
-              Pay<span className="text-blue-600">Core</span>
+            <span className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-sans">
+              Pay<span className="text-blue-600 dark:text-blue-500">Core</span>
             </span>
           </Link>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Merchant Sign In</h1>
-          <p className="text-xs text-slate-500 mt-1">Sign in to your merchant business account</p>
+          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Merchant Sign In</h1>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Sign in to your merchant account</p>
         </div>
 
         {/* Error Alert */}
@@ -164,17 +164,17 @@ export const LoginPage: React.FC = () => {
         {/* Divider */}
         <div className="relative my-5">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200" />
+            <div className="w-full border-t border-slate-200 dark:border-slate-700" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-3 text-slate-400 font-medium text-[11px]">Or continue with email</span>
+            <span className="bg-white dark:bg-slate-900 px-3 text-slate-400 font-medium text-[11px]">Or continue with email</span>
           </div>
         </div>
 
         {/* Email & Password Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
               Business email
             </label>
             <div className="relative">
@@ -188,19 +188,19 @@ export const LoginPage: React.FC = () => {
                 required
                 autoComplete="email"
                 placeholder="merchant@company.com"
-                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
               />
             </div>
           </div>
 
           <div>
             <div className="flex items-center justify-between mb-1.5">
-              <label className="block text-xs font-bold text-slate-700">
+              <label className="block text-xs font-bold text-slate-700 dark:text-slate-300">
                 Password
               </label>
               <Link
                 to="/forgot-password"
-                className="text-xs text-blue-600 hover:text-blue-700 font-semibold transition-colors"
+                className="text-xs text-blue-600 dark:text-blue-400 hover:text-blue-700 font-semibold transition-colors"
               >
                 Forgot password?
               </Link>
@@ -216,12 +216,12 @@ export const LoginPage: React.FC = () => {
                 required
                 autoComplete="current-password"
                 placeholder="Enter password"
-                className="w-full pl-10 pr-10 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
+                className="w-full pl-10 pr-10 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
@@ -235,9 +235,9 @@ export const LoginPage: React.FC = () => {
               type="checkbox"
               checked={rememberMe}
               onChange={(e) => setRememberMe(e.target.checked)}
-              className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+              className="h-4 w-4 rounded border-slate-300 dark:border-slate-700 text-blue-600 focus:ring-blue-500"
             />
-            <label htmlFor="remember-me" className="ml-2 block text-xs text-slate-600 cursor-pointer">
+            <label htmlFor="remember-me" className="ml-2 block text-xs text-slate-600 dark:text-slate-400 cursor-pointer">
               Remember me on this browser
             </label>
           </div>
@@ -253,16 +253,16 @@ export const LoginPage: React.FC = () => {
         </form>
 
         {/* Footer Links */}
-        <div className="mt-6 pt-5 border-t border-slate-100 text-center space-y-2 text-xs text-slate-600">
+        <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800 text-center space-y-2 text-xs text-slate-600 dark:text-slate-400">
           <div>
             Don't have a merchant account?{' '}
-            <Link to="/register" className="font-bold text-blue-600 hover:text-blue-700 hover:underline">
+            <Link to="/register" className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 hover:underline">
               Create Merchant Account
             </Link>
           </div>
           <div>
             Admin account?{' '}
-            <Link to="/admin/login" className="font-bold text-slate-800 hover:text-blue-600 hover:underline">
+            <Link to="/admin/login" className="font-bold text-slate-800 dark:text-slate-200 hover:text-blue-600 hover:underline">
               Admin Login →
             </Link>
           </div>

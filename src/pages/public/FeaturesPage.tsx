@@ -138,18 +138,18 @@ export const FeaturesPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100">
       {/* Hero */}
-      <section className="pt-16 pb-20 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 border-b border-slate-200/60 text-center">
+      <section className="pt-16 pb-20 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-b border-slate-200/60 dark:border-slate-800 text-center">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-4">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-xs font-semibold mb-4">
             <Layers className="w-3.5 h-3.5" />
             <span>Features</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight mb-4">
             Platform Features
           </h1>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
             Core tools for managing payments, refunds, transactions, and reconciliation.
           </p>
         </div>
@@ -164,7 +164,7 @@ export const FeaturesPage: React.FC = () => {
               <div
                 key={feat.id}
                 id={feat.id}
-                className="scroll-mt-24 p-8 sm:p-10 rounded-3xl bg-slate-50/80 border border-slate-200/80 shadow-xs"
+                className="scroll-mt-24 p-8 sm:p-10 rounded-3xl bg-slate-50/80 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs"
               >
                 <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-6 mb-6">
                   <div className="flex items-center space-x-3.5">
@@ -172,24 +172,24 @@ export const FeaturesPage: React.FC = () => {
                       <Icon className="w-6 h-6" />
                     </div>
                     <div>
-                      <h2 className="text-2xl font-extrabold text-slate-900">{feat.title}</h2>
-                      <p className="text-xs text-slate-500 font-medium">{feat.subtitle}</p>
+                      <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">{feat.title}</h2>
+                      <p className="text-xs text-slate-500 dark:text-slate-400 font-medium">{feat.subtitle}</p>
                     </div>
                   </div>
-                  <span className="self-start lg:self-auto px-3 py-1 rounded-full text-xs font-bold bg-blue-50 text-blue-700 border border-blue-200">
+                  <span className="self-start lg:self-auto px-3 py-1 rounded-full text-xs font-bold bg-blue-50 dark:bg-blue-950 text-blue-700 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
                     Active Feature
                   </span>
                 </div>
 
-                <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-6 max-w-4xl">
+                <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-6 max-w-4xl">
                   {feat.description}
                 </p>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-200/60">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4 border-t border-slate-200/60 dark:border-slate-800">
                   {feat.highlights.map((h, i) => (
                     <div key={i} className="flex items-start space-x-2">
-                      <CheckCircle2 className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                      <span className="text-xs font-medium text-slate-700">{h}</span>
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                      <span className="text-xs font-medium text-slate-700 dark:text-slate-300">{h}</span>
                     </div>
                   ))}
                 </div>

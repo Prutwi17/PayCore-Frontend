@@ -98,23 +98,23 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 relative overflow-hidden">
+    <div className="min-h-[calc(100vh-4rem)] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 relative overflow-hidden">
       {/* Background soft ambient glowing curves */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-blue-100/50 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 right-10 w-96 h-96 bg-blue-200/30 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-blue-100/50 dark:bg-blue-900/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-0 right-10 w-96 h-96 bg-blue-200/30 dark:bg-indigo-900/20 rounded-full blur-3xl pointer-events-none" />
 
-      {/* Centered Auth Card matching UI reference */}
-      <div className="relative w-full max-w-md bg-white border border-slate-200/80 rounded-3xl shadow-xl p-8 sm:p-10 z-10">
+      {/* Centered Auth Card */}
+      <div className="relative w-full max-w-md bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 rounded-3xl shadow-xl p-8 sm:p-10 z-10">
         {/* Brand Header */}
         <div className="flex flex-col items-center text-center mb-8">
           <Link to="/" className="flex items-center space-x-2.5 mb-5 group">
             <img src={logoSvg} alt="PayCore" className="h-9 w-9 drop-shadow group-hover:scale-105 transition-transform" />
-            <span className="text-2xl font-bold tracking-tight text-slate-900 font-sans">
-              Pay<span className="text-blue-600">Core</span>
+            <span className="text-2xl font-bold tracking-tight text-slate-900 dark:text-white font-sans">
+              Pay<span className="text-blue-600 dark:text-blue-500">Core</span>
             </span>
           </Link>
-          <h1 className="text-2xl font-extrabold text-slate-900 tracking-tight">Create Merchant Account</h1>
-          <p className="text-xs text-slate-500 mt-1">Set up business payment processing with PayCore</p>
+          <h1 className="text-2xl font-extrabold text-slate-900 dark:text-white tracking-tight">Create Merchant Account</h1>
+          <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Set up business payment processing with PayCore</p>
         </div>
 
         {/* Error Alert */}
@@ -141,17 +141,17 @@ export const RegisterPage: React.FC = () => {
         {/* Divider */}
         <div className="relative my-5">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-slate-200" />
+            <div className="w-full border-t border-slate-200 dark:border-slate-700" />
           </div>
           <div className="relative flex justify-center text-xs uppercase">
-            <span className="bg-white px-3 text-slate-400 font-medium text-[11px]">Or register with email</span>
+            <span className="bg-white dark:bg-slate-900 px-3 text-slate-400 font-medium text-[11px]">Or register with email</span>
           </div>
         </div>
 
-        {/* Form Fields matching UI Reference */}
+        {/* Form Fields */}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
               Full name
             </label>
             <div className="relative">
@@ -164,13 +164,13 @@ export const RegisterPage: React.FC = () => {
                 onChange={(e) => setFullName(e.target.value)}
                 required
                 placeholder="Full name"
-                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
               Business name <span className="font-normal text-slate-400">(optional)</span>
             </label>
             <div className="relative">
@@ -182,13 +182,13 @@ export const RegisterPage: React.FC = () => {
                 value={businessName}
                 onChange={(e) => setBusinessName(e.target.value)}
                 placeholder="Your company or store name"
-                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
               Email address
             </label>
             <div className="relative">
@@ -202,13 +202,13 @@ export const RegisterPage: React.FC = () => {
                 required
                 autoComplete="email"
                 placeholder="Email address"
-                className="w-full pl-10 pr-3.5 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
+                className="w-full pl-10 pr-3.5 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
               Password
             </label>
             <div className="relative">
@@ -221,12 +221,12 @@ export const RegisterPage: React.FC = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 placeholder="Password"
-                className="w-full pl-10 pr-10 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
+                className="w-full pl-10 pr-10 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
               >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
@@ -237,7 +237,7 @@ export const RegisterPage: React.FC = () => {
           </div>
 
           <div>
-            <label className="block text-xs font-bold text-slate-700 mb-1.5">
+            <label className="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1.5">
               Confirm password
             </label>
             <div className="relative">
@@ -250,12 +250,12 @@ export const RegisterPage: React.FC = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
                 placeholder="Confirm password"
-                className="w-full pl-10 pr-10 py-2.5 bg-white border border-slate-300 rounded-xl text-xs text-slate-900 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
+                className="w-full pl-10 pr-10 py-2.5 bg-white dark:bg-slate-800 border border-slate-300 dark:border-slate-700 rounded-xl text-xs text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all font-sans"
               />
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 transition-colors"
+                className="absolute inset-y-0 right-0 pr-3.5 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors"
               >
                 {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
               </button>
@@ -269,15 +269,15 @@ export const RegisterPage: React.FC = () => {
               type="checkbox"
               checked={agreeTerms}
               onChange={(e) => setAgreeTerms(e.target.checked)}
-              className="h-4 w-4 mt-0.5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+              className="h-4 w-4 mt-0.5 rounded border-slate-300 dark:border-slate-700 text-blue-600 focus:ring-blue-500"
             />
-            <label htmlFor="agree-terms" className="ml-2 block text-xs text-slate-600 cursor-pointer">
+            <label htmlFor="agree-terms" className="ml-2 block text-xs text-slate-600 dark:text-slate-400 cursor-pointer">
               I agree to the{' '}
-              <Link to="/terms" className="text-blue-600 hover:underline">
+              <Link to="/terms" className="text-blue-600 dark:text-blue-400 hover:underline">
                 Terms and Conditions
               </Link>{' '}
               and{' '}
-              <Link to="/privacy" className="text-blue-600 hover:underline">
+              <Link to="/privacy" className="text-blue-600 dark:text-blue-400 hover:underline">
                 Privacy Policy
               </Link>
             </label>
@@ -294,16 +294,16 @@ export const RegisterPage: React.FC = () => {
         </form>
 
         {/* Footer Links */}
-        <div className="mt-6 pt-5 border-t border-slate-100 text-center space-y-2 text-xs text-slate-600">
+        <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-800 text-center space-y-2 text-xs text-slate-600 dark:text-slate-400">
           <div>
             Already have a merchant account?{' '}
-            <Link to="/login" className="font-bold text-blue-600 hover:text-blue-700 hover:underline">
+            <Link to="/login" className="font-bold text-blue-600 dark:text-blue-400 hover:text-blue-700 hover:underline">
               Merchant Sign In
             </Link>
           </div>
           <div>
             Admin account?{' '}
-            <Link to="/admin/login" className="font-bold text-slate-800 hover:text-blue-600 hover:underline">
+            <Link to="/admin/login" className="font-bold text-slate-800 dark:text-slate-200 hover:text-blue-600 hover:underline">
               Admin Login →
             </Link>
           </div>

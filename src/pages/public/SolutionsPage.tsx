@@ -107,18 +107,18 @@ export const SolutionsPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-slate-900">
+    <div className="min-h-screen bg-white dark:bg-slate-950 text-slate-900 dark:text-slate-100">
       {/* Hero Header */}
-      <section className="pt-16 pb-20 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 border-b border-slate-200/60">
+      <section className="pt-16 pb-20 bg-gradient-to-b from-blue-50/60 via-white to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 border-b border-slate-200/60 dark:border-slate-800">
         <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-semibold mb-4">
+          <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-blue-100 dark:bg-blue-950 text-blue-700 dark:text-blue-300 text-xs font-semibold mb-4">
             <Briefcase className="w-3.5 h-3.5" />
             <span>Solutions</span>
           </div>
-          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4">
+          <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 dark:text-white tracking-tight leading-tight mb-4">
             Payment Solutions for Business
           </h1>
-          <p className="text-lg text-slate-600 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-slate-600 dark:text-slate-300 max-w-2xl mx-auto leading-relaxed">
             Simple tools to accept payments, manage refunds, and keep clear transaction records.
           </p>
         </div>
@@ -135,7 +135,7 @@ export const SolutionsPage: React.FC = () => {
               <div
                 key={sol.id}
                 id={sol.id}
-                className="scroll-mt-24 p-8 sm:p-12 rounded-3xl bg-slate-50/80 border border-slate-200/80 shadow-xs"
+                className="scroll-mt-24 p-8 sm:p-12 rounded-3xl bg-slate-50/80 dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 shadow-xs"
               >
                 <div className={`grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center ${isEven ? '' : 'lg:flex-row-reverse'}`}>
                   <div className="lg:col-span-7">
@@ -144,20 +144,20 @@ export const SolutionsPage: React.FC = () => {
                         <Icon className="w-6 h-6" />
                       </div>
                       <div>
-                        <h2 className="text-2xl font-extrabold text-slate-900">{sol.title}</h2>
-                        <p className="text-xs font-medium text-slate-500">{sol.subtitle}</p>
+                        <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">{sol.title}</h2>
+                        <p className="text-xs font-medium text-slate-500 dark:text-slate-400">{sol.subtitle}</p>
                       </div>
                     </div>
 
-                    <p className="text-sm sm:text-base text-slate-600 leading-relaxed mb-6">
+                    <p className="text-sm sm:text-base text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
                       {sol.description}
                     </p>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8">
                       {sol.benefits.map((b, i) => (
                         <div key={i} className="flex items-start space-x-2.5">
-                          <CheckCircle2 className="w-4 h-4 text-blue-600 flex-shrink-0 mt-0.5" />
-                          <span className="text-xs font-medium text-slate-700 leading-snug">{b}</span>
+                          <CheckCircle2 className="w-4 h-4 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                          <span className="text-xs font-medium text-slate-700 dark:text-slate-300 leading-snug">{b}</span>
                         </div>
                       ))}
                     </div>
@@ -174,26 +174,26 @@ export const SolutionsPage: React.FC = () => {
                   </div>
 
                   <div className="lg:col-span-5">
-                    <div className="p-6 rounded-2xl bg-white border border-slate-200 shadow-xs flex flex-col justify-center space-y-3">
-                      <div className="text-xs font-bold text-slate-900 pb-2 border-b border-slate-100">
+                    <div className="p-6 rounded-2xl bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 shadow-xs flex flex-col justify-center space-y-3">
+                      <div className="text-xs font-bold text-slate-900 dark:text-white pb-2 border-b border-slate-100 dark:border-slate-700">
                         Operational Scope
                       </div>
-                      <div className="text-xs text-slate-600 space-y-2.5">
+                      <div className="text-xs text-slate-600 dark:text-slate-300 space-y-2.5">
                         <div className="flex justify-between">
                           <span className="text-slate-400">Processing:</span>
-                          <span className="font-semibold text-slate-800">Cards & Wallets</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-100">Cards & Wallets</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-slate-400">Currencies:</span>
-                          <span className="font-semibold text-slate-800">USD, EUR, GBP, INR</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-100">USD, EUR, GBP, INR</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-slate-400">Access:</span>
-                          <span className="font-semibold text-slate-800">Merchant Portal & API</span>
+                          <span className="font-semibold text-slate-800 dark:text-slate-100">Merchant Portal & API</span>
                         </div>
                         <div className="flex justify-between">
                           <span className="text-slate-400">Records:</span>
-                          <span className="font-semibold text-emerald-600">Audit Logged</span>
+                          <span className="font-semibold text-emerald-600 dark:text-emerald-400">Audit Logged</span>
                         </div>
                       </div>
                     </div>
