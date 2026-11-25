@@ -11,7 +11,7 @@ export const DashboardLayout: React.FC = () => {
   const isAdmin = location.pathname.startsWith('/admin');
 
   return (
-    <div className="min-h-screen flex bg-slate-50 dark:bg-black text-slate-900 dark:text-white transition-colors">
+    <div className="min-h-screen flex bg-white dark:bg-black text-slate-900 dark:text-white transition-colors">
       <Sidebar portalType={isAdmin ? 'admin' : 'merchant'} />
       <div className="flex-1 flex flex-col min-w-0">
         <header className="h-16 bg-white dark:bg-black border-b border-slate-200 dark:border-zinc-800 flex items-center justify-between px-6 z-10 transition-colors">

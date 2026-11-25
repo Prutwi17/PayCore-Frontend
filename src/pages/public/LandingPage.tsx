@@ -186,7 +186,7 @@ export const LandingPage: React.FC = () => {
       </section>
 
       {/* INDUSTRIES SECTION */}
-      <section className="py-16 bg-slate-50/70 dark:bg-zinc-950 border-y border-slate-200/60 dark:border-zinc-800">
+      <section className="py-16 bg-white dark:bg-black border-y border-slate-200/70 dark:border-zinc-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <h2 className="text-2xl font-extrabold text-slate-900 dark:text-white">
@@ -200,7 +200,7 @@ export const LandingPage: React.FC = () => {
               return (
                 <div
                   key={item.title}
-                  className="bg-white dark:bg-black p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 shadow-2xs hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all text-center flex flex-col items-center justify-center group"
+                  className="bg-white dark:bg-zinc-950 p-5 rounded-2xl border border-slate-200 dark:border-zinc-800 shadow-2xs hover:shadow-md hover:border-blue-200 dark:hover:border-blue-800 transition-all text-center flex flex-col items-center justify-center group"
                 >
                   <div className="w-11 h-11 rounded-2xl bg-slate-100 dark:bg-zinc-900 text-slate-700 dark:text-zinc-300 flex items-center justify-center mb-3 group-hover:bg-blue-50 dark:group-hover:bg-blue-950 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                     <Icon className="w-5 h-5" />
