@@ -72,7 +72,7 @@ export const AdminSetupPage: React.FC = () => {
     setDispatchMessage(null);
     try {
       const msg = await authService.initiateAdminSetup();
-      setDispatchMessage(msg || 'Setup invitation has been sent to omp27614@gmail.com.');
+      setDispatchMessage(msg || 'Setup link sent to the admin email.');
     } catch (err: unknown) {
       const apiErr = err as ApiError;
       setErrorMessage(apiErr.message || 'Failed to dispatch setup invitation.');
@@ -94,9 +94,9 @@ export const AdminSetupPage: React.FC = () => {
             <ShieldCheck className="w-3.5 h-3.5" />
             Platform Security
           </div>
-          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Initial Administrator Setup</h1>
+          <h1 className="text-2xl font-bold text-slate-900 tracking-tight">Admin Setup</h1>
           <p className="text-sm text-slate-500 mt-1">
-            Designated Administrator: <span className="font-semibold text-slate-700">omp27614@gmail.com</span>
+            Configure the Admin account
           </p>
         </div>
 
@@ -206,7 +206,7 @@ export const AdminSetupPage: React.FC = () => {
                 One-Time Administrator Activation
               </p>
               <p>
-                To configure the initial platform administrator account, an onboarding link must be dispatched to <strong className="font-semibold">omp27614@gmail.com</strong>.
+                To set up the Admin account, send a one-time setup link to your admin email.
               </p>
             </div>
 

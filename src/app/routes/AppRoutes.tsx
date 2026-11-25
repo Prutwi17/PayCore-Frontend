@@ -4,7 +4,14 @@ import { RootLayout } from '@/layouts/RootLayout';
 import { PublicLayout } from '@/layouts/PublicLayout';
 import { DashboardLayout } from '@/layouts/DashboardLayout';
 import { LandingPage } from '@/pages/public/LandingPage';
+import { SolutionsPage } from '@/pages/public/SolutionsPage';
+import { FeaturesPage } from '@/pages/public/FeaturesPage';
+import { AboutPage } from '@/pages/public/AboutPage';
+import { ContactPage } from '@/pages/public/ContactPage';
+import { TermsPage } from '@/pages/public/TermsPage';
+import { PrivacyPage } from '@/pages/public/PrivacyPage';
 import { LoginPage } from '@/pages/public/LoginPage';
+import { AdminLoginPage } from '@/pages/public/AdminLoginPage';
 import { RegisterPage } from '@/pages/public/RegisterPage';
 import { VerifyEmailPage } from '@/pages/public/VerifyEmailPage';
 import { ForgotPasswordPage } from '@/pages/public/ForgotPasswordPage';
@@ -16,7 +23,7 @@ import { RoleRoute } from '@/components/common/RoleRoute';
 import { PublicOnlyRoute } from '@/components/common/PublicOnlyRoute';
 
 // Merchant Pages
-import { MerchantDashboardPlaceholder } from '@/pages/merchant/MerchantDashboardPlaceholder';
+import { MerchantDashboardPage } from '@/pages/merchant/MerchantDashboardPage';
 import { MerchantProfilePage } from '@/pages/merchant/MerchantProfilePage';
 import { MerchantApiKeysPage } from '@/pages/merchant/MerchantApiKeysPage';
 import { MerchantPaymentsPage } from '@/pages/merchant/MerchantPaymentsPage';
@@ -26,7 +33,6 @@ import { MerchantWebhooksPage } from '@/pages/merchant/MerchantWebhooksPage';
 
 // Admin Pages
 import { AdminDashboardPage } from '@/pages/admin/AdminDashboardPage';
-import { AdminDashboardPlaceholder } from '@/pages/admin/AdminDashboardPlaceholder';
 import { AdminMerchantsPage } from '@/pages/admin/AdminMerchantsPage';
 import { AdminPaymentsPage } from '@/pages/admin/AdminPaymentsPage';
 import { AdminRefundsPage } from '@/pages/admin/AdminRefundsPage';
@@ -43,10 +49,17 @@ export const AppRoutes: React.FC = () => {
         {/* Public Routes with Navbar and Footer */}
         <Route element={<PublicLayout />}>
           <Route path="/" element={<LandingPage />} />
-          
+          <Route path="/solutions" element={<SolutionsPage />} />
+          <Route path="/features" element={<FeaturesPage />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/terms" element={<TermsPage />} />
+          <Route path="/privacy" element={<PrivacyPage />} />
+
           {/* Guest-only routes (redirect authenticated users) */}
           <Route element={<PublicOnlyRoute />}>
             <Route path="/login" element={<LoginPage />} />
+            <Route path="/admin/login" element={<AdminLoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
             <Route path="/forgot-password" element={<ForgotPasswordPage />} />
             <Route path="/reset-password" element={<ResetPasswordPage />} />
@@ -71,14 +84,13 @@ export const AppRoutes: React.FC = () => {
           }
         >
           <Route index element={<Navigate to="/merchant/dashboard" replace />} />
-          <Route path="dashboard" element={<MerchantDashboardPlaceholder />} />
-          <Route path="settings" element={<MerchantProfilePage />} />
+          <Route path="dashboard" element={<MerchantDashboardPage />} />
+          <Route path="profile" element={<MerchantProfilePage />} />
           <Route path="api-keys" element={<MerchantApiKeysPage />} />
           <Route path="payments" element={<MerchantPaymentsPage />} />
           <Route path="refunds" element={<MerchantRefundsPage />} />
           <Route path="transactions" element={<MerchantTransactionsPage />} />
           <Route path="webhooks" element={<MerchantWebhooksPage />} />
-          <Route path="reconciliation" element={<MerchantDashboardPlaceholder />} />
         </Route>
 
         {/* Admin Portal Routes (Protected + ROLE_ADMIN only) */}
@@ -95,13 +107,12 @@ export const AppRoutes: React.FC = () => {
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="dashboard" element={<AdminDashboardPage />} />
           <Route path="merchants" element={<AdminMerchantsPage />} />
-          <Route path="settings" element={<AdminDashboardPlaceholder />} />
           <Route path="payments" element={<AdminPaymentsPage />} />
           <Route path="refunds" element={<AdminRefundsPage />} />
           <Route path="transactions" element={<AdminTransactionsPage />} />
+          <Route path="webhooks" element={<AdminWebhooksPage />} />
           <Route path="reconciliation" element={<AdminReconciliationPage />} />
           <Route path="reconciliation/:reference" element={<AdminReconciliationDetailPage />} />
-          <Route path="webhooks" element={<AdminWebhooksPage />} />
           <Route path="audit-logs" element={<AdminAuditLogsPage />} />
         </Route>
       </Route>

@@ -33,10 +33,29 @@ export const dashboardService = {
     if (endDate) params.append('endDate', endDate);
 
     const query = params.toString() ? `?${params.toString()}` : '';
-    const response = await apiClient.get<ApiResponse<PaymentTrendPoint[]>>(
-      `/admin/dashboard/trends/payments${query}`
-    );
-    return response.data.data;
+    const response = await apiClient.get<
+      ApiResponse<
+        Array<{
+          date: string;
+          totalCount?: number;
+          successfulCount?: number;
+          failedCount?: number;
+          totalAmount?: number;
+          total?: number;
+          successful?: number;
+          failed?: number;
+          amount?: number;
+        }>
+      >
+    >(`/admin/dashboard/payment-trends${query}`);
+
+    return (response.data.data || []).map((pt) => ({
+      date: pt.date,
+      total: pt.total ?? pt.totalCount ?? 0,
+      successful: pt.successful ?? pt.successfulCount ?? 0,
+      failed: pt.failed ?? pt.failedCount ?? 0,
+      amount: pt.amount ?? pt.totalAmount ?? 0,
+    }));
   },
 
   /**
@@ -48,10 +67,26 @@ export const dashboardService = {
     if (endDate) params.append('endDate', endDate);
 
     const query = params.toString() ? `?${params.toString()}` : '';
-    const response = await apiClient.get<ApiResponse<RefundTrendPoint[]>>(
-      `/admin/dashboard/trends/refunds${query}`
-    );
-    return response.data.data;
+    const response = await apiClient.get<
+      ApiResponse<
+        Array<{
+          date: string;
+          totalCount?: number;
+          successfulCount?: number;
+          totalAmount?: number;
+          total?: number;
+          successful?: number;
+          amount?: number;
+        }>
+      >
+    >(`/admin/dashboard/refund-trends${query}`);
+
+    return (response.data.data || []).map((pt) => ({
+      date: pt.date,
+      total: pt.total ?? pt.totalCount ?? 0,
+      successful: pt.successful ?? pt.successfulCount ?? 0,
+      amount: pt.amount ?? pt.totalAmount ?? 0,
+    }));
   },
 
   /**
@@ -64,9 +99,9 @@ export const dashboardService = {
 
     const query = params.toString() ? `?${params.toString()}` : '';
     const response = await apiClient.get<ApiResponse<StatusDistribution[]>>(
-      `/admin/dashboard/status-distribution${query}`
+      `/admin/dashboard/payment-status-distribution${query}`
     );
-    return response.data.data;
+    return response.data.data || [];
   },
 
   /**
